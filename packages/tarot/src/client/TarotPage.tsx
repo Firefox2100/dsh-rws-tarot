@@ -173,7 +173,7 @@ function OptionsPanel({ value, onChange, nameOf, t }: { value: Options; onChange
                 const rule = method.significator.colouring.find(c => c.suit === s)!
                 return (
                   <label key={s} className={css.choice}>
-                    <input type="radio" name="suit" checked={value.suit === s} onChange={() => { set({ suit: s }) }} />
+                    <input type="radio" name="suit" aria-label={t(`suit.${s}`)} checked={value.suit === s} onChange={() => { set({ suit: s }) }} />
                     <span><strong>{t(`suit.${s}`)}</strong> <span className={css.muted}>{rule.text}</span></span>
                   </label>
                 )

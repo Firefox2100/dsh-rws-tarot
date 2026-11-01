@@ -30,12 +30,12 @@ export function seededRng(seed: string | number): Rng {
   let c = seedHash()
   let d = seedHash()
   const word = (): number => {
-    const t = (((a + b) | 0) + d) | 0
-    d = (d + 1) | 0
+    const t = Math.trunc(Math.trunc(a + b) + d)
+    d = Math.trunc(d + 1)
     a = b ^ (b >>> 9)
-    b = (c + (c << 3)) | 0
+    b = Math.trunc(c + (c << 3))
     c = (c << 21) | (c >>> 11)
-    c = (c + t) | 0
+    c = Math.trunc(c + t)
     return t >>> 0
   }
   for (let i = 0; i < 15; i++) word()

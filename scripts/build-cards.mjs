@@ -1,5 +1,6 @@
 // Builds packages/tarot-data/data/cards.json from the book transcription in references/pictorial-key.
 // Every text is copied from the book; nothing is composed here.
+import { createHash } from 'node:crypto'
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -20,6 +21,7 @@ const IMAGE = /^!\[[^\]]*\]\(\.\.\/images\/([^)]+)\)$/
 
 const read = name => readFile(resolve(book, 'text', name), 'utf8').then(t => t.split('\n'))
 const manifest = JSON.parse(await readFile(resolve(book, 'images/manifest.json'), 'utf8'))
+const imageHashes = Object.fromEntries(await Promise.all(Object.entries(manifest).map(async ([file, value]) => [file, createHash('sha256').update(await readFile(resolve(book, value.path))).digest('hex')])))
 const joins = []
 const notes = []
 
@@ -178,7 +180,7 @@ const additional = new Map()
 const imageRecord = file => {
   const m = manifest[file]
   if (!m) throw new Error(`image ${file} not in manifest`)
-  return { file: `references/pictorial-key/${m.path}`, width: m.w, height: m.h, sha1: m.sha1, source: 'The Pictorial Key to the Tarot (1910/1922) plate, via Wikimedia Commons' }
+  return { file: `references/pictorial-key/${m.path}`, width: m.w, height: m.h, sha256: imageHashes[file], source: 'The Pictorial Key to the Tarot (1910/1922) plate, via Wikimedia Commons' }
 }
 const meaning = (scenario, context, pass, section) => pass && { scenario, context, text: pass.text, source: { part: 3, section, pdfPages: pass.pdfPages } }
 const cards = []

@@ -8,7 +8,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const data = JSON.parse(await readFile(resolve(root, 'packages/tarot-data/data/cards.json'), 'utf8'))
 const textDir = resolve(root, 'references/pictorial-key/text')
 const squash = s => s.toLowerCase().replace(/<!--.*?-->/g, '').replace(/[^\p{L}\p{N}]+/gu, '')
-const corpus = squash((await Promise.all((await readdir(textDir)).sort().map(f => readFile(resolve(textDir, f), 'utf8')))).join('\n').replace(/!\[[^\]]*\]\([^)]*\)/g, ''))
+const corpus = squash((await Promise.all((await readdir(textDir)).sort((a, b) => a.localeCompare(b)).map(f => readFile(resolve(textDir, f), 'utf8')))).join('\n').replace(/!\[[^\]]*\]\([^)]*\)/g, ''))
 
 const errors = []
 const fail = m => errors.push(m)
@@ -22,7 +22,7 @@ for (const c of data.cards) {
   counts[c.arcana]++
   const buf = await readFile(resolve(root, c.image.file)).catch(() => null)
   if (!buf) fail(`${c.id}: image missing ${c.image.file}`)
-  else if (createHash('sha1').update(buf).digest('hex') !== c.image.sha1) fail(`${c.id}: image sha1 differs`)
+  else if (createHash('sha256').update(buf).digest('hex') !== c.image.sha256) fail(`${c.id}: image sha256 differs`)
   const passages = [['pictorial', c.pictorial], ['traditional', c.traditional], ...c.meanings.map(m => [`${m.context}/${m.scenario}`, m])]
   for (const [label, p] of passages) {
     if (!p) continue

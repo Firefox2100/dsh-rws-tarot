@@ -23,7 +23,7 @@ export interface CardImage {
   readonly file: string
   readonly width: number
   readonly height: number
-  readonly sha1: string
+  readonly sha256: string
   readonly source: string
 }
 

@@ -15,6 +15,7 @@
     "tsdown.config.ts"
   ],
   "exclude": [
-    "src/client"
+    "src/client",
+    "tests/client.spec.tsx"
   ]
 }

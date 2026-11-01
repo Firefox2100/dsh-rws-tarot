@@ -12,7 +12,7 @@ card = {
   number, suit, rank
   name          the book's name ("Strength", "King of Wands"); aliases: other names the book gives
   printedTitle  heading as printed in the book
-  image         { file, width, height, sha1, source }      the book's own plate
+  image         { file, width, height, sha256, source }    the book's own plate
   pictorial     { text, source }  Part II (trumps) / Part III § 2 (lesser cards): the picture and its symbolism
   traditional   { text, source }  Part I § 2 commentary on the older tarot (trumps only; null elsewhere)
   meanings[]    { scenario: "upright" | "reversed", context: "divinatory" | "additional", text, source }
