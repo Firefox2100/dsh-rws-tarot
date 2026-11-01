@@ -9,10 +9,12 @@
     "data:build": "node scripts/build-cards.mjs",
     "data:check": "node scripts/check-cards.mjs",
     "typecheck": "pnpm -r run typecheck",
-    "test": "pnpm -r run test"
+    "test": "pnpm -r run test",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=lcov"
   },
   "devDependencies": {
     "@types/node": "^22.20.0",
+    "@vitest/coverage-v8": "^4.1.8",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8"
   }
