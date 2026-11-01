@@ -1,0 +1,16 @@
+{
+  "name": "@dsh-rws-tarot/data",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Card data of the Rider-Waite-Smith tarot, extracted from The Pictorial Key to the Tarot.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cards.json": "./data/cards.json"
+  },
+  "files": ["data", "src"],
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  }
+}

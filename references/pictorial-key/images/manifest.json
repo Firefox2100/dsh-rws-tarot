@@ -1,0 +1,569 @@
+{
+ "Pictorial_Key_to_the_Tarot_00_The_Fool.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_00_The_Fool.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Pictorial_Key_to_the_Tarot_00_The_Fool.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "8cc5e8aee126290ab0e71e7986f300f3af17d759",
+  "w": 328,
+  "h": 562
+ },
+ "Pictorial_Key_to_the_Tarot_01_The_Magician.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_01_The_Magician.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Pictorial_Key_to_the_Tarot_01_The_Magician.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "51dad90fb64e416020b7c34576bd914bc815a4ed",
+  "w": 329,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_02_The_High_Priestess.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_02_The_High_Priestess.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Pictorial_Key_to_the_Tarot_02_The_High_Priestess.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "a3bae1d6bc8a8d4315e52ea2d28ae15171554c0e",
+  "w": 330,
+  "h": 559
+ },
+ "Pictorial_Key_to_the_Tarot_03_The_Empress.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_03_The_Empress.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Pictorial_Key_to_the_Tarot_03_The_Empress.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "263065d7426acf7572e75cc0f30b4dd03e67b3e0",
+  "w": 328,
+  "h": 559
+ },
+ "Pictorial_Key_to_the_Tarot_04_The_Emperor.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_04_The_Emperor.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Pictorial_Key_to_the_Tarot_04_The_Emperor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "2f6a6a27580f93a8a781d847d7a4efd557ab8196",
+  "w": 329,
+  "h": 559
+ },
+ "Pictorial_Key_to_the_Tarot_05_The_Hierophant.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_05_The_Hierophant.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Pictorial_Key_to_the_Tarot_05_The_Hierophant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "e6fab0aecd16c0f3e8cae4e81b2fb77604da3a1c",
+  "w": 330,
+  "h": 561
+ },
+ "Pictorial_Key_to_the_Tarot_06_The_Lovers.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_06_The_Lovers.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Pictorial_Key_to_the_Tarot_06_The_Lovers.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "98ee3e09ed7eb173cf550dc14a40c813d244a872",
+  "w": 333,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_07_The_Chariot.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_07_The_Chariot.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Pictorial_Key_to_the_Tarot_07_The_Chariot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "8ffd73280a373dc5a387e85e5da0100510edfc82",
+  "w": 331,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_08_Strength.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_08_Strength.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Pictorial_Key_to_the_Tarot_08_Strength.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "35f357d722f497789e7dda9b023dd80d0e337bed",
+  "w": 329,
+  "h": 574
+ },
+ "Pictorial_Key_to_the_Tarot_09_The_Hermit.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_09_The_Hermit.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/61/Pictorial_Key_to_the_Tarot_09_The_Hermit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "4dfb4ed4dea015fc6943c332bea053ea1a63c025",
+  "w": 330,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_10_Wheel_of_Fortune.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_10_Wheel_of_Fortune.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/81/Pictorial_Key_to_the_Tarot_10_Wheel_of_Fortune.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "2e62d1c8ffe052113dc3487f13c7eb6eaca3d53e",
+  "w": 329,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_11_Justice.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_11_Justice.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Pictorial_Key_to_the_Tarot_11_Justice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "7f6d7d87fea16beb4b239b4780a695cd0dfab4b1",
+  "w": 330,
+  "h": 570
+ },
+ "Pictorial_Key_to_the_Tarot_12_The_Hanged_Man.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_12_The_Hanged_Man.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/80/Pictorial_Key_to_the_Tarot_12_The_Hanged_Man.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "1056f74f79a438eca1aecee650762e6fe2550f21",
+  "w": 331,
+  "h": 579
+ },
+ "Pictorial_Key_to_the_Tarot_13_Death.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_13_Death.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Pictorial_Key_to_the_Tarot_13_Death.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "1f1b1a8fb1c487fe73b515d803130c03f856202c",
+  "w": 329,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_14_Temperance.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_14_Temperance.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Pictorial_Key_to_the_Tarot_14_Temperance.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "cdfaeec96d9d91f5d6a6e4fb89077124348c0aab",
+  "w": 333,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_15_The_Devil.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_15_The_Devil.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Pictorial_Key_to_the_Tarot_15_The_Devil.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "f1d398c2761f698b37274138bb830e78889b53ce",
+  "w": 326,
+  "h": 568
+ },
+ "Pictorial_Key_to_the_Tarot_16_The_Tower.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_16_The_Tower.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Pictorial_Key_to_the_Tarot_16_The_Tower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "54262c19ca31460368e8fef0e78ed96889181b01",
+  "w": 330,
+  "h": 561
+ },
+ "Pictorial_Key_to_the_Tarot_17_The_Star.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_17_The_Star.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/83/Pictorial_Key_to_the_Tarot_17_The_Star.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "4e1a8b45fc2c63b5b7a76ae898f4218c7092855f",
+  "w": 331,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_18_The_Moon.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_18_The_Moon.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Pictorial_Key_to_the_Tarot_18_The_Moon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "067c0a25c8e8126c9d28b6d13f1b62ebfb1db9cd",
+  "w": 327,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_19_The_Sun.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_19_The_Sun.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Pictorial_Key_to_the_Tarot_19_The_Sun.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "ac81fc78716dc0b33efcc5ad8aecbfbe1ae59090",
+  "w": 329,
+  "h": 562
+ },
+ "Pictorial_Key_to_the_Tarot_20_Judgement.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_20_Judgement.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pictorial_Key_to_the_Tarot_20_Judgement.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "ca4c3ab4e4a5c547bba28bd0e4489dd1211a5df1",
+  "w": 330,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_21_The_World.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_21_The_World.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Pictorial_Key_to_the_Tarot_21_The_World.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "84a5675a7f007a134295fef2064866107be77833",
+  "w": 330,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_01.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_01.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Pictorial_Key_to_the_Tarot_Cups_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "e94be179624e18de8b5af6ff2d50a7652130d290",
+  "w": 331,
+  "h": 565
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_02.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_02.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Pictorial_Key_to_the_Tarot_Cups_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "63133778ba944fe5f1749910cac7844ad45134ae",
+  "w": 324,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_03.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_03.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Pictorial_Key_to_the_Tarot_Cups_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "7837a95f40200a4382cbd94f621e358c80fc72d0",
+  "w": 333,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_04.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_04.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Pictorial_Key_to_the_Tarot_Cups_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "c9a9414843eaf42726c1208d8e80f42125c7745f",
+  "w": 330,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_05.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_05.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Pictorial_Key_to_the_Tarot_Cups_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "32b70f9f9b91fcfb8355bcdc45829ac12eb1c17b",
+  "w": 324,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_06.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_06.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Pictorial_Key_to_the_Tarot_Cups_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "9b6ca68aab9ab7166b8f3d740b399f23a4f51e1f",
+  "w": 329,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_07.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_07.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Pictorial_Key_to_the_Tarot_Cups_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "a78587a1569160f82ddc6490f1579f6cd35c54c3",
+  "w": 325,
+  "h": 561
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_08.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_08.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Pictorial_Key_to_the_Tarot_Cups_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "683ec386b75d7e087be4a00563747bc68aa93136",
+  "w": 325,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_09.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_09.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Pictorial_Key_to_the_Tarot_Cups_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "dbca9e2da2d3a0fa06eb41ab58ea93bc83c3e3dd",
+  "w": 325,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_10.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_10.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Pictorial_Key_to_the_Tarot_Cups_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "e739eb0be28da114649ac2c925e95fae83a6abfd",
+  "w": 327,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_11.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_11.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Pictorial_Key_to_the_Tarot_Cups_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "be816bfc16e79ecd549ad53501de05ee0a51b1da",
+  "w": 329,
+  "h": 570
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_12.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_12.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Pictorial_Key_to_the_Tarot_Cups_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "8d131974c2d1d5bb9e15560552c8123c09877731",
+  "w": 330,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_13.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_13.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/03/Pictorial_Key_to_the_Tarot_Cups_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "272b7d15c6ae249f1907048be0f202412e08279b",
+  "w": 329,
+  "h": 565
+ },
+ "Pictorial_Key_to_the_Tarot_Cups_14.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Cups_14.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pictorial_Key_to_the_Tarot_Cups_14.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "1822225a9f546691722027148e446c58eec425cd",
+  "w": 326,
+  "h": 574
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_01.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_01.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Pictorial_Key_to_the_Tarot_Pentacles_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "f61367c99a9b8774877cd5b23a13d1988039228e",
+  "w": 329,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_02.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_02.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Pictorial_Key_to_the_Tarot_Pentacles_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "8d7aa4b6cdb0a3486ecccf3f3542b692cb119c5f",
+  "w": 334,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_03.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_03.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Pictorial_Key_to_the_Tarot_Pentacles_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "b5947cc89e791f2054e06bc682ad9b6ebbf3c76f",
+  "w": 325,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_04.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_04.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/03/Pictorial_Key_to_the_Tarot_Pentacles_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "d16751351bb977f74e0f43eb7eeee03f44677f33",
+  "w": 330,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_05.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_05.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Pictorial_Key_to_the_Tarot_Pentacles_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "80461265e2a974885011e9d5968989656954c8c2",
+  "w": 329,
+  "h": 557
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_06.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_06.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Pictorial_Key_to_the_Tarot_Pentacles_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "f686034db30018664f944bafab27e9bd38f29708",
+  "w": 329,
+  "h": 561
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_07.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_07.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Pictorial_Key_to_the_Tarot_Pentacles_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "1b965309fc58e2f73556e64057d947d17d422500",
+  "w": 326,
+  "h": 570
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_08.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_08.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Pictorial_Key_to_the_Tarot_Pentacles_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "d17e32ebfb8a3a98f66f66db75cd94b18fcae8dd",
+  "w": 355,
+  "h": 605
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_09.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_09.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pictorial_Key_to_the_Tarot_Pentacles_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "c38d4bb596f50b1cc1920beec034f82d0e59b8d4",
+  "w": 328,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_10.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_10.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Pictorial_Key_to_the_Tarot_Pentacles_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "bc2425f1cc72dc3ed62e2e1d076fcc75b5909adc",
+  "w": 330,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_11.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_11.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Pictorial_Key_to_the_Tarot_Pentacles_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "028ee6a9fa9f352b83501c8dfb27c6bfe0f366e6",
+  "w": 330,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_12.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_12.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Pictorial_Key_to_the_Tarot_Pentacles_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "5269d42eab2afb9a2feb62b06ff7bf77c2b44a8e",
+  "w": 329,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_13.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_13.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Pictorial_Key_to_the_Tarot_Pentacles_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "2878b509ec8f02c642c5287a1703f296e31ee749",
+  "w": 329,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Pentacles_14.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Pentacles_14.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/19/Pictorial_Key_to_the_Tarot_Pentacles_14.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "5410bb6607b3f459f3b9d125652d817fcd11fb5e",
+  "w": 329,
+  "h": 559
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_01.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_01.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Pictorial_Key_to_the_Tarot_Swords_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "fe48b1a394280ed269f7818e7447876424bb594f",
+  "w": 330,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_02.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_02.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/09/Pictorial_Key_to_the_Tarot_Swords_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "1edbfa4e5e65e7578f7a967654cc98e497def933",
+  "w": 329,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_03.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_03.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Pictorial_Key_to_the_Tarot_Swords_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "5d327c514c9f7e519f1fae92250585e0466ae6ac",
+  "w": 326,
+  "h": 573
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_04.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_04.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Pictorial_Key_to_the_Tarot_Swords_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "b3a975800363e10b84e9e9d0f323e0a7494ae8b1",
+  "w": 322,
+  "h": 574
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_05.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_05.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/67/Pictorial_Key_to_the_Tarot_Swords_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "fbd1cdff27c4a5081ed81c5c2334e2b440b2e7c5",
+  "w": 326,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_06.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_06.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Pictorial_Key_to_the_Tarot_Swords_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "fe45871aa06aaad33a8953029a03813ddef10a55",
+  "w": 330,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_07.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_07.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Pictorial_Key_to_the_Tarot_Swords_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "694ddeff452767461144551935177fdb9dc28040",
+  "w": 330,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_08.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_08.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Pictorial_Key_to_the_Tarot_Swords_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "d8ab3e00be1007f0dfc7679b0faf9bbc599a5a53",
+  "w": 333,
+  "h": 570
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_09.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_09.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Pictorial_Key_to_the_Tarot_Swords_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "224f6da4e1fdf1503c625f55dcc553f9296db8a0",
+  "w": 328,
+  "h": 564
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_10.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_10.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Pictorial_Key_to_the_Tarot_Swords_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "7c1c1735de8fc754640cc3e837b2647f7a1a84bb",
+  "w": 329,
+  "h": 558
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_11.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_11.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Pictorial_Key_to_the_Tarot_Swords_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "ad400858950ca3d7ed3160134a294b003b0d4ea0",
+  "w": 330,
+  "h": 575
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_12.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_12.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Pictorial_Key_to_the_Tarot_Swords_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "125d5745df7848698cb18e6b6d4f57c392a89a0b",
+  "w": 327,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_13.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_13.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Pictorial_Key_to_the_Tarot_Swords_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "a19d8ba1b149f1fcf01c59951001fd8d4cfa95d1",
+  "w": 331,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_Swords_14.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Swords_14.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Pictorial_Key_to_the_Tarot_Swords_14.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "e81b9957c04e75ac222695d54258ffd17beb2620",
+  "w": 329,
+  "h": 566
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_01.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_01.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Pictorial_Key_to_the_Tarot_Wands_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "24b3a2e167ced6343e06dc9c641eab8368c67659",
+  "w": 329,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_02.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_02.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Pictorial_Key_to_the_Tarot_Wands_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "9aa1cd54e1cb26447c02f1ca48ee61e476a971f8",
+  "w": 326,
+  "h": 562
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_03.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_03.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Pictorial_Key_to_the_Tarot_Wands_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "eb08b91a66edb8460c834521de87b9dda2be5df3",
+  "w": 327,
+  "h": 573
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_04.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_04.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Pictorial_Key_to_the_Tarot_Wands_04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "564c2acea4e7f538659900f401999491d9019cfe",
+  "w": 329,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_05.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_05.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/15/Pictorial_Key_to_the_Tarot_Wands_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "ae5f966572816c93dc47d139a947e70a9fe566d5",
+  "w": 330,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_06.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_06.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pictorial_Key_to_the_Tarot_Wands_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "dce3a5d5cf3d7194afe83258b7190e8a92a0efa9",
+  "w": 330,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_07.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_07.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Pictorial_Key_to_the_Tarot_Wands_07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "d1dfcf442f6f4af5dfc321db7ca5f43e1e8a67b9",
+  "w": 332,
+  "h": 570
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_08.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_08.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/86/Pictorial_Key_to_the_Tarot_Wands_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "ffc32462a285f1f8337dd9221084bcac6c355f55",
+  "w": 328,
+  "h": 577
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_09.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_09.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Pictorial_Key_to_the_Tarot_Wands_09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "eb327b4c976885000ccbc4e9474d845565234d45",
+  "w": 332,
+  "h": 569
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_10.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_10.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Pictorial_Key_to_the_Tarot_Wands_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "0cedffbd4cc10e7e5bdf6b21a6a0b93198db0e7c",
+  "w": 330,
+  "h": 562
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_11.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_11.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Pictorial_Key_to_the_Tarot_Wands_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "2046488b4d78c75666d49753b3c7b31ef74ff21a",
+  "w": 330,
+  "h": 568
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_12.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_12.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Pictorial_Key_to_the_Tarot_Wands_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "7ccafdd4389c17745d730d0e0cee32e69180b6ce",
+  "w": 329,
+  "h": 572
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_13.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_13.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Pictorial_Key_to_the_Tarot_Wands_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "b03091ad2b6cbb12e40a4f2e55d3fe14b789b552",
+  "w": 330,
+  "h": 567
+ },
+ "Pictorial_Key_to_the_Tarot_Wands_14.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot_Wands_14.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Pictorial_Key_to_the_Tarot_Wands_14.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "81c6b86b451052a4ab39a7f6ef2dc8c18ade6f73",
+  "w": 330,
+  "h": 573
+ },
+ "Pictorial_Key_to_the_Tarot.jpg": {
+  "path": "images/Pictorial_Key_to_the_Tarot.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Pictorial_Key_to_the_Tarot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "5b6f48771e1a166efd11c7079152ac6ff6f2c648",
+  "w": 475,
+  "h": 750
+ },
+ "The_Pictorial_Key_to_the_Tarot_1922_Title_Page.jpg": {
+  "path": "images/The_Pictorial_Key_to_the_Tarot_1922_Title_Page.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/b/b5/The_Pictorial_Key_to_the_Tarot_1922_Title_Page.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "a419e6ff6e713cd328c081dd5f1c4a7d72910d84",
+  "w": 1900,
+  "h": 2890
+ },
+ "The_Pictorial_Key_to_the_Tarot.pdf": {
+  "path": "source/The_Pictorial_Key_to_the_Tarot.pdf",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/The_Pictorial_Key_to_the_Tarot.pdf?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "sha1": "de71095d2be61794af94c3d8eb68ecb7f65e9740",
+  "w": 781,
+  "h": 1200
+ }
+}

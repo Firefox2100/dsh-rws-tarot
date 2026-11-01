@@ -1,0 +1,73 @@
+{
+  "methods": [
+    {
+      "id": "celtic",
+      "name": "An Ancient Celtic Method of Divination",
+      "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 318] },
+      "purpose": {
+        "text": "This mode of divination is the most suitable for obtaining an answer to a definite question.",
+        "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] }
+      },
+      "deck": "full",
+      "significator": {
+        "definition": {
+          "text": "The Diviner first selects a card to represent the person or matter about which inquiry is made. This card is called the Significator.",
+          "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] }
+        },
+        "ofPerson": [
+          { "rank": "knight", "text": "A Knight should be chosen as the Significator if the subject of inquiry is a man of forty years old and upward", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
+          { "rank": "king", "text": "a King should be chosen for any male who is under that age", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
+          { "rank": "queen", "text": "a Queen for a woman who is over forty years", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
+          { "rank": "page", "text": "a Page for any female of less age", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } }
+        ],
+        "colouring": [
+          { "suit": "wands", "text": "The four Court Cards in Wands represent very fair people, with yellow or auburn hair, fair complexion and blue eyes.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
+          { "suit": "cups", "text": "The Court Cards in Cups signify people with light brown or dull fair hair and grey or blue eyes.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
+          { "suit": "swords", "text": "Those in Swords stand for people having hazel or grey eyes, dark brown hair and dull complexion.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 313] } },
+          { "suit": "pentacles", "text": "are referred to persons with very dark brown or black hair, dark eyes and sallow or swarthy complexions.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 313] } }
+        ],
+        "reserve": {
+          "text": "You can be guided on occasion by the known temperament of a person; one who is exceedingly dark may be very energetic, and would be better represented by a Sword card than a Pentacle. On the other hand, a very fair subject who is indolent and lethargic should be referred to Cups rather than to Wands.",
+          "source": { "part": 3, "section": "§ 7", "pdfPages": [313, 313] }
+        },
+        "ofMatter": {
+          "text": "If it is more convenient for the purpose of a divination to take as the Significator the matter about which inquiry is to be made, that Trump or small card should be selected which has a meaning corresponding to the matter.",
+          "source": { "part": 3, "section": "§ 7", "pdfPages": [313, 313] }
+        }
+      },
+      "preparation": {
+        "text": "Having selected the Significator, place it on the table, face upwards. Then shuffle and cut the rest of the pack three times, keeping the faces of the cards downwards.",
+        "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] },
+        "shuffleAndCutTimes": 3
+      },
+      "facing": {
+        "text": "If the Significator is a Trump or any small card that cannot be said to face either way, the Diviner must decide before beginning the operation which side he will take it as facing.",
+        "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] }
+      },
+      "positions": [
+        { "number": 1, "name": "What covers him", "say": "This covers him.", "place": "cover the Significator with it", "meaning": "This card gives the influence which is affecting the person or matter of inquiry generally, the atmosphere of it in which the other currents work.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] } },
+        { "number": 2, "name": "What crosses him", "say": "This crosses him.", "place": "lay it across the First", "meaning": "It shews the nature of the obstacles in the matter. If it is a favourable card, the opposing forces will not be serious, or it may indicate that something good in itself will not be productive of good in the particular connexion.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] } },
+        { "number": 3, "name": "What crowns him", "say": "This crowns him.", "place": "place it above the Significator", "meaning": "It represents (a) the Querent's aim or ideal in the matter; (b) the best that can be achieved under the circumstances, but that which has not yet been made actual.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] } },
+        { "number": 4, "name": "What is beneath him", "say": "This is beneath him.", "place": "place it below the Significator", "meaning": "It shews the foundation or basis of the matter, that which has already passed into actuality and which the Significator has made his own.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 315] } },
+        { "number": 5, "name": "What is behind him", "say": "This is behind him.", "place": "place it on the side of the Significator from which he is looking", "meaning": "It gives the influence that is just passed, or is now passing away.", "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] } },
+        { "number": 6, "name": "What is before him", "say": "This is before him.", "place": "place it on the side that the Significator is facing", "meaning": "It shews the influence that is coming into action and will operate in the near future.", "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] } },
+        { "number": 7, "name": "Himself", "say": null, "place": "The next four cards are turned up in succession and placed one above the other in a line, on the right hand side of the cross.", "meaning": "signifies himself—that is, the Significator—whether person or thing—and shews its position or attitude in the circumstances.", "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 316] } },
+        { "number": 8, "name": "His house", "say": null, "place": null, "meaning": "signifies his house, that is, his environment and the tendencies at work therein which have an effect on the matter—for instance, his position in life, the influence of immediate friends, and so forth.", "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] } },
+        { "number": 9, "name": "His hopes or fears", "say": null, "place": null, "meaning": "gives his hopes or fears in the matter.", "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] } },
+        { "number": 10, "name": "What will come", "say": null, "place": null, "meaning": "is what will come, the final result, the culmination which is brought about by the influences shewn by the other cards that have been turned up in the divination.", "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] } }
+      ],
+      "cross": {
+        "text": "The cards are now disposed in the form of a cross, the Significator—covered by the First Card—being in the centre.",
+        "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] }
+      },
+      "finalCard": {
+        "text": "It is on this card that the Diviner should especially concentrate his intuitive faculties and his memory in respect of the official divinatory meanings attached thereto. It should embody whatsoever you may have divined from the other cards on the table, including the Significator itself and concerning him or it, not excepting such lights upon higher significance as might fall like sparks from heaven if the card which serves for the oracle, the card for reading, should happen to be a Trump Major.",
+        "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] }
+      },
+      "followUp": [
+        { "id": "dubious-tenth", "text": "should it happen that the last card is of a dubious nature, from which no final decision can be drawn, or which does not appear to indicate the ultimate conclusion of the affair, it may be well to repeat the operation, taking in this case the Tenth Card as the Significator, instead of the one previously used. The pack must be again shuffled and cut three times and the first ten cards laid out as before. By this a more detailed account of \"What will come\" may be obtained.", "source": { "part": 3, "section": "§ 7", "pdfPages": [317, 317] } },
+        { "id": "court-card-tenth", "text": "If in any divination the Tenth Card should be a Court Card, it shews that the subject of the divination falls ultimately into the hands of a person represented by that card, and its end depends mainly on him. In this event also it is useful to take the Court Card in question as the Significator in a fresh operation, and discover what is the nature of his influence in the matter and to what issue he will bring it.", "source": { "part": 3, "section": "§ 7", "pdfPages": [317, 317] } }
+      ]
+    }
+  ]
+}

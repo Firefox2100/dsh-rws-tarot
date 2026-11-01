@@ -1,0 +1,51 @@
+import type { Placed } from './pack.ts'
+
+/**
+ * One reading on the table. `order` is the whole pack as it lay when the reading began, so a replay needs no
+ * random numbers; `drawn` counts the cards turned up so far, at most `draws`.
+ */
+export interface Reading {
+  readonly id: string
+  readonly method: string
+  /** The card chosen to stand for the person or matter, laid face up before the draw; null for methods without one. */
+  readonly significator: Placed | null
+  /** The side the Significator faces, which decides where the book's fifth and sixth cards go. */
+  readonly facing: 'left' | 'right' | null
+  /** What the Querent asks, in their own words; empty when nothing was asked. */
+  readonly question: string
+  /** The language the reading is held in, from the screen it was begun on; the facts reach the model in it. */
+  readonly language: string
+  readonly draws: number
+  readonly order: Placed[]
+  readonly drawn: number
+}
+
+/** Every reading of one conversation, oldest first. Plain JSON, rebuilt by replaying the records below. */
+export interface Table {
+  readonly readings: Reading[]
+}
+
+export interface StartEvent extends Omit<Reading, 'drawn'> {}
+
+export interface DrawEvent {
+  readonly readingId: string
+  /** Position in the pack of the card turned up; must be the next one, so a replay cannot skip or repeat a card. */
+  readonly index: number
+}
+
+export const emptyTable: Table = { readings: [] }
+
+/** Records that do not follow on from the table are ignored, never thrown: the log is replayed on load. */
+export function applyStart(table: Table, event: StartEvent): Table {
+  if (table.readings.some(r => r.id === event.id)) return table
+  return { readings: [...table.readings, { ...event, drawn: 0 }] }
+}
+
+export function applyDraw(table: Table, event: DrawEvent): Table {
+  const at = table.readings.findIndex(r => r.id === event.readingId)
+  const reading = table.readings[at]
+  if (reading === undefined || event.index !== reading.drawn || event.index >= reading.draws || event.index >= reading.order.length) return table
+  const readings = table.readings.slice()
+  readings[at] = { ...reading, drawn: reading.drawn + 1 }
+  return { readings }
+}
