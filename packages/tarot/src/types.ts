@@ -12,6 +12,8 @@ export interface ReadingView {
   question: string
   language: string
   draws: number
+  /** Cards each turn shows, in order. */
+  turns: number[]
   drawn: Placed[]
 }
 

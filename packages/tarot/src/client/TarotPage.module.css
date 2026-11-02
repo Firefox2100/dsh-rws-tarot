@@ -85,6 +85,26 @@
   aspect-ratio: 328 / 562;
 }
 
+/* The layout of a method read line by line: cards in a grid, the first of each line on the right. */
+.layout {
+  display: grid;
+  gap: 8px 4px;
+  justify-items: center;
+  align-items: start;
+  padding: 14px 6px;
+  background: var(--dsw-alias-bg-layer-1);
+  border-radius: var(--dsw-radius-md);
+}
+
+.layout .number {
+  font-size: 11px;
+}
+
+/* A line turns over card by card, from its first. */
+.layout .inner {
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
 /* The Significator shows above the first card laid over it. */
 .significator {
   transform: translateY(-24px);

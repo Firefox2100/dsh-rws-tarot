@@ -66,12 +66,17 @@ export interface MethodPosition {
   readonly source: Source
 }
 
-export interface Method {
+interface MethodBase {
   readonly id: string
   readonly name: string
   readonly source: Source
   readonly purpose: Passage
   readonly deck: 'full'
+}
+
+/** A method that deals a Significator and then reads ten named positions, one card each. */
+export interface CelticMethod extends MethodBase {
+  readonly kind: 'celtic'
   readonly significator: {
     readonly definition: Passage
     readonly ofPerson: readonly (Passage & { readonly rank: Rank })[]
@@ -86,3 +91,43 @@ export interface Method {
   readonly finalCard: Passage
   readonly followUp: readonly (Passage & { readonly id: string })[]
 }
+
+/** A method that deals the whole layout at once, in lines with no meaning of their own, and reads it card by card. */
+export interface LinesMethod extends MethodBase {
+  readonly kind: 'lines'
+  /** What the Querent may name before the shuffle: a period the reading is about. */
+  readonly period: Passage
+  readonly preparation: Passage
+  readonly cut: Passage
+  readonly dealing: Passage & { readonly packets: number, readonly perPacket: number }
+  readonly regrouping: Passage
+  /** How the regrouped packets are shuffled and laid out, top of the packets first. */
+  readonly layout: readonly (Passage & { readonly lines: number, readonly fromEach: number })[]
+  readonly querent: Passage & {
+    readonly male: string
+    readonly female: string
+    readonly notDealt: Passage
+    readonly dealt: Passage
+  }
+  readonly reading: Passage
+  /** The side each line is read from. */
+  readonly direction: 'right-to-left' | 'left-to-right'
+  readonly guidance: readonly (Passage & { readonly id: string })[]
+}
+
+/** A method that carries a finished reading further with the cards left over, laid in lines of unequal length that each have a meaning. */
+export interface ContinuationMethod extends MethodBase {
+  readonly kind: 'continuation'
+  /** The method whose finished reading it continues. */
+  readonly continues: string
+  readonly heap: Passage
+  /** The packets the remaining cards are dealt into, and how many cards each holds; each becomes one line. */
+  readonly packets: Passage & { readonly sizes: readonly number[] }
+  readonly layout: Passage
+  /** The lines, in order, with what the book says each stands for. */
+  readonly positions: readonly MethodPosition[]
+  readonly reading: Passage
+  readonly direction: 'right-to-left' | 'left-to-right'
+}
+
+export type Method = CelticMethod | LinesMethod | ContinuationMethod

@@ -15,13 +15,17 @@ Requires DeepSeek Harness `>=0.2.1-rc.5 <0.2.2` and a model the profile can alre
 ## Use
 
 1. Open a conversation, open the right dock and choose **Tarot** on its start page.
-2. Choose how to draw (**Celtic Cross**, the ancient method described by Waite) and, optionally, write your question.
-3. Click the glowing card. The first click begins the reading; each following click turns the next card, and the model answers for that card, in the position where it fell and against the cards already on the table. After the tenth card it brings the whole spread together.
-4. **Options** (collapsed) let you choose the **Significator**, the card that stands for the person or the matter asked about, either from a description of the person (sex, age, colouring) or by naming a card; the side it faces; and whether some cards may come up **reversed** (off by default).
+2. Choose how to draw and, optionally, write your question. Three methods from Waite's book are available, and a plain draw:
+   - **Celtic Cross**, the ancient method, for a definite question: a Significator and ten cards.
+   - **Thirty-five card method**, which carries a finished alternative reading further with the 35 cards it left over, laid in six lines of unequal length (7, 6, 5, 4, 2 and 11 cards) read from the left. Each line has a meaning of its own, from the book (the house, the person, what is passing outside, a surprise, consolation, and the line that explains the others). It becomes available once an alternative reading is finished, and you may add what remained doubtful.
+   - **Alternative method**, for when no definite question is asked and you want to hear generally about the course of your life: 42 cards in six lines of seven, with the Querent's card (the Magician for a man, the High Priestess for a woman) lying beside the first line. You may name a period of time instead of a question.
+   - **Plain draw**, for a simple question or when you just want a few cards: choose how many (1 to 12) and turn them one at a time. It is not one of the book's methods, so the cards have no positions; each carries the book's meanings and is read with the others on the table.
+3. Click the glowing card (or, in the alternative method, the glowing line). The first click begins the reading; each following click turns the next card, or the next line of seven, and the model answers for it against the cards already on the table. After the last one it brings the whole spread together.
+4. **Options** (collapsed). For the Celtic Cross: the **Significator**, the card that stands for the person or the matter asked about, chosen from a description of the person (sex, age, colouring) or by naming a card, and the side it faces. For the alternative method: whether the Querent is a man or a woman. For both, whether some cards may come up **reversed**: off by default for the Celtic Cross, on for the alternative method, whose instructions turn some of the cards round.
 
-A reading lives in its conversation: reload the page and the cards are as you left them. **New reading** starts another once the tenth card is turned.
+A reading lives in its conversation: reload the page and the cards are as you left them. **New reading** starts another once the last card is turned.
 
-You can also ask in the conversation: the model has a tool, `tarot_lay_spread`, that lays a spread for you. It never turns a card; you turn the cards on the Tarot page. The command `/tarot` runs the same steps from the composer (`/tarot start celtic <card-id> <left|right> <upright|reversed> <language> [question]`, then `/tarot draw` for each card).
+You can also ask in the conversation: the model has a tool, `tarot_lay_spread`, that lays a spread for you. It never turns a card; you turn the cards on the Tarot page. The command `/tarot` runs the same steps from the composer (`/tarot start celtic <card-id> <left|right> <upright|reversed> <language> [question]` or `/tarot start alternative <male|female> <upright|reversed> <language> [question]`, `/tarot start plain <count> <upright|reversed> <language> [question]`, `/tarot continue [question]` for the thirty-five card method after an alternative reading, then `/tarot draw` for each card or line).
 
 ### Language
 

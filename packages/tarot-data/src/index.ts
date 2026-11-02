@@ -1,9 +1,9 @@
 import raw from '../data/cards.json' with { type: 'json' }
 import rawMethods from '../data/methods.json' with { type: 'json' }
-import type { Card, Method, TarotData } from './types.ts'
+import type { Card, CelticMethod, ContinuationMethod, LinesMethod, Method, TarotData } from './types.ts'
 
 export type * from './types.ts'
-export { cardName, finalCardText, followUpTexts, pickLocale, positionMeaning, positionName } from './names.ts'
+export { cardName, finalCardText, followUpTexts, guidanceTexts, pickLocale, positionMeaning, positionName } from './names.ts'
 
 const SUITS = ['wands', 'cups', 'swords', 'pentacles'] as const
 
@@ -44,9 +44,17 @@ function validateMethods(list: readonly Method[]): readonly Method[] {
   for (const method of list) {
     if (ids.has(method.id)) throw new Error(`tarot data: duplicate method id ${method.id}`)
     ids.add(method.id)
-    method.positions.forEach((p, i) => {
-      if (p.number !== i + 1) throw new Error(`tarot data: method ${method.id} position ${i + 1} is numbered ${p.number}`)
-    })
+    if (method.kind === 'celtic' || method.kind === 'continuation') {
+      method.positions.forEach((p, i) => {
+        if (p.number !== i + 1) throw new Error(`tarot data: method ${method.id} position ${i + 1} is numbered ${p.number}`)
+      })
+      if (method.kind === 'continuation' && method.packets.sizes.length !== method.positions.length) throw new Error(`tarot data: method ${method.id} has ${method.packets.sizes.length} packets for ${method.positions.length} lines`)
+    } else {
+      const dealt = method.dealing.packets * method.dealing.perPacket
+      const laid = method.layout.reduce((n, l) => n + l.lines * method.dealing.perPacket, 0)
+      if (laid !== dealt) throw new Error(`tarot data: method ${method.id} lays ${laid} cards of ${dealt} dealt`)
+      if (method.layout.reduce((n, l) => n + l.fromEach, 0) !== method.dealing.packets) throw new Error(`tarot data: method ${method.id} does not use every card of a packet`)
+    }
   }
   return list
 }
@@ -54,6 +62,10 @@ function validateMethods(list: readonly Method[]): readonly Method[] {
 /** The reading methods the book describes and this plugin supports, each with its positions and the book's words. */
 export const methods: readonly Method[] = validateMethods((rawMethods as unknown as { methods: Method[] }).methods)
 
+export function getMethod(id: 'celtic'): CelticMethod
+export function getMethod(id: 'alternative'): LinesMethod
+export function getMethod(id: 'thirtyfive'): ContinuationMethod
+export function getMethod(id: string): Method
 export function getMethod(id: string): Method {
   const method = methods.find(m => m.id === id)
   if (!method) throw new RangeError(`unknown method id ${JSON.stringify(id)}`)

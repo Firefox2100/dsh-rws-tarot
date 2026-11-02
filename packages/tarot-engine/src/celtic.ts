@@ -29,6 +29,7 @@ export interface CelticStart {
   /** The pack that remains, shuffled and cut as the book instructs, in the order the cards will be turned up. */
   readonly order: Placed[]
   readonly draws: number
+  readonly turns: number[]
 }
 
 export interface CelticOptions {
@@ -57,5 +58,6 @@ export function startCeltic(options: CelticOptions): CelticStart {
     facing: options.facing,
     order: [...pack.snapshot().order],
     draws: method.positions.length,
+    turns: method.positions.map(() => 1),
   }
 }

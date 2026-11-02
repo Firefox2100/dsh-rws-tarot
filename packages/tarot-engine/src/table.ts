@@ -15,7 +15,10 @@ export interface Reading {
   readonly question: string
   /** The language the reading is held in, from the screen it was begun on; the facts reach the model in it. */
   readonly language: string
+  /** How many cards the reading turns up in all. */
   readonly draws: number
+  /** How many cards each turn shows, in order, adding up to `draws`: one each for a spread read position by position, a line each for a layout read line by line. */
+  readonly turns: number[]
   readonly order: Placed[]
   readonly drawn: number
 }
@@ -33,6 +36,16 @@ export interface DrawEvent {
   readonly index: number
 }
 
+/** The turn that begins at card `from` (0-based) and how many cards it shows; undefined when no turn begins there. */
+export function turnAt(reading: Pick<Reading, 'turns'>, from: number): { turn: number, size: number } | undefined {
+  let start = 0
+  for (const [turn, size] of reading.turns.entries()) {
+    if (start === from) return { turn, size }
+    start += size
+  }
+  return undefined
+}
+
 export const emptyTable: Table = { readings: [] }
 
 /** Records that do not follow on from the table are ignored, never thrown: the log is replayed on load. */
@@ -44,8 +57,9 @@ export function applyStart(table: Table, event: StartEvent): Table {
 export function applyDraw(table: Table, event: DrawEvent): Table {
   const at = table.readings.findIndex(r => r.id === event.readingId)
   const reading = table.readings[at]
-  if (reading === undefined || event.index !== reading.drawn || event.index >= reading.draws || event.index >= reading.order.length) return table
+  const turn = reading === undefined ? undefined : turnAt(reading, event.index)
+  if (reading === undefined || turn === undefined || event.index !== reading.drawn || event.index + turn.size > reading.order.length) return table
   const readings = table.readings.slice()
-  readings[at] = { ...reading, drawn: reading.drawn + 1 }
+  readings[at] = { ...reading, drawn: reading.drawn + turn.size }
   return { readings }
 }

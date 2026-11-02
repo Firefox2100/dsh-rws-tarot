@@ -1,5 +1,5 @@
 import raw from '../data/names.json' with { type: 'json' }
-import type { Card, Method, MethodPosition, Rank, Suit } from './types.ts'
+import type { Card, CelticMethod, LinesMethod, MethodPosition, Rank, Suit } from './types.ts'
 
 interface Names {
   readonly major: Readonly<Record<string, string>>
@@ -7,9 +7,10 @@ interface Names {
   readonly ranks: Readonly<Record<Rank, string>>
   readonly positions: Readonly<Record<string, readonly string[]>>
   readonly methods: Readonly<Record<string, {
-    readonly positions: readonly string[]
-    readonly finalCard: string
-    readonly followUp: Readonly<Record<string, string>>
+    readonly positions?: readonly string[]
+    readonly finalCard?: string
+    readonly followUp?: Readonly<Record<string, string>>
+    readonly guidance?: Readonly<Record<string, string>>
   }>>
 }
 
@@ -46,16 +47,22 @@ export function positionName(methodId: string, position: MethodPosition, locale:
 
 /** What a position means, in the locale; the book's own sentence where no translation exists. */
 export function positionMeaning(methodId: string, position: MethodPosition, locale: string | undefined): string {
-  return namesFor(locale)?.methods[methodId]?.positions[position.number - 1] ?? position.meaning
+  return namesFor(locale)?.methods[methodId]?.positions?.[position.number - 1] ?? position.meaning
 }
 
 /** The book's guidance for the last card of a method, in the locale. */
-export function finalCardText(method: Method, locale: string | undefined): string {
+export function finalCardText(method: CelticMethod, locale: string | undefined): string {
   return namesFor(locale)?.methods[method.id]?.finalCard ?? method.finalCard.text
 }
 
 /** The text of each of a method's follow-up rules, in the locale. */
-export function followUpTexts(method: Method, locale: string | undefined): string[] {
+export function followUpTexts(method: CelticMethod, locale: string | undefined): string[] {
   const table = namesFor(locale)?.methods[method.id]?.followUp
   return method.followUp.map(f => table?.[f.id] ?? f.text)
+}
+
+/** The text of each of a lines method's guidance sentences, in the locale. */
+export function guidanceTexts(method: LinesMethod, locale: string | undefined): string[] {
+  const table = namesFor(locale)?.methods[method.id]?.guidance
+  return method.guidance.map(g => table?.[g.id] ?? g.text)
 }

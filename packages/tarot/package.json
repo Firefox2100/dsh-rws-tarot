@@ -1,6 +1,6 @@
 {
   "name": "dsh-rws-tarot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Rider-Waite-Smith tarot for DeepSeek Harness: draw a Celtic Cross card by card in the right dock and have each card read to you, with the meanings taken from Waite's Pictorial Key.",
   "author": {
     "name": "Firefox2100",

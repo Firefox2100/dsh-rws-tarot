@@ -29,6 +29,16 @@ export interface PackOptions {
   readonly reversals: number
 }
 
+/** A shuffled copy of a list (Fisher-Yates). */
+export function shuffled<T>(list: readonly T[], rng: Rng): T[] {
+  const result = list.slice()
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = randomInt(rng, i + 1)
+    ;[result[i], result[j]] = [result[j]!, result[i]!]
+  }
+  return result
+}
+
 function checkChance(p: number): void {
   if (!(p >= 0 && p <= 1)) throw new RangeError(`reversals must be between 0 and 1, got ${p}`)
 }
@@ -100,12 +110,7 @@ export class Pack {
 
   /** Shuffle the undrawn cards (Fisher-Yates). */
   shuffle(): void {
-    const rest = this.#order.slice(this.#drawn)
-    for (let i = rest.length - 1; i > 0; i--) {
-      const j = randomInt(this.#rng, i + 1)
-      ;[rest[i], rest[j]] = [rest[j]!, rest[i]!]
-    }
-    this.#order = [...this.#order.slice(0, this.#drawn), ...rest]
+    this.#order = [...this.#order.slice(0, this.#drawn), ...shuffled(this.#order.slice(this.#drawn), this.#rng)]
   }
 
   /**

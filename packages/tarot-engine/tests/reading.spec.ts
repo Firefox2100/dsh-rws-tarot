@@ -3,7 +3,7 @@ import { applyDraw, applyStart, describeCard, emptyTable, seededRng, significato
 
 function begin(seed: string, question = '', language = 'en') {
   const start = startCeltic({ significatorId: significatorFor({ sex: 'female', fortyOrOver: true }, 'cups'), facing: 'left', rng: seededRng(seed), reversals: 0 })
-  return applyStart(emptyTable, { id: 'r1', method: 'celtic', significator: start.significator, facing: start.facing, question, language, draws: start.draws, order: start.order }).readings[0]!
+  return applyStart(emptyTable, { id: 'r1', method: 'celtic', significator: start.significator, facing: start.facing, question, language, draws: start.draws, turns: start.turns, order: start.order }).readings[0]!
 }
 
 describe('Significator', () => {

@@ -1,73 +1,754 @@
 {
   "methods": [
     {
+      "kind": "celtic",
       "id": "celtic",
       "name": "An Ancient Celtic Method of Divination",
-      "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 318] },
+      "source": {
+        "part": 3,
+        "section": "§ 7",
+        "pdfPages": [
+          312,
+          318
+        ]
+      },
       "purpose": {
         "text": "This mode of divination is the most suitable for obtaining an answer to a definite question.",
-        "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] }
+        "source": {
+          "part": 3,
+          "section": "§ 7",
+          "pdfPages": [
+            312,
+            312
+          ]
+        }
       },
       "deck": "full",
       "significator": {
         "definition": {
           "text": "The Diviner first selects a card to represent the person or matter about which inquiry is made. This card is called the Significator.",
-          "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] }
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              312,
+              312
+            ]
+          }
         },
         "ofPerson": [
-          { "rank": "knight", "text": "A Knight should be chosen as the Significator if the subject of inquiry is a man of forty years old and upward", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
-          { "rank": "king", "text": "a King should be chosen for any male who is under that age", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
-          { "rank": "queen", "text": "a Queen for a woman who is over forty years", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
-          { "rank": "page", "text": "a Page for any female of less age", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } }
+          {
+            "rank": "knight",
+            "text": "A Knight should be chosen as the Significator if the subject of inquiry is a man of forty years old and upward",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                312
+              ]
+            }
+          },
+          {
+            "rank": "king",
+            "text": "a King should be chosen for any male who is under that age",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                312
+              ]
+            }
+          },
+          {
+            "rank": "queen",
+            "text": "a Queen for a woman who is over forty years",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                312
+              ]
+            }
+          },
+          {
+            "rank": "page",
+            "text": "a Page for any female of less age",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                312
+              ]
+            }
+          }
         ],
         "colouring": [
-          { "suit": "wands", "text": "The four Court Cards in Wands represent very fair people, with yellow or auburn hair, fair complexion and blue eyes.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
-          { "suit": "cups", "text": "The Court Cards in Cups signify people with light brown or dull fair hair and grey or blue eyes.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 312] } },
-          { "suit": "swords", "text": "Those in Swords stand for people having hazel or grey eyes, dark brown hair and dull complexion.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 313] } },
-          { "suit": "pentacles", "text": "are referred to persons with very dark brown or black hair, dark eyes and sallow or swarthy complexions.", "source": { "part": 3, "section": "§ 7", "pdfPages": [312, 313] } }
+          {
+            "suit": "wands",
+            "text": "The four Court Cards in Wands represent very fair people, with yellow or auburn hair, fair complexion and blue eyes.",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                312
+              ]
+            }
+          },
+          {
+            "suit": "cups",
+            "text": "The Court Cards in Cups signify people with light brown or dull fair hair and grey or blue eyes.",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                312
+              ]
+            }
+          },
+          {
+            "suit": "swords",
+            "text": "Those in Swords stand for people having hazel or grey eyes, dark brown hair and dull complexion.",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                313
+              ]
+            }
+          },
+          {
+            "suit": "pentacles",
+            "text": "are referred to persons with very dark brown or black hair, dark eyes and sallow or swarthy complexions.",
+            "source": {
+              "part": 3,
+              "section": "§ 7",
+              "pdfPages": [
+                312,
+                313
+              ]
+            }
+          }
         ],
         "reserve": {
           "text": "You can be guided on occasion by the known temperament of a person; one who is exceedingly dark may be very energetic, and would be better represented by a Sword card than a Pentacle. On the other hand, a very fair subject who is indolent and lethargic should be referred to Cups rather than to Wands.",
-          "source": { "part": 3, "section": "§ 7", "pdfPages": [313, 313] }
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              313,
+              313
+            ]
+          }
         },
         "ofMatter": {
           "text": "If it is more convenient for the purpose of a divination to take as the Significator the matter about which inquiry is to be made, that Trump or small card should be selected which has a meaning corresponding to the matter.",
-          "source": { "part": 3, "section": "§ 7", "pdfPages": [313, 313] }
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              313,
+              313
+            ]
+          }
         }
       },
       "preparation": {
         "text": "Having selected the Significator, place it on the table, face upwards. Then shuffle and cut the rest of the pack three times, keeping the faces of the cards downwards.",
-        "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] },
+        "source": {
+          "part": 3,
+          "section": "§ 7",
+          "pdfPages": [
+            314,
+            314
+          ]
+        },
         "shuffleAndCutTimes": 3
       },
       "facing": {
         "text": "If the Significator is a Trump or any small card that cannot be said to face either way, the Diviner must decide before beginning the operation which side he will take it as facing.",
-        "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] }
+        "source": {
+          "part": 3,
+          "section": "§ 7",
+          "pdfPages": [
+            315,
+            315
+          ]
+        }
       },
       "positions": [
-        { "number": 1, "name": "What covers him", "say": "This covers him.", "place": "cover the Significator with it", "meaning": "This card gives the influence which is affecting the person or matter of inquiry generally, the atmosphere of it in which the other currents work.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] } },
-        { "number": 2, "name": "What crosses him", "say": "This crosses him.", "place": "lay it across the First", "meaning": "It shews the nature of the obstacles in the matter. If it is a favourable card, the opposing forces will not be serious, or it may indicate that something good in itself will not be productive of good in the particular connexion.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] } },
-        { "number": 3, "name": "What crowns him", "say": "This crowns him.", "place": "place it above the Significator", "meaning": "It represents (a) the Querent's aim or ideal in the matter; (b) the best that can be achieved under the circumstances, but that which has not yet been made actual.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 314] } },
-        { "number": 4, "name": "What is beneath him", "say": "This is beneath him.", "place": "place it below the Significator", "meaning": "It shews the foundation or basis of the matter, that which has already passed into actuality and which the Significator has made his own.", "source": { "part": 3, "section": "§ 7", "pdfPages": [314, 315] } },
-        { "number": 5, "name": "What is behind him", "say": "This is behind him.", "place": "place it on the side of the Significator from which he is looking", "meaning": "It gives the influence that is just passed, or is now passing away.", "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] } },
-        { "number": 6, "name": "What is before him", "say": "This is before him.", "place": "place it on the side that the Significator is facing", "meaning": "It shews the influence that is coming into action and will operate in the near future.", "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] } },
-        { "number": 7, "name": "Himself", "say": null, "place": "The next four cards are turned up in succession and placed one above the other in a line, on the right hand side of the cross.", "meaning": "signifies himself—that is, the Significator—whether person or thing—and shews its position or attitude in the circumstances.", "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 316] } },
-        { "number": 8, "name": "His house", "say": null, "place": null, "meaning": "signifies his house, that is, his environment and the tendencies at work therein which have an effect on the matter—for instance, his position in life, the influence of immediate friends, and so forth.", "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] } },
-        { "number": 9, "name": "His hopes or fears", "say": null, "place": null, "meaning": "gives his hopes or fears in the matter.", "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] } },
-        { "number": 10, "name": "What will come", "say": null, "place": null, "meaning": "is what will come, the final result, the culmination which is brought about by the influences shewn by the other cards that have been turned up in the divination.", "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] } }
+        {
+          "number": 1,
+          "name": "What covers him",
+          "say": "This covers him.",
+          "place": "cover the Significator with it",
+          "meaning": "This card gives the influence which is affecting the person or matter of inquiry generally, the atmosphere of it in which the other currents work.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              314,
+              314
+            ]
+          }
+        },
+        {
+          "number": 2,
+          "name": "What crosses him",
+          "say": "This crosses him.",
+          "place": "lay it across the First",
+          "meaning": "It shews the nature of the obstacles in the matter. If it is a favourable card, the opposing forces will not be serious, or it may indicate that something good in itself will not be productive of good in the particular connexion.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              314,
+              314
+            ]
+          }
+        },
+        {
+          "number": 3,
+          "name": "What crowns him",
+          "say": "This crowns him.",
+          "place": "place it above the Significator",
+          "meaning": "It represents (a) the Querent's aim or ideal in the matter; (b) the best that can be achieved under the circumstances, but that which has not yet been made actual.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              314,
+              314
+            ]
+          }
+        },
+        {
+          "number": 4,
+          "name": "What is beneath him",
+          "say": "This is beneath him.",
+          "place": "place it below the Significator",
+          "meaning": "It shews the foundation or basis of the matter, that which has already passed into actuality and which the Significator has made his own.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              314,
+              315
+            ]
+          }
+        },
+        {
+          "number": 5,
+          "name": "What is behind him",
+          "say": "This is behind him.",
+          "place": "place it on the side of the Significator from which he is looking",
+          "meaning": "It gives the influence that is just passed, or is now passing away.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              315,
+              315
+            ]
+          }
+        },
+        {
+          "number": 6,
+          "name": "What is before him",
+          "say": "This is before him.",
+          "place": "place it on the side that the Significator is facing",
+          "meaning": "It shews the influence that is coming into action and will operate in the near future.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              315,
+              315
+            ]
+          }
+        },
+        {
+          "number": 7,
+          "name": "Himself",
+          "say": null,
+          "place": "The next four cards are turned up in succession and placed one above the other in a line, on the right hand side of the cross.",
+          "meaning": "signifies himself—that is, the Significator—whether person or thing—and shews its position or attitude in the circumstances.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              315,
+              316
+            ]
+          }
+        },
+        {
+          "number": 8,
+          "name": "His house",
+          "say": null,
+          "place": null,
+          "meaning": "signifies his house, that is, his environment and the tendencies at work therein which have an effect on the matter—for instance, his position in life, the influence of immediate friends, and so forth.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              316,
+              316
+            ]
+          }
+        },
+        {
+          "number": 9,
+          "name": "His hopes or fears",
+          "say": null,
+          "place": null,
+          "meaning": "gives his hopes or fears in the matter.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              316,
+              316
+            ]
+          }
+        },
+        {
+          "number": 10,
+          "name": "What will come",
+          "say": null,
+          "place": null,
+          "meaning": "is what will come, the final result, the culmination which is brought about by the influences shewn by the other cards that have been turned up in the divination.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              316,
+              316
+            ]
+          }
+        }
       ],
       "cross": {
         "text": "The cards are now disposed in the form of a cross, the Significator—covered by the First Card—being in the centre.",
-        "source": { "part": 3, "section": "§ 7", "pdfPages": [315, 315] }
+        "source": {
+          "part": 3,
+          "section": "§ 7",
+          "pdfPages": [
+            315,
+            315
+          ]
+        }
       },
       "finalCard": {
         "text": "It is on this card that the Diviner should especially concentrate his intuitive faculties and his memory in respect of the official divinatory meanings attached thereto. It should embody whatsoever you may have divined from the other cards on the table, including the Significator itself and concerning him or it, not excepting such lights upon higher significance as might fall like sparks from heaven if the card which serves for the oracle, the card for reading, should happen to be a Trump Major.",
-        "source": { "part": 3, "section": "§ 7", "pdfPages": [316, 316] }
+        "source": {
+          "part": 3,
+          "section": "§ 7",
+          "pdfPages": [
+            316,
+            316
+          ]
+        }
       },
       "followUp": [
-        { "id": "dubious-tenth", "text": "should it happen that the last card is of a dubious nature, from which no final decision can be drawn, or which does not appear to indicate the ultimate conclusion of the affair, it may be well to repeat the operation, taking in this case the Tenth Card as the Significator, instead of the one previously used. The pack must be again shuffled and cut three times and the first ten cards laid out as before. By this a more detailed account of \"What will come\" may be obtained.", "source": { "part": 3, "section": "§ 7", "pdfPages": [317, 317] } },
-        { "id": "court-card-tenth", "text": "If in any divination the Tenth Card should be a Court Card, it shews that the subject of the divination falls ultimately into the hands of a person represented by that card, and its end depends mainly on him. In this event also it is useful to take the Court Card in question as the Significator in a fresh operation, and discover what is the nature of his influence in the matter and to what issue he will bring it.", "source": { "part": 3, "section": "§ 7", "pdfPages": [317, 317] } }
+        {
+          "id": "dubious-tenth",
+          "text": "should it happen that the last card is of a dubious nature, from which no final decision can be drawn, or which does not appear to indicate the ultimate conclusion of the affair, it may be well to repeat the operation, taking in this case the Tenth Card as the Significator, instead of the one previously used. The pack must be again shuffled and cut three times and the first ten cards laid out as before. By this a more detailed account of \"What will come\" may be obtained.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              317,
+              317
+            ]
+          }
+        },
+        {
+          "id": "court-card-tenth",
+          "text": "If in any divination the Tenth Card should be a Court Card, it shews that the subject of the divination falls ultimately into the hands of a person represented by that card, and its end depends mainly on him. In this event also it is useful to take the Court Card in question as the Significator in a fresh operation, and discover what is the nature of his influence in the matter and to what issue he will bring it.",
+          "source": {
+            "part": 3,
+            "section": "§ 7",
+            "pdfPages": [
+              317,
+              317
+            ]
+          }
+        }
       ]
+    },
+    {
+      "kind": "lines",
+      "id": "alternative",
+      "name": "An Alternative Method of Reading the Tarot Cards",
+      "source": {
+        "part": 3,
+        "section": "§ 8",
+        "pdfPages": [
+          319,
+          323
+        ]
+      },
+      "purpose": {
+        "text": "This method is recommended when no definite question is asked—that is, when the Querent wishes to learn generally concerning the course of his life and destiny.",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            322,
+            322
+          ]
+        }
+      },
+      "period": {
+        "text": "If he wishes to know what may befall within a certain time, this time should be clearly specified before the cards are shuffled.",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            322,
+            322
+          ]
+        }
+      },
+      "deck": "full",
+      "preparation": {
+        "text": "Shuffle the entire pack and turn some of the cards round, so as to invert their tops.",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            319,
+            319
+          ]
+        }
+      },
+      "cut": {
+        "text": "Let them be cut by the Querent with his left hand.",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            319,
+            319
+          ]
+        }
+      },
+      "dealing": {
+        "text": "Deal out the first forty-two cards in six packets of seven cards each, face upwards, so that the first seven cards form the first packet, the following seven the second, and so on",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            319,
+            319
+          ]
+        },
+        "packets": 6,
+        "perPacket": 7
+      },
+      "regrouping": {
+        "text": "Take up the first packet; lay out the cards on the table in a row, from right to left; place the cards of the second packet upon them and then the packets which remain. You will thus have seven new packets of six cards each",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            319,
+            319
+          ]
+        }
+      },
+      "layout": [
+        {
+          "text": "Take the top card of each packet, shuffle them and lay out from right to left, making a line of seven cards.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              320,
+              320
+            ]
+          },
+          "lines": 1,
+          "fromEach": 1
+        },
+        {
+          "text": "Then take up the two next cards from each packet, shuffle and lay them out in two lines under the first line.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              320,
+              320
+            ]
+          },
+          "lines": 2,
+          "fromEach": 2
+        },
+        {
+          "text": "Take up the remaining twenty-one cards of the packets, shuffle and lay them out in three lines below the others.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              320,
+              320
+            ]
+          },
+          "lines": 3,
+          "fromEach": 3
+        }
+      ],
+      "querent": {
+        "male": "major-01",
+        "female": "major-02",
+        "text": "In this method, the Querent—if of the male sex—is represented by the Magician, and if female by the High Priestess; but the card, in either case, is not taken from the pack until the forty-two cards have been laid out, as above directed.",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            321,
+            321
+          ]
+        },
+        "notDealt": {
+          "text": "If the required card is not found among those placed upon the table, it must be sought among the remaining thirty-six cards, which have not been dealt, and should be placed a little distance to the right of the first horizontal line.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              321,
+              321
+            ]
+          }
+        },
+        "dealt": {
+          "text": "On the other hand, if it is among them, it is also taken out, placed as stated, and a card is drawn haphazard from the thirty-six cards undealt to fill the vacant position, so that there are still forty-two cards laid out on the table.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              321,
+              322
+            ]
+          }
+        }
+      },
+      "reading": {
+        "text": "The cards are then read in succession, from right to left throughout, beginning at card No. 1 of the top line, the last to be read being that on the extreme left, or No. 7, of the bottom line.",
+        "source": {
+          "part": 3,
+          "section": "§ 8",
+          "pdfPages": [
+            322,
+            322
+          ]
+        }
+      },
+      "guidance": [
+        {
+          "id": "relative",
+          "text": "the cards must be interpreted relatively to the subject, which means that all official and conventional meanings of the cards may and should be adapted to harmonize with the conditions of this particular case in question—the position, time of life and sex of the Querent, or person for whom the consultation is made.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              322,
+              322
+            ]
+          }
+        },
+        {
+          "id": "trumps",
+          "text": "It should be remembered that the Trumps represent more powerful and compelling forces—by the Tarot hypothesis—than are referable to the small cards.",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              323,
+              323
+            ]
+          }
+        }
+      ],
+      "direction": "right-to-left"
+    },
+    {
+      "kind": "continuation",
+      "id": "thirtyfive",
+      "name": "The Method of Reading by Means of Thirty-five Cards",
+      "source": {
+        "part": 3,
+        "section": "§ 9",
+        "pdfPages": [
+          326,
+          328
+        ]
+      },
+      "purpose": {
+        "text": "When the reading is over, according to the scheme set forth in the last method, it may happen—as in the previous case—that something remains doubtful, or it may be desired to carry the question further, which is done as follows.",
+        "source": {
+          "part": 3,
+          "section": "§ 9",
+          "pdfPages": [
+            326,
+            326
+          ]
+        }
+      },
+      "deck": "full",
+      "continues": "alternative",
+      "heap": {
+        "text": "Take up the undealt cards which remain over, not having been used in the first operation with 42 cards. The latter are set aside in a heap, with the Querent, face upwards, on the top. The thirty-five cards, being shuffled and cut as before, are divided by dealing into six packets thus:",
+        "source": {
+          "part": 3,
+          "section": "§ 9",
+          "pdfPages": [
+            326,
+            326
+          ]
+        }
+      },
+      "packets": {
+        "text": "Packet I consists of the first Seven Cards; Packet II consists of the Six Cards next following in order; Packet III consists of the Five Cards following; Packet IV contains the next Four Cards; Packet V contains Two Cards; and Packet VI contains the last Eleven Cards.",
+        "source": {
+          "part": 3,
+          "section": "§ 9",
+          "pdfPages": [
+            326,
+            326
+          ]
+        },
+        "sizes": [
+          7,
+          6,
+          5,
+          4,
+          2,
+          11
+        ]
+      },
+      "layout": {
+        "text": "Take up these packets successively; deal out the cards which they contain in six lines, which will be necessarily of unequal length.",
+        "source": {
+          "part": 3,
+          "section": "§ 9",
+          "pdfPages": [
+            327,
+            327
+          ]
+        }
+      },
+      "positions": [
+        {
+          "number": 1,
+          "name": "First Line",
+          "say": null,
+          "place": null,
+          "meaning": "The First Line stands for the house, the environment and so forth.",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        },
+        {
+          "number": 2,
+          "name": "Second Line",
+          "say": null,
+          "place": null,
+          "meaning": "The Second Line stands for the person or subject of the divination.",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        },
+        {
+          "number": 3,
+          "name": "Third Line",
+          "say": null,
+          "place": null,
+          "meaning": "The Third Line stands for what is passing outside, events, persons, etc.",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        },
+        {
+          "number": 4,
+          "name": "Fourth Line",
+          "say": null,
+          "place": null,
+          "meaning": "The Fourth Line stands for a surprise, the unexpected, etc.",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        },
+        {
+          "number": 5,
+          "name": "Fifth Line",
+          "say": null,
+          "place": null,
+          "meaning": "The Fifth Line stands for consolation, and may moderate all that is unfavourable in the preceding lines.",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        },
+        {
+          "number": 6,
+          "name": "Sixth Line",
+          "say": null,
+          "place": null,
+          "meaning": "The Sixth Line is that which must be consulted to elucidate the enigmatic oracles of the others; apart from them it has no importance.",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        }
+      ],
+      "reading": {
+        "text": "These cards should all be read from left to right, beginning with the uppermost line.",
+        "source": {
+          "part": 3,
+          "section": "§ 9",
+          "pdfPages": [
+            327,
+            327
+          ]
+        }
+      },
+      "direction": "left-to-right"
     }
   ]
 }
