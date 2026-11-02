@@ -21,6 +21,8 @@ export interface Reading {
   readonly turns: number[]
   readonly order: Placed[]
   readonly drawn: number
+  /** Whether the person ended the reading before its last card; it then takes no more cards and is never carried on. */
+  readonly abandoned: boolean
 }
 
 /** Every reading of one conversation, oldest first. Plain JSON, rebuilt by replaying the records below. */
@@ -28,7 +30,11 @@ export interface Table {
   readonly readings: Reading[]
 }
 
-export interface StartEvent extends Omit<Reading, 'drawn'> {}
+export interface StartEvent extends Omit<Reading, 'drawn' | 'abandoned'> {}
+
+export interface AbandonEvent {
+  readonly readingId: string
+}
 
 export interface DrawEvent {
   readonly readingId: string
@@ -51,15 +57,25 @@ export const emptyTable: Table = { readings: [] }
 /** Records that do not follow on from the table are ignored, never thrown: the log is replayed on load. */
 export function applyStart(table: Table, event: StartEvent): Table {
   if (table.readings.some(r => r.id === event.id)) return table
-  return { readings: [...table.readings, { ...event, drawn: 0 }] }
+  return { readings: [...table.readings, { ...event, drawn: 0, abandoned: false }] }
 }
 
 export function applyDraw(table: Table, event: DrawEvent): Table {
   const at = table.readings.findIndex(r => r.id === event.readingId)
   const reading = table.readings[at]
   const turn = reading === undefined ? undefined : turnAt(reading, event.index)
-  if (reading === undefined || turn === undefined || event.index !== reading.drawn || event.index + turn.size > reading.order.length) return table
+  if (reading === undefined || reading.abandoned || turn === undefined || event.index !== reading.drawn || event.index + turn.size > reading.order.length) return table
   const readings = table.readings.slice()
   readings[at] = { ...reading, drawn: reading.drawn + turn.size }
+  return { readings }
+}
+
+/** Ends a reading that is still open; one already finished or ended is left as it is. */
+export function applyAbandon(table: Table, event: AbandonEvent): Table {
+  const at = table.readings.findIndex(r => r.id === event.readingId)
+  const reading = table.readings[at]
+  if (reading === undefined || reading.abandoned || reading.drawn >= reading.draws) return table
+  const readings = table.readings.slice()
+  readings[at] = { ...reading, abandoned: true }
   return { readings }
 }

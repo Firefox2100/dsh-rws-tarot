@@ -1,6 +1,7 @@
-import { cardName, finalCardText, followUpTexts, getCard, getMethod, guidanceTexts, pickLocale, positionMeaning, positionName, type Card } from '@dsh-rws-tarot/data'
+import { cardName, finalCardText, followUpTexts, getCard, getMethod, guidanceTexts, pickLocale, positionMeaning, positionName, rankName, type Card, type Recurrence } from '@dsh-rws-tarot/data'
 import type { Placed } from './pack.ts'
 import { PLAIN_METHOD } from './plain.ts'
+import { newRecurrences } from './recurrence.ts'
 import { turnAt, type Reading } from './table.ts'
 
 /**
@@ -37,6 +38,7 @@ interface Words {
   readonly plainStyle: readonly string[]
   readonly plainTurned: (n: number, total: number, name: string) => string
   readonly plainLast: string
+  readonly recurrence: (count: number, rank: string, reversed: boolean, means: string) => string
 }
 
 const en: Words = {
@@ -91,6 +93,7 @@ const en: Words = {
     'Do not name or cite any source, do not write "according to" or "the text says", do not list or quote the meanings below, and do not bring in meanings that are not given here. A short paragraph for each card is enough.',
   ],
   plainTurned: (n, total, name) => `Card ${n} of ${total} has just been turned over: ${name}.`,
+  recurrence: (count, rank, reversed, means) => `${count} ${rank}s${reversed ? ' reversed' : ''} now lie on the table together: ${means}.`,
   plainLast: 'This is the last card. After speaking to it, bring the cards together into one closing reading that answers them.',
 }
 
@@ -146,10 +149,17 @@ const zh: Words = {
     '不要提及或引用任何出处，不要写“根据”“书中说”，不要罗列或照抄下面的牌义，也不要加入下面没有给出的含义。每张牌写一小段就够了。资料中的牌义是英文原文，请用你自己的话、用中文回答。',
   ],
   plainTurned: (n, total, name) => `第 ${n} 张（共 ${total} 张）刚刚翻开：${name}。`,
+  recurrence: (count, rank, reversed, means) => `桌上现在有 ${count} 张${reversed ? '逆位' : ''}${rank}：${means}。`,
   plainLast: '这是最后一张牌。说完这张之后，把所有的牌合起来，给出一个回答他们问题的总结。',
 }
 
 const WORDS: Readonly<Record<string, Words>> = { en, zh }
+
+/** What the book says when this turn brings two or more cards of one rank onto the table. */
+function recurrenceLines(reading: Reading, from: number, size: number, words: Words): string[] {
+  const found = newRecurrences(reading.order.slice(0, from), reading.order.slice(from, from + size))
+  return found.length === 0 ? [] : ['', ...found.map((r: Recurrence) => words.recurrence(r.count, rankName(r.rank, reading.language), r.position === 'reversed', r.means))]
+}
 
 function meaningLines(card: Card, placed: Placed, indent: string, words: Words): string[] {
   const scenario = placed.reversed ? 'reversed' : 'upright'
@@ -196,6 +206,7 @@ export function describeCard(reading: Reading, index: number): string {
   if (turned.length > 0) {
     lines.push('', words.table, ...turned.map((p, i) => `  ${i + 1}. ${where(i)}: ${named(p)}`))
   }
+  lines.push(...recurrenceLines(reading, index, 1, words))
   if (index + 1 === reading.draws) {
     lines.push('', words.last)
     lines.push(`${words.forPosition}: ${finalCardText(method, locale)}`)
@@ -250,6 +261,7 @@ function describeLine(reading: Reading, from: number): string {
       start += size
     }
   }
+  out.push(...recurrenceLines(reading, from, turn.size, words))
   if (turn.turn + 1 === lines) out.push('', method.kind === 'lines' ? words.linesLast : words.continueLast)
   return out.join('\n')
 }
@@ -271,6 +283,7 @@ function describePlain(reading: Reading, index: number): string {
   }
   out.push(words.plainTurned(index + 1, reading.draws, named(placed)), ...meaningLines(getCard(placed.cardId), placed, '  ', words))
   if (index > 0) out.push('', words.table, ...reading.order.slice(0, index).map((p, i) => `  ${i + 1}. ${named(p)}`))
+  out.push(...recurrenceLines(reading, index, 1, words))
   if (index + 1 === reading.draws) out.push('', words.plainLast)
   return out.join('\n')
 }

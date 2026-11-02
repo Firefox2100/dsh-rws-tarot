@@ -47,5 +47,6 @@ function walk(node, path) {
   }
 }
 walk(data, 'methods')
+walk(JSON.parse(readFileSync(join(root, 'packages/tarot-data/data/recurrence.json'), 'utf8')), 'recurrence')
 console.log(`${quotes} quotes checked, ${missing} missing`)
 process.exit(missing === 0 ? 0 : 1)

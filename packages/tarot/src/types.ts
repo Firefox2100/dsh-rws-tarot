@@ -15,6 +15,8 @@ export interface ReadingView {
   /** Cards each turn shows, in order. */
   turns: number[]
   drawn: Placed[]
+  /** Ended by the person before its last card. */
+  abandoned: boolean
 }
 
 export interface TarotView {

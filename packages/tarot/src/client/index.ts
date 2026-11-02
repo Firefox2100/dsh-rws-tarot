@@ -5,9 +5,11 @@ import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type {} from '@deepseek-ai/dsh-client-ui-session/client'
 import type {} from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
+import type {} from '@deepseek-ai/dsh-client-ui-tool/client'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
 import type {} from '../types.ts'
 import { en, zh, type TarotKey } from './locales.ts'
+import { TarotCall } from './TarotCall.tsx'
 import { TarotPage } from './TarotPage.tsx'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
@@ -50,4 +52,10 @@ export function apply(ctx: Context): void {
       },
     }),
   }, TarotPage)), 'dsh-rws-tarot: page')
+  // Keyed by the tool's own name: no other tool's row is touched.
+  ctx.effect(() => ctx.slots.inject('tool.call.toolview', () => ctx.slots.register({
+    name: 'tool.call.toolview',
+    key: 'tarot_lay_spread',
+    locale: NAMESPACE,
+  }, TarotCall)), 'dsh-rws-tarot: tool row')
 }

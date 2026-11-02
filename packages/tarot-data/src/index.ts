@@ -1,9 +1,10 @@
 import raw from '../data/cards.json' with { type: 'json' }
 import rawMethods from '../data/methods.json' with { type: 'json' }
-import type { Card, CelticMethod, ContinuationMethod, LinesMethod, Method, TarotData } from './types.ts'
+import rawRecurrence from '../data/recurrence.json' with { type: 'json' }
+import type { Card, CelticMethod, ContinuationMethod, LinesMethod, Method, Rank, Recurrence, TarotData } from './types.ts'
 
 export type * from './types.ts'
-export { cardName, finalCardText, followUpTexts, guidanceTexts, pickLocale, positionMeaning, positionName } from './names.ts'
+export { cardName, rankName, finalCardText, followUpTexts, guidanceTexts, pickLocale, positionMeaning, positionName } from './names.ts'
 
 const SUITS = ['wands', 'cups', 'swords', 'pentacles'] as const
 
@@ -70,4 +71,12 @@ export function getMethod(id: string): Method {
   const method = methods.find(m => m.id === id)
   if (!method) throw new RangeError(`unknown method id ${JSON.stringify(id)}`)
   return method
+}
+
+const recurrences: readonly Recurrence[] = (rawRecurrence as unknown as { entries: Recurrence[] }).entries
+if (recurrences.length !== 84) throw new Error(`tarot data: expected 84 recurrences, found ${recurrences.length}`)
+
+/** What the book says of `count` cards of one rank together, upright or reversed; undefined for a count the book gives nothing for. */
+export function recurrence(rank: Rank, count: number, reversed: boolean): Recurrence | undefined {
+  return recurrences.find(r => r.rank === rank && r.count === count && r.position === (reversed ? 'reversed' : 'natural'))
 }

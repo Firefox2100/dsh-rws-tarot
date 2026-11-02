@@ -1,5 +1,17 @@
 export type Arcana = 'major' | 'minor'
 export type Suit = 'wands' | 'cups' | 'swords' | 'pentacles'
+/** What the book says of two, three or four cards of one rank turning up together, upright (natural) or reversed. */
+export interface Recurrence {
+  readonly rank: Rank
+  readonly count: 2 | 3 | 4
+  readonly position: 'natural' | 'reversed'
+  /** The book's phrase, such as `3 Kings = consultation`. */
+  readonly text: string
+  /** What it signifies, such as `consultation`. */
+  readonly means: string
+  readonly pdfPage: number
+}
+
 export type Rank = 'ace' | 'two' | 'three' | 'four' | 'five' | 'six' | 'seven' | 'eight' | 'nine' | 'ten' | 'page' | 'knight' | 'queen' | 'king'
 
 /** Where in the book a text stands; `pdfPages` index the page-scan PDF kept under `references/`. */

@@ -128,6 +128,28 @@ describe('/tarot', () => {
     expect(await run(test, '/tarot draw')).toMatchObject({ kind: 'error' })
   })
 
+  it('ends a half-drawn reading, keeps it in the session and lets another begin', async () => {
+    const test = await harness()
+    expect(await run(test, '/tarot abandon')).toMatchObject({ kind: 'error' })
+    await run(test, '/tarot start plain 3 upright en first')
+    await run(test, '/tarot draw')
+    expect(await run(test, '/tarot start plain 1 upright en again')).toMatchObject({ kind: 'error', text: 'a reading is already in progress' })
+    expect(await run(test, '/tarot abandon')).toMatchObject({ kind: 'success', text: 'reading ended after 1 of 3 cards' })
+    expect(await run(test, '/tarot draw')).toMatchObject({ kind: 'error' })
+    expect(await run(test, '/tarot abandon')).toMatchObject({ kind: 'error' })
+    expect(await run(test, '/tarot start plain 1 upright en second')).toMatchObject({ kind: 'success' })
+    await run(test, '/tarot draw')
+    expect(view(test).readings.map(r => [r.question, r.drawn.length, r.abandoned])).toEqual([['first', 1, true], ['second', 1, false]])
+  })
+
+  it('does not carry on an alternative reading that was ended early', async () => {
+    const test = await harness()
+    await run(test, '/tarot start alternative male upright en')
+    await run(test, '/tarot draw')
+    await run(test, '/tarot abandon')
+    expect(await run(test, '/tarot continue')).toMatchObject({ kind: 'error', text: expect.stringContaining('finished') })
+  })
+
   it('refuses a plain draw of no cards, too many, or a malformed one', async () => {
     const test = await harness()
     for (const line of ['/tarot start plain 0 upright en', '/tarot start plain 13 upright en', '/tarot start plain 2 upright', '/tarot start plain x upright en']) {

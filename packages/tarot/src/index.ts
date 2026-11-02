@@ -10,8 +10,8 @@ import { appendPluginRecord, pluginRecordOf } from '@deepseek-ai/dsh-session'
 import type { Agent } from '@deepseek-ai/dsh-agent'
 import { getCard, getMethod, hasCard, cardName } from '@dsh-rws-tarot/data'
 import {
-  applyDraw, applyStart, continueAlternative, cryptoRng, describeTurn, emptyTable, PLAIN_LIMIT, significatorFor, startAlternative, startCeltic, startPlain, turnAt,
-  type DrawEvent, type Placed, type Reading, type StartEvent, type Table,
+  applyAbandon, applyDraw, applyStart, continueAlternative, cryptoRng, describeTurn, emptyTable, PLAIN_LIMIT, significatorFor, startAlternative, startCeltic, startPlain, turnAt,
+  type AbandonEvent, type DrawEvent, type Placed, type Reading, type StartEvent, type Table,
 } from '@dsh-rws-tarot/engine'
 import z from '@deepseek-ai/schemastery'
 import { z as zod } from 'zod'
@@ -35,6 +35,8 @@ declare module '@deepseek-ai/dsh-session/types' {
     'plugin:dsh-rws-tarot/start': StartEvent
     /** The next card of a reading is turned up. */
     'plugin:dsh-rws-tarot/draw': DrawEvent
+    /** The person ends the reading that is open. */
+    'plugin:dsh-rws-tarot/abandon': AbandonEvent
   }
 }
 
@@ -56,13 +58,14 @@ const readingBase = zod.object({
 // A record written before readings had turns of their own shows one card a turn.
 const startRecord = readingBase.extend({ turns: turns.optional() })
 const drawRecord = zod.object({ readingId: zod.string(), index: zod.number().int().min(0) })
-const reading = readingBase.extend({ turns, drawn: zod.number().int().min(0) })
+const abandonRecord = zod.object({ readingId: zod.string() })
+const reading = readingBase.extend({ turns, drawn: zod.number().int().min(0), abandoned: zod.boolean() })
 const table = zod.object({ readings: zod.array(reading) })
 const view = zod.object({
-  readings: zod.array(readingBase.omit({ order: true }).extend({ turns, drawn: zod.array(placed) })),
+  readings: zod.array(readingBase.omit({ order: true }).extend({ turns, drawn: zod.array(placed), abandoned: zod.boolean() })),
 })
 
-const USAGE = '/tarot start celtic <significator-id> <left|right> <upright|reversed> <language> [question] | start alternative <male|female> <upright|reversed> <language> [question] | start plain <count> <upright|reversed> <language> [question] | continue [question] | draw'
+const USAGE = '/tarot start celtic <significator-id> <left|right> <upright|reversed> <language> [question] | start alternative <male|female> <upright|reversed> <language> [question] | start plain <count> <upright|reversed> <language> [question] | continue [question] | draw | abandon'
 
 export interface Config {
   /** The language of the facts for a reading the model begins, when it names none. */
@@ -84,7 +87,7 @@ export function apply(ctx: Context, config: Config): void {
 
   ctx.sessionProjections.register({
     key: 'tarot',
-    stateVersion: 6,
+    stateVersion: 7,
     stateSchema: table,
     init: () => emptyTable,
     apply: (state, event) => {
@@ -97,6 +100,10 @@ export function apply(ctx: Context, config: Config): void {
       if (record.type === 'plugin:dsh-rws-tarot/draw') {
         const data = drawRecord.safeParse(record.data)
         return data.success ? applyDraw(state, data.data) : state
+      }
+      if (record.type === 'plugin:dsh-rws-tarot/abandon') {
+        const data = abandonRecord.safeParse(record.data)
+        return data.success ? applyAbandon(state, data.data) : state
       }
       return state
     },
@@ -111,7 +118,7 @@ export function apply(ctx: Context, config: Config): void {
   const tableOf = (agent: Agent): Table => ctx.sessionProjections.stateOf(agent.session, 'tarot') ?? emptyTable
   const openReading = (agent: Agent): Reading | undefined => {
     const last = tableOf(agent).readings.at(-1)
-    return last !== undefined && last.drawn < last.draws ? last : undefined
+    return last !== undefined && !last.abandoned && last.drawn < last.draws ? last : undefined
   }
   interface Common {
     reversed: boolean
@@ -135,7 +142,7 @@ export function apply(ctx: Context, config: Config): void {
     if (input.methodId === 'thirtyfive') {
       // It carries on the reading just finished, in its language, with the cards that reading left over.
       const previous = tableOf(agent).readings.at(-1)
-      if (previous?.method !== getMethod('thirtyfive').continues) return 'there is no finished reading of the alternative method to carry further'
+      if (previous?.method !== getMethod('thirtyfive').continues || previous.abandoned || previous.drawn < previous.draws) return 'there is no finished reading of the alternative method to carry further'
       language = previous.language
       prepared = { ...continueAlternative(previous, cryptoRng()), facing: null }
     } else {
@@ -191,6 +198,15 @@ export function apply(ctx: Context, config: Config): void {
       if (verb === 'continue') {
         const failure = await begin(agent, { methodId: 'thirtyfive', question: args.join(' ') })
         return failure === null ? { kind: 'success', text: `${getMethod('thirtyfive').name}: reading begun` } : { kind: 'error', text: failure }
+      }
+
+      if (verb === 'abandon') {
+        const current = openReading(agent)
+        if (current === undefined) return { kind: 'error', text: 'no reading in progress' }
+        appendPluginRecord(session, 'plugin:dsh-rws-tarot/abandon', { readingId: current.id })
+        if (openReading(agent) !== undefined) throw new Error('rws-tarot: the reading was not ended')
+        await ctx.sessions.flush(session)
+        return { kind: 'success', text: `reading ended after ${current.drawn} of ${current.draws} cards` }
       }
 
       if (verb === 'draw') {

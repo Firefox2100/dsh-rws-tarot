@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 import { en, type TarotKey } from '../src/client/locales.ts'
 import { plateUrl } from '../src/client/plates.ts'
+import { TarotCall } from '../src/client/TarotCall.tsx'
 import { TarotPage } from '../src/client/TarotPage.tsx'
 import { getCard, getMethod } from '@dsh-rws-tarot/data'
 import type { ReadingView, TarotView } from '../src/types.ts'
@@ -19,11 +20,11 @@ const t = (key: TarotKey, values?: Record<string, string | number>): string => {
 const placed = { cardId: 'major-00', reversed: false } as const
 const baseReading: ReadingView = {
   id: 'test', method: 'celtic', question: 'What now?', language: 'en', facing: 'left',
-  significator: placed, drawn: [], draws: 10, turns: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  significator: placed, drawn: [], draws: 10, turns: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], abandoned: false,
 }
 
-function render(reading?: ReadingView): string {
-  const view: TarotView | undefined = reading === undefined ? undefined : { readings: [reading] }
+function render(...readings: ReadingView[]): string {
+  const view: TarotView | undefined = readings.length === 0 ? undefined : { readings }
   const props = { useProjection: () => view, run: async () => null, t } as unknown as Parameters<typeof TarotPage>[0]
   return renderToStaticMarkup(<TarotPage {...props} />)
 }
@@ -123,5 +124,46 @@ describe('thirty-five card continuation', () => {
     expect(html).toContain('Click the glowing card to turn it over: card 2')
     expect(html).not.toContain('Significator:')
     vi.unstubAllGlobals()
+  })
+
+  it('offers to end a reading that is open, and not one that is finished', () => {
+    vi.stubGlobal('document', { baseURI: 'https://example.test/' })
+    const open: ReadingView = { ...baseReading, method: 'plain', significator: null, facing: null, draws: 3, turns: [1, 1, 1], drawn: [placed] }
+    expect(render(open)).toContain('End this reading')
+    expect(render({ ...open, drawn: [placed, placed, placed] })).not.toContain('End this reading')
+    vi.unstubAllGlobals()
+  })
+
+  it('shows an ended reading as a new start, with the earlier readings listed and openable', () => {
+    vi.stubGlobal('document', { baseURI: 'https://example.test/' })
+    const ended: ReadingView = { ...baseReading, method: 'plain', significator: null, facing: null, question: 'Which road?', draws: 3, turns: [1, 1, 1], drawn: [placed], abandoned: true }
+    const html = render(ended)
+    expect(html).toContain('Earlier readings (1)')
+    expect(html).toContain('Which road?')
+    expect(html).toContain('1 of 3 cards turned')
+    expect(html).toContain('ended early')
+    expect(html).toContain('Click the glowing card to turn it over and begin the reading.')
+    expect(html).not.toContain('End this reading')
+    expect(render({ ...ended, abandoned: false })).not.toContain('Earlier readings')
+    vi.unstubAllGlobals()
+  })
+})
+
+describe('the model\'s tarot call row', () => {
+  const call = (block: object, phase = 'started') => renderToStaticMarkup(<TarotCall {...({ phase, block, t } as unknown as Parameters<typeof TarotCall>[0])} />)
+
+  it('says what was laid, from the call alone', () => {
+    expect(call({ callId: 'c', argsRaw: '{"method":"plain","count":3}' })).toContain('Laying the cards')
+    const settled = (argsRaw: string, extra = {}) => ({ kind: 'settled', callId: 'c', call: { argsRaw }, content: [{ type: 'text', text: 'ok' }], isError: false, ...extra })
+    expect(call(settled('{"method":"plain","count":3}'))).toContain('Laid: Plain draw · 3 cards')
+    expect(call(settled('{"card":"cups-13"}'))).toContain('Laid: Celtic Cross')
+    expect(call(settled('{"method":"thir'))).toContain('Laid: ')
+  })
+
+  it('shows why a call failed, in one line', () => {
+    const html = call({ kind: 'settled', callId: 'c', call: { argsRaw: '{}' }, content: [{ type: 'text', text: 'a reading is already in progress\nmore' }], isError: true })
+    expect(html).toContain('a reading is already in progress')
+    expect(html).not.toContain('more')
+    expect(html).toContain('data-state="error"')
   })
 })

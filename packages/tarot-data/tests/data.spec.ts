@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cards, getCard, hasCard, tarotData } from '../src/index.ts'
+import { cards, getCard, hasCard, recurrence, tarotData } from '../src/index.ts'
 
 describe('tarot data', () => {
   it('holds the 78 cards: 22 trumps and 14 per suit', () => {
@@ -103,5 +103,12 @@ describe('names', () => {
     expect(pickLocale(table, 'zh-CN', 'en')).toBe('b')
     expect(pickLocale(table, 'fr', 'en')).toBe('a')
     expect(pickLocale(table, undefined, 'en')).toBe('a')
+  })
+
+  it('holds what the book says of recurring ranks, upright and reversed', () => {
+    expect(recurrence('king', 3, false)).toMatchObject({ text: '3 Kings = consultation', means: 'consultation' })
+    expect(recurrence('ace', 2, true)?.means).toBe('enemies')
+    expect(recurrence('knight', 3, true)?.means).toBe('a duel, or personal encounter')
+    expect(recurrence('king', 5, false)).toBeUndefined()
   })
 })

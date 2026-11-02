@@ -361,7 +361,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const linePositions = continuation.positions.map(p => ({ ...p, name: positionName(continuation.id, p, language), meaning: positionMeaning(continuation.id, p, language) }))
   const last = view?.readings.at(-1)
   const finished = last !== undefined && last.drawn.length >= last.draws
-  const reading = last !== undefined && !(fresh && finished) ? last : undefined
+  const reading = last !== undefined && !last.abandoned && !(fresh && finished) ? last : undefined
   const canContinue = finished && last.method === continuation.continues
   const methodId: MethodId = reading === undefined
     ? chosenId === 'thirtyfive' && !canContinue ? 'celtic' : chosenId
@@ -392,12 +392,17 @@ export function TarotPage({ useProjection, run, t }: Props) {
     while (row < rows.length - 1 && index >= start + rows[row]!) start += rows[row++]!
     return { row, n: index - start + 1 }
   }
-  const where = (index: number): { name: string; meaning: string | null } => {
-    if (plain) return { name: t('plain.card', { n: index + 1 }), meaning: null }
-    if (!lines) return { name: positions[index]!.name, meaning: positions[index]!.meaning }
-    const { row, n } = lineOf(index)
-    return { name: t('line.label', { line: row + 1, n }), meaning: methodId === 'thirtyfive' ? linePositions[row]!.meaning : null }
+  /** The place card `index` of a reading lies in, and what the book says of that place when it does. */
+  const whereIn = (r: ReadingView) => (index: number): { name: string; meaning: string | null } => {
+    if (r.method === 'plain') return { name: t('plain.card', { n: index + 1 }), meaning: null }
+    if (r.method === 'celtic') return { name: positions[index]!.name, meaning: positions[index]!.meaning }
+    let row = 0
+    let start = 0
+    while (row < r.turns.length - 1 && index >= start + r.turns[row]!) start += r.turns[row++]!
+    return { name: t('line.label', { line: row + 1, n: index - start + 1 }), meaning: r.method === 'thirtyfive' ? linePositions[row]!.meaning : null }
   }
+  const earlier = (view?.readings ?? []).filter(r => r !== reading).reverse()
+  const methodLabel = (id: string): string => t(id === 'alternative' ? 'method.alt42' : id === 'thirtyfive' ? 'method.alt35' : id === 'plain' ? 'method.plain' : 'method.celtic')
 
   const turn = async (): Promise<void> => {
     if (next === null) return
@@ -420,6 +425,15 @@ export function TarotPage({ useProjection, run, t }: Props) {
       }
       const failure = await run('/tarot draw')
       if (failure !== null) setError(failure)
+    } finally { setBusy(false) }
+  }
+  const end = async (): Promise<void> => {
+    setBusy(true)
+    setError(null)
+    try {
+      const failure = await run('/tarot abandon')
+      if (failure !== null) setError(failure)
+      else setQuestion('')
     } finally { setBusy(false) }
   }
   const nextRow = next === null ? 0 : lineOf(next).row
@@ -478,11 +492,29 @@ export function TarotPage({ useProjection, run, t }: Props) {
             ? t(plain ? 'hint.begin' : lines ? 'hint.beginLines' : 'hint.begin')
             : plain ? t('hint.nextPlain', { n: next + 1 }) : lines ? t('hint.nextLine', { line: nextRow + 1 }) : t('hint.next', { position: positions[next]!.name })}
       </p>
-      {next !== null && reading !== undefined && <p className={css.muted}>{where(next).meaning}</p>}
+      {next !== null && reading !== undefined && <p className={css.muted}>{whereIn(reading)(next).meaning}</p>}
       {error !== null && <p className={css.error} role="alert">{t('failed', { message: error })}</p>}
+      {reading !== undefined && !finished && (
+        <div className={css.actions}><Button variant="outline" size="sm" disabled={busy} onClick={() => { void end() }}>{t('end')}</Button></div>
+      )}
       {finished && <div className={css.actions}><Button variant="outline" size="sm" onClick={() => { setFresh(true); setQuestion('') }}>{t('newReading')}</Button></div>}
 
-      {reading !== undefined && <Turned reading={reading} where={where} nameOf={nameOf} t={t} />}
+      {reading !== undefined && <Turned reading={reading} where={whereIn(reading)} nameOf={nameOf} t={t} />}
+
+      {earlier.length > 0 && (
+        <details className={css.turned}>
+          <summary>{t('history', { n: earlier.length })}</summary>
+          {earlier.map(r => (
+            <details key={r.id} className={css.past}>
+              <summary>
+                <span>{methodLabel(r.method)}</span>
+                <span className={css.muted}>{r.question === '' ? '—' : r.question} · {t('history.cards', { n: r.drawn.length, m: r.draws })}{r.abandoned ? ` · ${t('history.ended')}` : ''}</span>
+              </summary>
+              <Turned reading={r} where={whereIn(r)} nameOf={nameOf} t={t} />
+            </details>
+          ))}
+        </details>
+      )}
 
       <details className={css.optionsBox}>
         <summary>{t('options')}</summary>

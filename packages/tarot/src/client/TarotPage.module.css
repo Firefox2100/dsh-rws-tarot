@@ -228,6 +228,19 @@
   font-weight: 600;
 }
 
+.past {
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: var(--dsw-alias-bg-layer-1);
+  border-radius: var(--dsw-radius-sm);
+}
+
+.past > summary {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
 .list {
   display: flex;
   flex-direction: column;

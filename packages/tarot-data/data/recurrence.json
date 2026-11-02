@@ -1,0 +1,681 @@
+{
+  "source": {
+    "part": 3,
+    "section": 5,
+    "title": "The Recurrence of Cards in Dealing"
+  },
+  "entries": [
+    {
+      "rank": "king",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Kings = great honour",
+      "means": "great honour",
+      "pdfPage": 308
+    },
+    {
+      "rank": "king",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Kings = consultation",
+      "means": "consultation",
+      "pdfPage": 308
+    },
+    {
+      "rank": "king",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Kings = minor counsel",
+      "means": "minor counsel",
+      "pdfPage": 308
+    },
+    {
+      "rank": "queen",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Queens = great debate",
+      "means": "great debate",
+      "pdfPage": 308
+    },
+    {
+      "rank": "queen",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Queens = deception by women",
+      "means": "deception by women",
+      "pdfPage": 308
+    },
+    {
+      "rank": "queen",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Queens = sincere friends",
+      "means": "sincere friends",
+      "pdfPage": 308
+    },
+    {
+      "rank": "knight",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Knights = serious matters",
+      "means": "serious matters",
+      "pdfPage": 308
+    },
+    {
+      "rank": "knight",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Knights = lively debate",
+      "means": "lively debate",
+      "pdfPage": 308
+    },
+    {
+      "rank": "knight",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Knights = intimacy",
+      "means": "intimacy",
+      "pdfPage": 308
+    },
+    {
+      "rank": "page",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Pages = dangerous illness",
+      "means": "dangerous illness",
+      "pdfPage": 308
+    },
+    {
+      "rank": "page",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Pages = dispute",
+      "means": "dispute",
+      "pdfPage": 308
+    },
+    {
+      "rank": "page",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Pages = disquiet",
+      "means": "disquiet",
+      "pdfPage": 308
+    },
+    {
+      "rank": "ten",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Tens = condemnation",
+      "means": "condemnation",
+      "pdfPage": 308
+    },
+    {
+      "rank": "ten",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Tens = new condition",
+      "means": "new condition",
+      "pdfPage": 308
+    },
+    {
+      "rank": "ten",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Tens = change",
+      "means": "change",
+      "pdfPage": 308
+    },
+    {
+      "rank": "nine",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Nines = a good friend",
+      "means": "a good friend",
+      "pdfPage": 308
+    },
+    {
+      "rank": "nine",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Nines = success",
+      "means": "success",
+      "pdfPage": 308
+    },
+    {
+      "rank": "nine",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Nines = receipt",
+      "means": "receipt",
+      "pdfPage": 308
+    },
+    {
+      "rank": "eight",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Eights = reverse",
+      "means": "reverse",
+      "pdfPage": 308
+    },
+    {
+      "rank": "eight",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Eights = marriage",
+      "means": "marriage",
+      "pdfPage": 308
+    },
+    {
+      "rank": "eight",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Eights = new knowledge",
+      "means": "new knowledge",
+      "pdfPage": 308
+    },
+    {
+      "rank": "seven",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Sevens = intrigue",
+      "means": "intrigue",
+      "pdfPage": 308
+    },
+    {
+      "rank": "seven",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Sevens = infirmity",
+      "means": "infirmity",
+      "pdfPage": 308
+    },
+    {
+      "rank": "seven",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Sevens = news",
+      "means": "news",
+      "pdfPage": 308
+    },
+    {
+      "rank": "six",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Sixes = abundance",
+      "means": "abundance",
+      "pdfPage": 308
+    },
+    {
+      "rank": "six",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Sixes = success",
+      "means": "success",
+      "pdfPage": 308
+    },
+    {
+      "rank": "six",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Sixes = irritability",
+      "means": "irritability",
+      "pdfPage": 308
+    },
+    {
+      "rank": "five",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Fives = regularity",
+      "means": "regularity",
+      "pdfPage": 308
+    },
+    {
+      "rank": "five",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Fives = determination",
+      "means": "determination",
+      "pdfPage": 308
+    },
+    {
+      "rank": "five",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Fives = vigils",
+      "means": "vigils",
+      "pdfPage": 308
+    },
+    {
+      "rank": "four",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Fours = journey near at hand",
+      "means": "journey near at hand",
+      "pdfPage": 309
+    },
+    {
+      "rank": "four",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Fours = a subject of reflection",
+      "means": "a subject of reflection",
+      "pdfPage": 309
+    },
+    {
+      "rank": "four",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Fours = insomnia",
+      "means": "insomnia",
+      "pdfPage": 309
+    },
+    {
+      "rank": "three",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Threes = progress",
+      "means": "progress",
+      "pdfPage": 309
+    },
+    {
+      "rank": "three",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Threes = unity",
+      "means": "unity",
+      "pdfPage": 309
+    },
+    {
+      "rank": "three",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Threes = calm",
+      "means": "calm",
+      "pdfPage": 309
+    },
+    {
+      "rank": "two",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Twos = contention",
+      "means": "contention",
+      "pdfPage": 309
+    },
+    {
+      "rank": "two",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Twos = security",
+      "means": "security",
+      "pdfPage": 309
+    },
+    {
+      "rank": "two",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Twos = accord",
+      "means": "accord",
+      "pdfPage": 309
+    },
+    {
+      "rank": "ace",
+      "count": 4,
+      "position": "natural",
+      "text": "4 Aces = favourable chance",
+      "means": "favourable chance",
+      "pdfPage": 309
+    },
+    {
+      "rank": "ace",
+      "count": 3,
+      "position": "natural",
+      "text": "3 Aces = small success",
+      "means": "small success",
+      "pdfPage": 309
+    },
+    {
+      "rank": "ace",
+      "count": 2,
+      "position": "natural",
+      "text": "2 Aces = trickery",
+      "means": "trickery",
+      "pdfPage": 309
+    },
+    {
+      "rank": "king",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Kings = celerity",
+      "means": "celerity",
+      "pdfPage": 309
+    },
+    {
+      "rank": "king",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Kings = commerce",
+      "means": "commerce",
+      "pdfPage": 309
+    },
+    {
+      "rank": "king",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Kings = projects",
+      "means": "projects",
+      "pdfPage": 309
+    },
+    {
+      "rank": "queen",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Queens = bad company",
+      "means": "bad company",
+      "pdfPage": 309
+    },
+    {
+      "rank": "queen",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Queens = gluttony",
+      "means": "gluttony",
+      "pdfPage": 309
+    },
+    {
+      "rank": "queen",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Queens = work",
+      "means": "work",
+      "pdfPage": 309
+    },
+    {
+      "rank": "knight",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Knights = alliance",
+      "means": "alliance",
+      "pdfPage": 309
+    },
+    {
+      "rank": "knight",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Knights = a duel, or personal encounter",
+      "means": "a duel, or personal encounter",
+      "pdfPage": 309
+    },
+    {
+      "rank": "knight",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Knights = susceptibility",
+      "means": "susceptibility",
+      "pdfPage": 309
+    },
+    {
+      "rank": "page",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Pages = privation",
+      "means": "privation",
+      "pdfPage": 309
+    },
+    {
+      "rank": "page",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Pages = idleness",
+      "means": "idleness",
+      "pdfPage": 309
+    },
+    {
+      "rank": "page",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Pages = society",
+      "means": "society",
+      "pdfPage": 309
+    },
+    {
+      "rank": "ten",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Tens = event, happening",
+      "means": "event, happening",
+      "pdfPage": 309
+    },
+    {
+      "rank": "ten",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Tens = disappointment",
+      "means": "disappointment",
+      "pdfPage": 309
+    },
+    {
+      "rank": "ten",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Tens = expectation justified",
+      "means": "expectation justified",
+      "pdfPage": 309
+    },
+    {
+      "rank": "nine",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Nines = usury",
+      "means": "usury",
+      "pdfPage": 309
+    },
+    {
+      "rank": "nine",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Nines = imprudence",
+      "means": "imprudence",
+      "pdfPage": 309
+    },
+    {
+      "rank": "nine",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Nines = a small profit",
+      "means": "a small profit",
+      "pdfPage": 309
+    },
+    {
+      "rank": "eight",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Eights = error",
+      "means": "error",
+      "pdfPage": 309
+    },
+    {
+      "rank": "eight",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Eights = a spectacle",
+      "means": "a spectacle",
+      "pdfPage": 309
+    },
+    {
+      "rank": "eight",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Eights = misfortune",
+      "means": "misfortune",
+      "pdfPage": 309
+    },
+    {
+      "rank": "seven",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Sevens = quarrellers",
+      "means": "quarrellers",
+      "pdfPage": 309
+    },
+    {
+      "rank": "seven",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Sevens = joy",
+      "means": "joy",
+      "pdfPage": 309
+    },
+    {
+      "rank": "seven",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Sevens = women of no repute",
+      "means": "women of no repute",
+      "pdfPage": 309
+    },
+    {
+      "rank": "six",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Sixes = care",
+      "means": "care",
+      "pdfPage": 310
+    },
+    {
+      "rank": "six",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Sixes = satisfaction",
+      "means": "satisfaction",
+      "pdfPage": 310
+    },
+    {
+      "rank": "six",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Sixes = downfall",
+      "means": "downfall",
+      "pdfPage": 310
+    },
+    {
+      "rank": "five",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Fives = order",
+      "means": "order",
+      "pdfPage": 310
+    },
+    {
+      "rank": "five",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Fives = hesitation",
+      "means": "hesitation",
+      "pdfPage": 310
+    },
+    {
+      "rank": "five",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Fives = reverse",
+      "means": "reverse",
+      "pdfPage": 310
+    },
+    {
+      "rank": "four",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Fours = walks abroad",
+      "means": "walks abroad",
+      "pdfPage": 310
+    },
+    {
+      "rank": "four",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Fours = disquiet",
+      "means": "disquiet",
+      "pdfPage": 310
+    },
+    {
+      "rank": "four",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Fours = dispute",
+      "means": "dispute",
+      "pdfPage": 310
+    },
+    {
+      "rank": "three",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Threes = great success",
+      "means": "great success",
+      "pdfPage": 310
+    },
+    {
+      "rank": "three",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Threes = serenity",
+      "means": "serenity",
+      "pdfPage": 310
+    },
+    {
+      "rank": "three",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Threes = safety",
+      "means": "safety",
+      "pdfPage": 310
+    },
+    {
+      "rank": "two",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Twos = reconciliation",
+      "means": "reconciliation",
+      "pdfPage": 310
+    },
+    {
+      "rank": "two",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Twos = apprehension",
+      "means": "apprehension",
+      "pdfPage": 310
+    },
+    {
+      "rank": "two",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Twos = mistrust",
+      "means": "mistrust",
+      "pdfPage": 310
+    },
+    {
+      "rank": "ace",
+      "count": 4,
+      "position": "reversed",
+      "text": "4 Aces = dishonour",
+      "means": "dishonour",
+      "pdfPage": 310
+    },
+    {
+      "rank": "ace",
+      "count": 3,
+      "position": "reversed",
+      "text": "3 Aces = debauchery",
+      "means": "debauchery",
+      "pdfPage": 310
+    },
+    {
+      "rank": "ace",
+      "count": 2,
+      "position": "reversed",
+      "text": "2 Aces = enemies",
+      "means": "enemies",
+      "pdfPage": 310
+    }
+  ]
+}

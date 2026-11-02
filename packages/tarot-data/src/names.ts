@@ -40,6 +40,12 @@ export function cardName(card: Card, locale: string | undefined): string {
   return card.suit === null || card.rank === null ? card.name : `${table.suits[card.suit]}${table.ranks[card.rank]}`
 }
 
+/** A court or number rank's name in the locale, such as `King`, `Ten` or `Ace`. */
+export function rankName(rank: Rank, locale: string | undefined): string {
+  const table = namesFor(locale)
+  return table === undefined ? `${rank[0]!.toUpperCase()}${rank.slice(1)}` : table.ranks[rank]
+}
+
 /** A position's name in the locale; the book's own words where no translation exists. */
 export function positionName(methodId: string, position: MethodPosition, locale: string | undefined): string {
   return namesFor(locale)?.positions[methodId]?.[position.number - 1] ?? position.name
