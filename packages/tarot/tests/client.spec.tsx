@@ -24,7 +24,7 @@ const baseReading: ReadingView = {
 }
 
 function render(...readings: ReadingView[]): string {
-  const view: TarotView | undefined = readings.length === 0 ? undefined : { readings }
+  const view: TarotView | undefined = readings.length === 0 ? undefined : { maxQuestion: 500, readings }
   const props = { useProjection: () => view, run: async () => null, t } as unknown as Parameters<typeof TarotPage>[0]
   return renderToStaticMarkup(<TarotPage {...props} />)
 }
@@ -40,6 +40,9 @@ describe('client page', () => {
     vi.stubGlobal('document', { baseURI: 'https://example.test/' })
     const html = render()
     expect(html).toContain('Click the glowing card')
+    expect(html).toContain('0 of 10 cards turned')
+    expect(html).toContain('About this spread')
+    expect(html).toContain('each position answering one aspect of the question')
     expect(html).toContain('Turn over card 1')
     expect(html).toContain('Significator: Page of Wands')
     vi.unstubAllGlobals()
@@ -60,6 +63,8 @@ describe('client page', () => {
     const drawn = getMethod('celtic').positions.map((_, index) => ({ cardId: `major-${String(index).padStart(2, '0')}`, reversed: false }))
     const html = render({ ...baseReading, drawn })
     expect(html).toContain('All ten cards are turned')
+    expect(html).toContain('Reading complete')
+    expect(html).toContain('Cards in this reading')
     expect(html).toContain('New reading')
     vi.unstubAllGlobals()
   })
@@ -95,6 +100,7 @@ describe('thirty-five card continuation', () => {
     vi.stubGlobal('document', { baseURI: 'https://example.test/' })
     const html = render(done())
     expect(html).toContain('<option value="thirtyfive">')
+    expect(html).toContain('Continue with the 35 cards left')
     expect(render({ ...done(), drawn: [] })).toContain('<option value="thirtyfive" disabled="">')
     expect(render({ ...baseReading, drawn: [] })).toContain('finish a reading of the alternative method first')
     vi.unstubAllGlobals()
@@ -104,13 +110,24 @@ describe('thirty-five card continuation', () => {
     vi.stubGlobal('document', { baseURI: 'https://example.test/' })
     const drawn = Array.from({ length: 7 }, (_, i) => ({ cardId: `major-${String(i + 3).padStart(2, '0')}`, reversed: false }))
     const html = render({ ...baseReading, method: 'thirtyfive', facing: null, significator: querent, draws: 35, turns: [7, 6, 5, 4, 2, 11], drawn })
-    expect(html).toContain('repeat(11, minmax(0, 1fr))')
+    expect(html).toContain('repeat(11, minmax(44px, 1fr))')
     expect(html).toContain('style="grid-column:1;grid-row:1"')
     expect(html).toContain('Turn over line 2 (card 1)')
     expect(html).toContain('Line 6, card 11, face down')
     expect(html).toContain('Click the glowing line to turn it over: line 2')
+    expect(html).toContain('1 of 6 lines turned')
     expect(html).toContain('The Second Line stands for the person or subject of the divination.')
     expect(html).toContain('Querent: The Magician')
+    vi.unstubAllGlobals()
+  })
+
+  it('uses the host-configured question limit', () => {
+    vi.stubGlobal('document', { baseURI: 'https://example.test/' })
+    const view: TarotView = { maxQuestion: 24, readings: [] }
+    const props = { useProjection: () => view, run: async () => null, t } as unknown as Parameters<typeof TarotPage>[0]
+    const html = renderToStaticMarkup(<TarotPage {...props} />)
+    expect(html).toContain('maxLength="24"')
+    expect(html).toContain('<textarea')
     vi.unstubAllGlobals()
   })
 

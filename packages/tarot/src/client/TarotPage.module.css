@@ -29,6 +29,8 @@
 
 .field select,
 .field input,
+.field textarea,
+.cardPicker input,
 .options select {
   box-sizing: border-box;
   width: 100%;
@@ -41,6 +43,12 @@
   font: inherit;
 }
 
+.field textarea {
+  min-height: 52px;
+  padding-block: 5px;
+  resize: vertical;
+}
+
 .asked {
   margin: 0;
 }
@@ -50,9 +58,26 @@
   color: var(--dsw-alias-label-secondary);
 }
 
-.hint {
-  margin: 0;
+.progress {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 -2px;
+  padding: 8px 10px;
+  border: 0.5px solid var(--dsw-alias-border-l2);
+  border-radius: var(--dsw-radius-sm);
+  background: var(--dsw-alias-bg-base);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--dsw-alias-label-primary) 10%, transparent);
   font-weight: 500;
+}
+
+.progressCount {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
 
 .error {
@@ -89,11 +114,13 @@
 .layout {
   display: grid;
   gap: 8px 4px;
-  justify-items: center;
+  justify-items: stretch;
   align-items: start;
   padding: 14px 6px;
   background: var(--dsw-alias-bg-layer-1);
   border-radius: var(--dsw-radius-md);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
 }
 
 .layout .number {
@@ -137,6 +164,12 @@
 
 .card.next {
   cursor: pointer;
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--dsw-alias-link);
+  outline-offset: 4px;
+  border-radius: var(--dsw-radius-xs);
 }
 
 .inner {
@@ -217,15 +250,41 @@
 }
 
 .turned,
-.optionsBox {
+.optionsBox,
+.guide {
   border-top: 0.5px solid var(--dsw-alias-border-l2);
   padding-top: 8px;
 }
 
 .turned > summary,
-.optionsBox > summary {
+.optionsBox > summary,
+.guide > summary {
   cursor: pointer;
   font-weight: 600;
+}
+
+.guide p {
+  margin: 8px 0 0;
+}
+
+.guide ol {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide li {
+  display: grid;
+  gap: 1px;
+  padding: 6px 8px;
+  background: var(--dsw-alias-bg-layer-1);
+  border-radius: var(--dsw-radius-sm);
+}
+
+.guide li span {
+  color: var(--dsw-alias-label-secondary);
 }
 
 .past {
@@ -314,6 +373,62 @@
   flex-direction: column;
   gap: 4px;
   margin: 8px 0;
+}
+
+.cardPicker {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cardPreview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardPreview img {
+  width: 42px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: var(--dsw-radius-xs);
+}
+
+.cardPicker select {
+  min-height: 144px;
+  padding-block: 4px;
+}
+
+.completion {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background: var(--dsw-alias-bg-layer-1);
+  border-radius: var(--dsw-radius-md);
+}
+
+.completion h3,
+.completion p {
+  margin: 0;
+}
+
+.completion h3 {
+  font-size: 14px;
+}
+
+.recap {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-block: 2px 6px;
+}
+
+.recap img {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 62px;
+  object-fit: contain;
+  border-radius: var(--dsw-radius-xs);
 }
 
 .chip {

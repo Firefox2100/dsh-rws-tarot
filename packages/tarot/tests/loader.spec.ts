@@ -92,6 +92,7 @@ describe('rws-tarot booted through the real Loader from a cordis.yml', () => {
     })
     expect(result.isError).toBe(false)
     const view = ctx.sessionProjections.snapshot(agent.session).values.tarot as tarot.TarotView
+    expect(view.maxQuestion).toBe(20)
     expect(view.readings).toHaveLength(1)
     expect(view.readings[0]).toMatchObject({ method: 'plain', draws: 2, language: 'zh' })
 

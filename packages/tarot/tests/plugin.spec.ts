@@ -52,6 +52,15 @@ describe('plugin exports', () => {
   })
 })
 
+describe('model-facing tool contract', () => {
+  it('states the resolved plain-draw limit', async () => {
+    const test = await harness()
+    const schema = test.ctx.tools.schemas().find(item => item.name === 'tarot_lay_spread')
+    expect(schema?.description).toContain('from 1 to 12')
+    expect(schema?.description).not.toContain('${PLAIN_LIMIT}')
+  })
+})
+
 describe('/tarot', () => {
   it('begins a reading, turns the cards one at a time and shows only the cards turned', async () => {
     const test = await harness()

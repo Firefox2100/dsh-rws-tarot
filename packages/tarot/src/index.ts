@@ -62,6 +62,7 @@ const abandonRecord = zod.object({ readingId: zod.string() })
 const reading = readingBase.extend({ turns, drawn: zod.number().int().min(0), abandoned: zod.boolean() })
 const table = zod.object({ readings: zod.array(reading) })
 const view = zod.object({
+  maxQuestion: zod.number().int().min(0),
   readings: zod.array(readingBase.omit({ order: true }).extend({ turns, drawn: zod.array(placed), abandoned: zod.boolean() })),
 })
 
@@ -110,6 +111,7 @@ export function apply(ctx: Context, config: Config): void {
     wire: {
       viewSchema: view,
       view: (state): TarotView => ({
+        maxQuestion: config.maxQuestion,
         readings: state.readings.map(({ order, drawn, ...rest }) => ({ ...rest, drawn: order.slice(0, drawn) })),
       }),
     },
@@ -231,7 +233,7 @@ export function apply(ctx: Context, config: Config): void {
     name: 'tarot_lay_spread',
     description: [
       'Lay out a tarot spread for the person you are talking with, when they ask for a reading and none is open.',
-      'Layouts: "celtic" (the default, the Celtic Cross of ten cards, for a definite question); "alternative" (forty-two cards in six lines of seven, for when no definite question is asked and they want to hear generally about the course of their life); "plain" (a number of cards, from 1 to ${PLAIN_LIMIT}, each speaking for itself with no position, for a simple question or when they just want a few cards); and "thirtyfive", which carries a finished alternative reading further with the thirty-five cards left over, in six lines, when something remains doubtful or they want to go on.',
+      `Layouts: "celtic" (the default, the Celtic Cross of ten cards, for a definite question); "alternative" (forty-two cards in six lines of seven, for when no definite question is asked and they want to hear generally about the course of their life); "plain" (a number of cards, from 1 to ${PLAIN_LIMIT}, each speaking for itself with no position, for a simple question or when they just want a few cards); and "thirtyfive", which carries a finished alternative reading further with the thirty-five cards left over, in six lines, when something remains doubtful or they want to go on.`,
       'You do not choose or turn any card: the shuffle and the layout are done for you, and the person turns the cards on their own Tarot page, one at a time for the Celtic Cross and one line at a time for the two layouts of lines, one card at a time for a plain draw.',
       'Each card reaches you as it is turned, with its place and what it means; speak to it then. Never name a card that has not been turned.',
       'For the Celtic Cross, pick the Significator, the card that stands for the person or the matter, either from their description (sex, whether they are forty or over, colouring) or by naming a card. For the alternative layout give only their sex; for "plain" give the number of cards; for "thirtyfive" give nothing but, if they have one, their question.',

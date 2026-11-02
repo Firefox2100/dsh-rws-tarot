@@ -20,6 +20,8 @@ export interface ReadingView {
 }
 
 export interface TarotView {
+  /** The host-configured question limit, so the page enforces the same boundary. */
+  maxQuestion: number
   readings: ReadingView[]
 }
 
