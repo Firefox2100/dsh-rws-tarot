@@ -16,7 +16,18 @@ const withoutComments = (text) => {
   }
   return result + text.slice(from)
 }
-const flat = s => withoutComments(s).replace(/<[^>]+>/g, '').replace(/!\[[^\]]*\]\([^)]*\)/g, ' ').replace(/\*/g, '').replace(/-\s*\n\s*/g, '').replace(/\s+/g, ' ').trim()
+const withoutTags = (text) => {
+  let result = ''
+  let from = 0
+  for (let open = text.indexOf('<', from); open >= 0; open = text.indexOf('<', from)) {
+    result += text.slice(from, open)
+    const close = text.indexOf('>', open + 1)
+    if (close < 0) return result + text.slice(open)
+    from = close + 1
+  }
+  return result + text.slice(from)
+}
+const flat = s => withoutTags(withoutComments(s)).replace(/!\[[^\]]*\]\([^)]*\)/g, ' ').replace(/\*/g, '').replace(/-\s*\n\s*/g, '').replace(/\s+/g, ' ').trim()
 const corpus = flat(readdirSync(textDir).filter(f => f.endsWith('.md')).map(f => readFileSync(join(textDir, f), 'utf8')).join('\n'))
 const data = JSON.parse(readFileSync(join(root, 'packages/tarot-data/data/methods.json'), 'utf8'))
 
