@@ -1,5 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": { "lib": ["ES2024", "DOM"], "jsx": "react-jsx", "resolveJsonModule": true, "types": ["node"] },
-  "include": ["src/client", "src/types.ts", "tests/client.spec.tsx", "tests/client-plugin.spec.tsx"]
+  "include": ["src/client", "src/types.ts", "tests/client.spec.tsx", "tests/client-plugin.spec.tsx", "tests/client-interactions.spec.tsx"]
 }
