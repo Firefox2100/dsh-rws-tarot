@@ -126,37 +126,45 @@ function LinesBoard({ rows, rightToLeft, querent, drawn, next, busy, onTurn, nam
           <span className={css.still}><Face placed={querent} label={t('querent.chosen', { name: nameOf(querent.cardId) })} /></span>
         </div>
       )}
-      {rows.flatMap((count, row) => Array.from({ length: count }, (_, k) => {
-        const index = starts[row]! + k
+      {rows.map((count, row) => {
         const line = row + 1
-        const n = k + 1
-        const placed = drawn[index]
         const isNext = row === nextLine
-        const where = { line, n }
-        const label = placed === undefined
-          ? t(isNext ? 'line.turn' : 'line.back', where)
-          : `${t('line.label', where)}: ${nameOf(placed.cardId)}, ${t(placed.reversed ? 'reversed' : 'upright')}`
         return (
-          <div key={index} className={css.slot} style={{ gridColumn: rightToLeft ? width + 1 - n : n, gridRow: line }}>
-            <button
-              type="button"
-              className={cx(css.card, placed !== undefined && css.flipped, isNext && css.next)}
-              style={{ '--i': k } as CSSProperties}
-              disabled={!isNext || busy}
-              aria-label={label}
-              title={t('line.label', where)}
-              onClick={onTurn}
-            >
-              <span className={css.inner}>
-                <span className={css.back}><span className={css.number}>{n}</span></span>
-                <span className={css.front}>
-                  {placed !== undefined && <Face placed={placed} label={label} />}
-                </span>
-              </span>
-            </button>
-          </div>
+          <button
+            key={line}
+            type="button"
+            className={cx(css.line, isNext && css.lineNext)}
+            style={{ gridColumn: `1 / span ${width}`, gridRow: line }}
+            disabled={!isNext || busy}
+            aria-label={t(isNext ? 'line.turn' : 'line.back', { line, n: rightToLeft ? count : 1 })}
+            onClick={onTurn}
+          >
+            <span className={css.lineCards} style={{ gridTemplateColumns: `repeat(${width}, minmax(44px, 1fr))` }}>
+              {Array.from({ length: count }, (_, k) => {
+                const index = starts[row]! + k
+                const n = k + 1
+                const placed = drawn[index]
+                const where = { line, n }
+                const label = placed === undefined
+                  ? t('line.back', where)
+                  : `${t('line.label', where)}: ${nameOf(placed.cardId)}, ${t(placed.reversed ? 'reversed' : 'upright')}`
+                return (
+                  <span key={index} className={css.slot} style={{ gridColumn: rightToLeft ? width + 1 - n : n }} title={t('line.label', where)}>
+                    <span className={cx(css.card, placed !== undefined && css.flipped)} style={{ '--i': k } as CSSProperties}>
+                      <span className={css.inner}>
+                        <span className={css.back}><span className={css.number}>{n}</span></span>
+                        <span className={css.front}>
+                          {placed !== undefined && <Face placed={placed} label={label} />}
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                )
+              })}
+            </span>
+          </button>
         )
-      }))}
+      })}
     </div>
   )
 }
@@ -247,6 +255,19 @@ function Turned({ reading, where, nameOf, t }: TurnedProps) {
           )
         })}
       </ol>
+    </details>
+  )
+}
+
+function EarlierReading({ reading, methodLabel, where, nameOf, t }: { reading: ReadingView; methodLabel: string; where: (index: number) => { name: string; meaning: string | null }; nameOf: NameOf; t: T }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <details className={css.past} onToggle={(event) => { setOpen(event.currentTarget.open) }}>
+      <summary>
+        <span>{methodLabel}</span>
+        <span className={css.muted}>{reading.question === '' ? '—' : reading.question} · {t('history.cards', { n: reading.drawn.length, m: reading.draws })}{reading.abandoned ? ` · ${t('history.ended')}` : ''}</span>
+      </summary>
+      {open && <Turned reading={reading} where={where} nameOf={nameOf} t={t} />}
     </details>
   )
 }
@@ -404,8 +425,8 @@ function Completion({ reading, canContinue, repeatCard, methodLabel, nameOf, onC
       <p className={css.muted}>{t('complete.help')}</p>
       {repeatCard !== null && <p className={css.muted}>{t('complete.repeatHelp')}</p>}
       <div className={css.actions}>
-        {canContinue && <Button variant="outline" size="sm" onClick={onContinue}>{t('complete.continue')}</Button>}
-        {repeatCard !== null && <Button variant="outline" size="sm" disabled={busy} onClick={onRepeat}>{t('complete.repeat', { name: nameOf(repeatCard) })}</Button>}
+        {canContinue && <Button variant="primary" size="sm" onClick={onContinue}>{t('complete.continue')}</Button>}
+        {repeatCard !== null && <Button variant="primary" size="sm" disabled={busy} onClick={onRepeat}>{t('complete.repeat', { name: nameOf(repeatCard) })}</Button>}
         <Button variant="outline" size="sm" onClick={onNew}>{t('newReading')}</Button>
       </div>
     </section>
@@ -424,6 +445,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const [fresh, setFresh] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [confirmEnd, setConfirmEnd] = useState(false)
 
   const language = t('language')
   const maxQuestion = view?.maxQuestion ?? DEFAULT_MAX_QUESTION
@@ -512,7 +534,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
     try {
       const failure = await run('/tarot abandon')
       if (failure !== null) setError(failure)
-      else { setQuestion(''); setChosenId(methodId) }
+      else { setQuestion(''); setChosenId(methodId); setConfirmEnd(false) }
     } finally { setBusy(false) }
   }
   const repeat = async (): Promise<void> => {
@@ -580,11 +602,11 @@ export function TarotPage({ useProjection, run, t }: Props) {
         <span>{instruction}</span>
       </div>
 
-      {free
+      {(reading === undefined || !finished) && (free
         ? <PlainBoard count={count} columns={plain ? Math.min(count, 6) : 3} slotName={methodId === 'three' ? i => threePlaces[i]!.name : methodId === 'nine' ? nineCell : n => t('plain.card', { n: n + 1 })} captioned={!plain} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
         : lines
         ? <LinesBoard rows={rows} rightToLeft={(methodId === 'alternative' ? alternative : continuation).direction === 'right-to-left'} querent={methodId === 'alternative' ? significator : null} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
-        : <Board positions={positions} facing={facing} significator={significator} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />}
+        : <Board positions={positions} facing={facing} significator={significator} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />)}
 
       {significator !== null && (
         <div className={css.chip} title={t(lines ? 'querent.help' : 'significator.help')}>
@@ -595,7 +617,15 @@ export function TarotPage({ useProjection, run, t }: Props) {
       {next !== null && reading !== undefined && <p className={css.muted}>{whereIn(reading)(next).meaning}</p>}
       {error !== null && <p className={css.error} role="alert">{t('failed', { message: error })}</p>}
       {reading !== undefined && !finished && (
-        <div className={css.actions}><Button variant="outline" size="sm" disabled={busy} onClick={() => { void end() }}>{t('end')}</Button></div>
+        confirmEnd
+          ? <div className={css.endConfirm}>
+              <p>{t('end.confirm', { n: reading.drawn.length, m: reading.draws })}</p>
+              <div className={css.actions}>
+                <Button variant="outline" size="sm" disabled={busy} onClick={() => { setConfirmEnd(false) }}>{t('end.cancel')}</Button>
+                <Button variant="outline" size="sm" className={css.dangerAction} disabled={busy} onClick={() => { void end() }}>{t('end.confirmAction')}</Button>
+              </div>
+            </div>
+          : <div className={css.actions}><Button variant="outline" size="sm" disabled={busy} onClick={() => { setConfirmEnd(true) }}>{t('end')}</Button></div>
       )}
       {finished && reading !== undefined && (
         <Completion
@@ -618,13 +648,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
         <details className={css.turned}>
           <summary>{t('history', { n: earlier.length })}</summary>
           {earlier.map(r => (
-            <details key={r.id} className={css.past}>
-              <summary>
-                <span>{methodLabel(r.method)}</span>
-                <span className={css.muted}>{r.question === '' ? '—' : r.question} · {t('history.cards', { n: r.drawn.length, m: r.draws })}{r.abandoned ? ` · ${t('history.ended')}` : ''}</span>
-              </summary>
-              <Turned reading={r} where={whereIn(r)} nameOf={nameOf} t={t} />
-            </details>
+            <EarlierReading key={r.id} reading={r} methodLabel={methodLabel(r.method)} where={whereIn(r)} nameOf={nameOf} t={t} />
           ))}
         </details>
       )}

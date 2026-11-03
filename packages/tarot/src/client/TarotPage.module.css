@@ -87,6 +87,23 @@
   padding: 6px 8px;
 }
 
+.endConfirm {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: var(--dsw-alias-bg-layer-1);
+  border-radius: var(--dsw-radius-sm);
+}
+
+.endConfirm p {
+  margin: 0;
+}
+
+.dangerAction {
+  color: var(--dsw-alias-state-error-primary);
+  border-color: color-mix(in srgb, var(--dsw-alias-state-error-primary) 45%, var(--dsw-alias-border-l2));
+}
+
 .actions {
   display: flex;
   gap: 8px;
@@ -125,6 +142,42 @@
 
 .layout .number {
   font-size: 11px;
+}
+
+.line {
+  position: relative;
+  display: block;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
+.line:disabled {
+  opacity: 1;
+}
+
+.lineCards {
+  display: grid;
+  gap: 4px;
+  justify-items: stretch;
+}
+
+.lineNext {
+  cursor: pointer;
+}
+
+.lineNext::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--dsw-radius-sm);
+  box-shadow: 0 0 14px 3px var(--dsw-alias-link);
+  opacity: 0.25;
+  animation: breathe 2.4s ease-in-out infinite;
+  pointer-events: none;
 }
 
 /* Layouts with named places keep room under each card for its name. */
@@ -246,7 +299,7 @@
 }
 
 /* The card the reader is meant to turn next breathes. */
-.next::after {
+.card.next::after {
   content: '';
   position: absolute;
   inset: -3px;
@@ -264,7 +317,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .inner { transition: none; }
-  .next::after { animation: none; opacity: 0.8; }
+  .card.next::after,
+  .lineNext::after { animation: none; opacity: 0.8; }
 }
 
 .turned,
