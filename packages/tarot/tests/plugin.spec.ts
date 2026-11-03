@@ -12,6 +12,7 @@ interface Harness {
   readonly ctx: Context
   readonly agent: Agent
   readonly followups: string[]
+  readonly injected: string[]
   readonly plugin: Awaited<ReturnType<Context['plugin']>>
 }
 
@@ -27,14 +28,15 @@ async function harness(config: Partial<tarot.Config> = {}): Promise<Harness> {
   const plugin = await ctx.plugin(tarot, tarot.Config(config as tarot.Config))
   const session = ctx.sessions.create(SessionId(`tarot-${Math.random()}`))
   const followups: string[] = []
+  const injected: string[] = []
   const agent = {
     id: session.id, options: {}, session, status: 'idle', ctx: new Context(),
     followup: (message: { content: { type: string; text?: string }[] }) => { followups.push(message.content.map(c => c.text ?? '').join('')) },
-    send: () => {}, steer: () => {}, inject: () => {}, cancel: () => {}, runMaintenance: (task: (s: AbortSignal) => unknown) => task(new AbortController().signal),
+    send: () => {}, steer: () => {}, inject: (message: { content: { type: string; text?: string }[] }) => { injected.push(message.content.map(c => c.text ?? '').join('')) }, cancel: () => {}, runMaintenance: (task: (s: AbortSignal) => unknown) => task(new AbortController().signal),
     whenIdle: () => Promise.resolve(),
   } as unknown as Agent
   await ctx.agents.register(agent)
-  return { ctx, agent, followups, plugin }
+  return { ctx, agent, followups, injected, plugin }
 }
 
 async function run(test: Harness, line: string) {
@@ -60,6 +62,11 @@ describe('model-facing tool contract', () => {
     expect(schema?.description).not.toContain('${PLAIN_LIMIT}')
   })
 })
+
+function tableOrder(test: Harness): string[] {
+  const state = test.ctx.sessionProjections.stateOf(test.agent.session, 'tarot') as { readings: { order: { cardId: string }[] }[] }
+  return state.readings.at(-1)!.order.map(p => p.cardId)
+}
 
 describe('/tarot', () => {
   it('begins a reading, turns the cards one at a time and shows only the cards turned', async () => {
@@ -143,7 +150,11 @@ describe('/tarot', () => {
     await run(test, '/tarot start plain 3 upright en first')
     await run(test, '/tarot draw')
     expect(await run(test, '/tarot start plain 1 upright en again')).toMatchObject({ kind: 'error', text: 'a reading is already in progress' })
+    expect(test.injected).toEqual([])
     expect(await run(test, '/tarot abandon')).toMatchObject({ kind: 'success', text: 'reading ended after 1 of 3 cards' })
+    expect(test.injected).toHaveLength(1)
+    expect(test.injected[0]).toContain('ended the reading after 1 of 3 cards')
+    expect(test.followups).toHaveLength(1)
     expect(await run(test, '/tarot draw')).toMatchObject({ kind: 'error' })
     expect(await run(test, '/tarot abandon')).toMatchObject({ kind: 'error' })
     expect(await run(test, '/tarot start plain 1 upright en second')).toMatchObject({ kind: 'success' })
@@ -225,6 +236,53 @@ describe('/tarot', () => {
     expect(JSON.stringify(laid)).toContain('six lines of seven')
     expect(view(test).readings[0]).toMatchObject({ method: 'alternative', significator: { cardId: 'major-01' }, draws: 42 })
     expect(test.followups).toEqual([])
+  })
+
+  it('lays three cards and nine, one at a time, each with its place', async () => {
+    const test = await harness()
+    expect(await run(test, '/tarot start three upright en My week')).toMatchObject({ kind: 'success', text: 'Three cards: reading begun' })
+    expect(view(test).readings[0]).toMatchObject({ method: 'three', significator: null, facing: null, draws: 3, turns: [1, 1, 1], drawn: [] })
+    await run(test, '/tarot draw')
+    expect(test.followups[0]).toContain('Its position is "Past"')
+    await run(test, '/tarot draw')
+    await run(test, '/tarot draw')
+    expect(test.followups[2]).toContain('Its position is "Future"')
+    expect(test.followups[2]).toContain('This is the last card.')
+    expect(await run(test, '/tarot start nine reversed zh')).toMatchObject({ kind: 'success', text: 'Nine cards: reading begun' })
+    expect(view(test).readings[1]).toMatchObject({ method: 'nine', draws: 9, language: 'zh' })
+    await run(test, '/tarot draw')
+    expect(test.followups[3]).toContain('“思想，过去”')
+    for (const line of ['/tarot start three sideways en', '/tarot start nine upright']) expect(await run(test, line)).toMatchObject({ kind: 'error' })
+  })
+
+  it('lets the model lay three cards or nine without any choice but the layout', async () => {
+    const test = await harness()
+    const call = (args: Record<string, unknown>) => test.ctx.tools.execute({ callId: 'c3' as never, name: 'tarot_lay_spread', arguments: args, agent: test.agent, signal: new AbortController().signal } as never)
+    expect(JSON.stringify(await call({ method: 'three', question: 'My week' }))).toContain('for the past, the present and the future')
+    expect(view(test).readings[0]).toMatchObject({ method: 'three', draws: 3, question: 'My week' })
+    expect(JSON.stringify(await call({ method: 'nine' }))).toContain('a reading is already in progress')
+    await run(test, '/tarot abandon')
+    expect(JSON.stringify(await call({ method: 'nine' }))).toContain('in three rows of three')
+    expect(view(test).readings[1]).toMatchObject({ method: 'nine', draws: 9 })
+  })
+
+  it('repeats a finished Celtic Cross with its tenth card as the Significator, as the book says', async () => {
+    const test = await harness()
+    expect(await run(test, '/tarot repeat upright')).toMatchObject({ kind: 'error', text: 'there is no finished Celtic Cross to repeat' })
+    await run(test, '/tarot start celtic cups-13 right upright en Will the move go well?')
+    for (let i = 0; i < 9; i++) await run(test, '/tarot draw')
+    expect(await run(test, '/tarot repeat upright')).toMatchObject({ kind: 'error', text: 'a reading is already in progress' })
+    await run(test, '/tarot draw')
+    const first = tableOrder(test)
+    expect(await run(test, '/tarot repeat sideways')).toMatchObject({ kind: 'error' })
+    expect(await run(test, '/tarot repeat upright')).toMatchObject({ kind: 'success' })
+    const [before, after] = view(test).readings
+    expect(after).toMatchObject({ method: 'celtic', question: 'Will the move go well?', language: 'en', facing: 'right', draws: 10, drawn: [] })
+    expect(after!.significator!.cardId).toBe(first[9])
+    expect(before!.drawn[9]!.cardId).toBe(first[9])
+    expect(await run(test, '/tarot repeat upright')).toMatchObject({ kind: 'error', text: 'a reading is already in progress' })
+    await run(test, '/tarot draw')
+    expect(test.followups.at(-1)).toContain('lies face up')
   })
 
   it('explains itself when run without arguments', async () => {

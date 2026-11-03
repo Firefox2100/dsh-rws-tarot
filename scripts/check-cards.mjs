@@ -39,6 +39,20 @@ for (const c of data.cards) {
 for (const n of data.sectionNotes) if (!corpus.includes(squash(n.text))) fail(`note ${n.id} is not in the book text`)
 if (counts.major !== 22 || counts.minor !== 56) fail(`expected 22 major and 56 minor cards, got ${counts.major} and ${counts.minor}`)
 
+// The book numbers the Trumps in its summary list of divinatory meanings (Part III) and says how it treats the Fool and the World.
+const partThreeFile = (await readdir(textDir)).find(f => f.startsWith('03-part-3'))
+const partThree = await readFile(resolve(textDir, partThreeFile), 'utf8')
+const summary = [...partThree.matchAll(/^(Zero|\d+)\\?\. (.+?)\.—/gm)].map(m => [m[1] === 'Zero' ? 0 : Number(m[1]), m[2]])
+if (summary.length !== 22) fail(`expected 22 numbered Trumps in the summary list of Part III, found ${summary.length}`)
+for (const [number, title] of summary) {
+  const card = data.cards.find(c => c.arcana === 'major' && c.number === number)
+  if (!card) fail(`the book's Trump ${number} (${title}) has no card`)
+  else if (![card.name, card.printedTitle, ...card.aliases].some(n => n === title)) fail(`the book calls Trump ${number} "${title}", the data "${card.printedTitle}"`)
+}
+for (const sentence of ['I have taken care not to number the World or Universe otherwise than as 21', 'Wherever it ought to be put, the Zero is an unnumbered card']) {
+  if (!corpus.includes(squash(sentence))) fail(`the book no longer says: ${sentence}`)
+}
+
 console.log(`${data.cards.length} cards checked`)
 if (gaps.length) console.log(`Gaps in the book (left empty, not invented):\n  ${gaps.join('\n  ')}`)
 if (errors.length) { console.error(`\n${errors.length} problem(s):\n  ${errors.join('\n  ')}`); process.exit(1) }

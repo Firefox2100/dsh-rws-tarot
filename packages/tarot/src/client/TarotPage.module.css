@@ -127,6 +127,24 @@
   font-size: 11px;
 }
 
+/* Layouts with named places keep room under each card for its name. */
+.layout.captioned {
+  row-gap: 26px;
+  padding-bottom: 28px;
+}
+
+.caption {
+  position: absolute;
+  top: 100%;
+  left: -6px;
+  right: -6px;
+  margin-top: 3px;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--dsw-alias-label-secondary);
+}
+
 /* A line turns over card by card, from its first. */
 .layout .inner {
   transition-delay: calc(var(--i, 0) * 70ms);

@@ -59,6 +59,34 @@ describe('client page interactions', () => {
     await waitFor(() => { expect(end).toHaveBeenLastCalledWith('/tarot abandon') })
   })
 
+  it('keeps the chosen method after a reading is ended or finished', async () => {
+    let view: TarotView = { maxQuestion: 500, readings: [openReading] }
+    const run = vi.fn(async (line: string) => {
+      if (line === '/tarot abandon') view = { maxQuestion: 500, readings: [{ ...openReading, abandoned: true }] }
+      return null
+    })
+    const props = (): Parameters<typeof TarotPage>[0] => ({ useProjection: () => view, run, t } as unknown as Parameters<typeof TarotPage>[0])
+    const { rerender } = render(<TarotPage {...props()} />)
+    fireEvent.click(screen.getByRole('button', { name: 'End this reading' }))
+    await waitFor(() => { expect(run).toHaveBeenCalledWith('/tarot abandon') })
+    rerender(<TarotPage {...props()} />)
+    await waitFor(() => { expect((screen.getByRole('combobox', { name: 'Spread' }) as HTMLSelectElement).value).toBe('plain') })
+
+    cleanup()
+    const done: ReadingView = { ...openReading, method: 'nine', draws: 9, turns: Array.from({ length: 9 }, () => 1), drawn: Array.from({ length: 9 }, () => placed) }
+    page(async () => null, { maxQuestion: 500, readings: [done] })
+    fireEvent.click(screen.getByRole('button', { name: 'New reading' }))
+    expect((screen.getByRole('combobox', { name: 'Spread' }) as HTMLSelectElement).value).toBe('nine')
+  })
+
+  it('repeats a finished Celtic Cross with its tenth card', async () => {
+    const run = vi.fn(async () => null)
+    const celtic: ReadingView = { ...openReading, method: 'celtic', facing: 'left', significator: placed, draws: 10, turns: Array.from({ length: 10 }, () => 1), drawn: Array.from({ length: 10 }, () => placed) }
+    page(run, { maxQuestion: 500, readings: [celtic] })
+    fireEvent.click(screen.getByRole('button', { name: 'Repeat with The Fool as the Significator' }))
+    await waitFor(() => { expect(run).toHaveBeenCalledWith('/tarot repeat upright') })
+  })
+
   it('applies the Celtic and alternative options and exposes empty card searches', () => {
     page(async () => null)
     fireEvent.click(screen.getByRole('radio', { name: 'Choose a card' }))

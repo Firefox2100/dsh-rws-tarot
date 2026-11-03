@@ -5,8 +5,8 @@ import css from './TarotCall.module.css'
 type Props = ToolCallViewProps & PropsLocale<'tarot'>
 type T = Props['t']
 
-const METHODS: Readonly<Record<string, 'method.celtic' | 'method.alt42' | 'method.alt35' | 'method.plain'>> = {
-  celtic: 'method.celtic', alternative: 'method.alt42', thirtyfive: 'method.alt35', plain: 'method.plain',
+const METHODS: Readonly<Record<string, 'method.celtic' | 'method.alt42' | 'method.alt35' | 'method.plain' | 'method.three' | 'method.nine'>> = {
+  celtic: 'method.celtic', alternative: 'method.alt42', thirtyfive: 'method.alt35', plain: 'method.plain', three: 'method.three', nine: 'method.nine',
 }
 
 const firstLine = (text: string): string => text.split('\n', 1)[0]!

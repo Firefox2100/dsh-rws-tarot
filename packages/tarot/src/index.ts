@@ -10,8 +10,8 @@ import { appendPluginRecord, pluginRecordOf } from '@deepseek-ai/dsh-session'
 import type { Agent } from '@deepseek-ai/dsh-agent'
 import { getCard, getMethod, hasCard, cardName } from '@dsh-rws-tarot/data'
 import {
-  applyAbandon, applyDraw, applyStart, continueAlternative, cryptoRng, describeTurn, emptyTable, PLAIN_LIMIT, significatorFor, startAlternative, startCeltic, startPlain, turnAt,
-  type AbandonEvent, type DrawEvent, type Placed, type Reading, type StartEvent, type Table,
+  applyAbandon, applyDraw, applyStart, continueAlternative, cryptoRng, describeEnd, describeTurn, emptyTable, isLayout, LAYOUT_SIZES, PLAIN_LIMIT, significatorFor, startAlternative, startCeltic, startLayout, startPlain, turnAt,
+  type AbandonEvent, type DrawEvent, type LayoutId, type Placed, type Reading, type StartEvent, type Table,
 } from '@dsh-rws-tarot/engine'
 import z from '@deepseek-ai/schemastery'
 import { z as zod } from 'zod'
@@ -66,7 +66,9 @@ const view = zod.object({
   readings: zod.array(readingBase.omit({ order: true }).extend({ turns, drawn: zod.array(placed), abandoned: zod.boolean() })),
 })
 
-const USAGE = '/tarot start celtic <significator-id> <left|right> <upright|reversed> <language> [question] | start alternative <male|female> <upright|reversed> <language> [question] | start plain <count> <upright|reversed> <language> [question] | continue [question] | draw | abandon'
+const LAYOUT_NAMES = { three: 'Three cards', nine: 'Nine cards' } as const
+
+const USAGE = '/tarot start celtic <significator-id> <left|right> <upright|reversed> <language> [question] | start alternative <male|female> <upright|reversed> <language> [question] | start plain <count> <upright|reversed> <language> [question] | start three|nine <upright|reversed> <language> [question] | continue [question] | repeat <upright|reversed> [question] | draw | abandon'
 
 export interface Config {
   /** The language of the facts for a reading the model begins, when it names none. */
@@ -131,15 +133,19 @@ export function apply(ctx: Context, config: Config): void {
     | (Common & { methodId: 'celtic', significatorId: string, facing: 'left' | 'right' })
     | (Common & { methodId: 'alternative', sex: 'male' | 'female' })
     | (Common & { methodId: 'plain', count: number })
+    | (Common & { methodId: LayoutId })
     | (Pick<Common, 'question'> & { methodId: 'thirtyfive' })
+    | (Pick<Common, 'question' | 'reversed'> & { methodId: 'repeat' })
 
   /** Lays a reading in the session: the one place a reading begins, for the person's command and the model's tool alike. @returns why it cannot, or null. */
   const begin = async (agent: Agent, input: Begin): Promise<string | null> => {
     if (input.methodId === 'celtic' && !hasCard(input.significatorId)) return `usage: ${USAGE}`
+    let method: string = input.methodId
     if (input.methodId === 'plain' && !(Number.isInteger(input.count) && input.count >= 1 && input.count <= PLAIN_LIMIT)) return `draw 1 to ${PLAIN_LIMIT} cards`
     if (input.question.length > config.maxQuestion) return `the question is longer than ${config.maxQuestion} characters`
     if (openReading(agent) !== undefined) return 'a reading is already in progress'
     let language: string
+    let question = input.question
     let prepared: { significator: Placed | null, facing: 'left' | 'right' | null, draws: number, turns: number[], order: Placed[] }
     if (input.methodId === 'thirtyfive') {
       // It carries on the reading just finished, in its language, with the cards that reading left over.
@@ -147,16 +153,25 @@ export function apply(ctx: Context, config: Config): void {
       if (previous?.method !== getMethod('thirtyfive').continues || previous.abandoned || previous.drawn < previous.draws) return 'there is no finished reading of the alternative method to carry further'
       language = previous.language
       prepared = { ...continueAlternative(previous, cryptoRng()), facing: null }
+    } else if (input.methodId === 'repeat') {
+      // The book's follow-up to a doubtful or Court Card tenth card: the same operation again, that card now the Significator.
+      const previous = tableOf(agent).readings.at(-1)
+      if (previous?.method !== 'celtic' || previous.abandoned || previous.drawn < previous.draws) return 'there is no finished Celtic Cross to repeat'
+      language = previous.language
+      method = 'celtic'
+      question = input.question === '' ? previous.question : input.question
+      prepared = { ...startCeltic({ significatorId: previous.order[9]!.cardId, facing: previous.facing ?? 'left', rng: cryptoRng(), reversals: input.reversed ? config.reversedShare : 0 }) }
     } else {
       language = input.language
       const reversals = input.reversed ? config.reversedShare : 0
       if (input.methodId === 'celtic') prepared = startCeltic({ significatorId: input.significatorId, facing: input.facing, rng: cryptoRng(), reversals })
       else if (input.methodId === 'alternative') prepared = { ...startAlternative({ sex: input.sex, rng: cryptoRng(), reversals }), facing: null }
-      else prepared = { ...startPlain({ count: input.count, rng: cryptoRng(), reversals }), facing: null }
+      else if (input.methodId === 'plain') prepared = { ...startPlain({ count: input.count, rng: cryptoRng(), reversals }), facing: null }
+      else prepared = { ...startLayout({ id: input.methodId, rng: cryptoRng(), reversals }), facing: null }
     }
     appendPluginRecord(agent.session, 'plugin:dsh-rws-tarot/start', {
-      id: randomUUID(), method: input.methodId, significator: prepared.significator, facing: prepared.facing,
-      question: input.question, language, draws: prepared.draws, turns: prepared.turns, order: prepared.order,
+      id: randomUUID(), method, significator: prepared.significator, facing: prepared.facing,
+      question, language, draws: prepared.draws, turns: prepared.turns, order: prepared.order,
     })
     await ctx.sessions.flush(agent.session)
     return null
@@ -191,10 +206,22 @@ export function apply(ctx: Context, config: Config): void {
           if (language !== undefined && /^\d+$/.test(count ?? '') && (orientation === 'upright' || orientation === 'reversed')) {
             input = { methodId, count: Number(count), reversed: orientation === 'reversed', language, question: asked.join(' ') }
           }
+        } else if (methodId !== undefined && isLayout(methodId)) {
+          const [orientation, language, ...asked] = rest
+          if (language !== undefined && (orientation === 'upright' || orientation === 'reversed')) {
+            input = { methodId, reversed: orientation === 'reversed', language, question: asked.join(' ') }
+          }
         }
         if (input === undefined) return { kind: 'error', text: `usage: ${USAGE}` }
         const failure = await begin(agent, input)
-        return failure === null ? { kind: 'success', text: `${input.methodId === 'plain' ? 'Plain draw' : getMethod(input.methodId).name}: reading begun` } : { kind: 'error', text: failure }
+        return failure === null ? { kind: 'success', text: `${input.methodId === 'plain' ? 'Plain draw' : isLayout(input.methodId) ? LAYOUT_NAMES[input.methodId] : getMethod(input.methodId).name}: reading begun` } : { kind: 'error', text: failure }
+      }
+
+      if (verb === 'repeat') {
+        const [orientation, ...asked] = args
+        if (orientation !== 'upright' && orientation !== 'reversed') return { kind: 'error', text: `usage: ${USAGE}` }
+        const failure = await begin(agent, { methodId: 'repeat', reversed: orientation === 'reversed', question: asked.join(' ') })
+        return failure === null ? { kind: 'success', text: `${getMethod('celtic').name}: reading begun with the tenth card as the Significator` } : { kind: 'error', text: failure }
       }
 
       if (verb === 'continue') {
@@ -207,6 +234,7 @@ export function apply(ctx: Context, config: Config): void {
         if (current === undefined) return { kind: 'error', text: 'no reading in progress' }
         appendPluginRecord(session, 'plugin:dsh-rws-tarot/abandon', { readingId: current.id })
         if (openReading(agent) !== undefined) throw new Error('rws-tarot: the reading was not ended')
+        agent.inject(createUserMessage({ content: [{ type: 'text', text: describeEnd(current) }], source: { kind: 'rws-tarot' } }))
         await ctx.sessions.flush(session)
         return { kind: 'success', text: `reading ended after ${current.drawn} of ${current.draws} cards` }
       }
@@ -233,13 +261,13 @@ export function apply(ctx: Context, config: Config): void {
     name: 'tarot_lay_spread',
     description: [
       'Lay out a tarot spread for the person you are talking with, when they ask for a reading and none is open.',
-      `Layouts: "celtic" (the default, the Celtic Cross of ten cards, for a definite question); "alternative" (forty-two cards in six lines of seven, for when no definite question is asked and they want to hear generally about the course of their life); "plain" (a number of cards, from 1 to ${PLAIN_LIMIT}, each speaking for itself with no position, for a simple question or when they just want a few cards); and "thirtyfive", which carries a finished alternative reading further with the thirty-five cards left over, in six lines, when something remains doubtful or they want to go on.`,
-      'You do not choose or turn any card: the shuffle and the layout are done for you, and the person turns the cards on their own Tarot page, one at a time for the Celtic Cross and one line at a time for the two layouts of lines, one card at a time for a plain draw.',
+      `Layouts: "celtic" (the default, the Celtic Cross of ten cards, for a definite question); "alternative" (forty-two cards in six lines of seven, for when no definite question is asked and they want to hear generally about the course of their life); "plain" (a number of cards, from 1 to ${PLAIN_LIMIT}, each speaking for itself with no position, for a simple question or when they just want a few cards); and "three" (three cards for the past, the present and the future, a quick look at a matter) and "nine" (nine cards in three rows of three, the columns past, present and near future and the rows thought, reality and undercurrent, for a matter that wants more than three cards), neither from the book but from common modern practice; and "thirtyfive", which carries a finished alternative reading further with the thirty-five cards left over, in six lines, when something remains doubtful or they want to go on.`,
+      'You do not choose or turn any card: the shuffle and the layout are done for you, and the person turns the cards on their own Tarot page, one at a time for the Celtic Cross and one line at a time for the two layouts of lines, one card at a time for a plain draw, three cards and nine cards.',
       'Each card reaches you as it is turned, with its place and what it means; speak to it then. Never name a card that has not been turned.',
-      'For the Celtic Cross, pick the Significator, the card that stands for the person or the matter, either from their description (sex, whether they are forty or over, colouring) or by naming a card. For the alternative layout give only their sex; for "plain" give the number of cards; for "thirtyfive" give nothing but, if they have one, their question.',
+      'For the Celtic Cross, pick the Significator, the card that stands for the person or the matter, either from their description (sex, whether they are forty or over, colouring) or by naming a card. For the alternative layout give only their sex; for "plain" give the number of cards; for "three" and "nine" nothing more; for "thirtyfive" give nothing but, if they have one, their question.',
     ].join(' '),
     parameters: {
-      method: { type: 'string', enum: ['celtic', 'alternative', 'plain', 'thirtyfive'], description: 'Which layout; celtic when omitted.' },
+      method: { type: 'string', enum: ['celtic', 'alternative', 'plain', 'three', 'nine', 'thirtyfive'], description: 'Which layout; celtic when omitted.' },
       question: { type: 'string', description: 'What the person asks, in their own words, or the period they want to hear about; omit when they asked nothing.' },
       sex: { type: 'string', enum: ['man', 'woman'], description: 'For a Significator that stands for a person, and for the alternative layout.' },
       age: { type: 'string', enum: ['under-forty', 'forty-or-over'], description: 'For a Significator that stands for a person.' },
@@ -263,6 +291,8 @@ export function apply(ctx: Context, config: Config): void {
         type: 'text',
         text: value.method === 'thirtyfive'
           ? `The ${value.cards} cards left over are laid in six lines of unequal length, to carry the reading further. Now wait: the person turns the lines one at a time, and each arrives as a message when turned. Tell the person to turn the first line on the Tarot page, and say nothing about any card until it has been turned.`
+          : value.method === 'three' || value.method === 'nine'
+          ? `${value.cards} cards are laid${value.method === 'three' ? ' for the past, the present and the future' : ' in three rows of three'}. Now wait: the person turns them one at a time, and each arrives as a message when turned, with its place. Tell the person to turn the first card on the Tarot page, and say nothing about any card until it has been turned.`
           : value.method === 'plain'
           ? `${value.cards} cards are drawn. Now wait: the person turns them one at a time, and each arrives as a message when turned. Tell the person to turn the first card on the Tarot page, and say nothing about any card until it has been turned.`
           : value.method === 'alternative'
@@ -281,6 +311,11 @@ export function apply(ctx: Context, config: Config): void {
         const method = getMethod('thirtyfive')
         const querent = tableOf(agent).readings.at(-1)!.significator!
         return { method: 'thirtyfive', significator: cardName(getCard(querent.cardId), language), cards: method.packets.sizes.reduce((a, b) => a + b, 0) }
+      }
+      if (args.method === 'three' || args.method === 'nine') {
+        const failure = await begin(agent, { methodId: args.method, reversed: args.reversed ?? false, language, question })
+        if (failure !== null) throw new Error(failure)
+        return { method: args.method, significator: '', cards: LAYOUT_SIZES[args.method] }
       }
       if (args.method === 'plain') {
         const count = args.count ?? 3

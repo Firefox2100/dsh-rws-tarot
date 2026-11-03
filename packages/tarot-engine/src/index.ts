@@ -6,5 +6,6 @@ export { rankFor, significatorFor, startCeltic, type CelticOptions, type CelticS
 export { continueAlternative, type ContinuationStart } from './continuation.ts'
 export { startAlternative, type AlternativeOptions, type AlternativeStart } from './alternative.ts'
 export { newRecurrences } from './recurrence.ts'
-export { describeCard, describeTurn } from './facts.ts'
+export { describeCard, describeEnd, describeTurn } from './facts.ts'
 export { PLAIN_LIMIT, PLAIN_METHOD, startPlain, type PlainOptions, type PlainStart } from './plain.ts'
+export { isLayout, LAYOUT_SIZES, startLayout, type LayoutId, type LayoutOptions } from './layouts.ts'

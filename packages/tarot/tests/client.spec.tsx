@@ -33,11 +33,13 @@ describe('client page', () => {
   it('builds the command for every way a reading can begin', () => {
     const options = {
       mode: 'person', person: { sex: 'female', fortyOrOver: false }, suit: 'wands', picked: 'major-00', facing: 'right',
-      reversals: { celtic: false, alternative: true, plain: true }, count: 3,
+      reversals: { celtic: false, alternative: true, plain: true, three: false, nine: true }, count: 3,
     } as const
     expect(startCommand('celtic', '  What   now? ', 10, 'en', 'cups-13', options)).toBe('/tarot start celtic cups-13 right upright en What now?')
     expect(startCommand('alternative', '', 42, 'zh', 'major-02', options)).toBe('/tarot start alternative female reversed zh')
     expect(startCommand('plain', 'One card', 1, 'en', null, options)).toBe('/tarot start plain 1 reversed en One card')
+    expect(startCommand('three', 'My week', 3, 'en', null, options)).toBe('/tarot start three upright en My week')
+    expect(startCommand('nine', '', 9, 'zh', null, options)).toBe('/tarot start nine reversed zh')
     expect(startCommand('thirtyfive', 'Further?', 35, 'en', 'major-02', options)).toBe('/tarot continue Further?')
   })
 
@@ -151,6 +153,33 @@ describe('thirty-five card continuation', () => {
     expect(html).toContain('Card 4, face down')
     expect(html).toContain('Click the glowing card to turn it over: card 2')
     expect(html).not.toContain('Significator:')
+    vi.unstubAllGlobals()
+  })
+
+  it('renders three cards under their places and nine in a grid of three', () => {
+    vi.stubGlobal('document', { baseURI: 'https://example.test/' })
+    const three = render({ ...baseReading, method: 'three', facing: null, significator: null, draws: 3, turns: [1, 1, 1], drawn: [placed] })
+    expect(three).toContain('repeat(3, minmax(0, 1fr))')
+    expect(three).toContain('>Past<')
+    expect(three).toContain('>Present<')
+    expect(three).toContain('>Future<')
+    const nine = render({ ...baseReading, method: 'nine', facing: null, significator: null, draws: 9, turns: Array.from({ length: 9 }, () => 1), drawn: [placed, placed] })
+    expect(nine).toContain('repeat(3, minmax(0, 1fr))')
+    expect(nine).toContain('>Thought, Past<')
+    expect(nine).toContain('>Reality, Near future<')
+    expect(nine).toContain('>Undercurrent, Present<')
+    vi.unstubAllGlobals()
+  })
+
+  it('offers the book\'s repeat with the tenth card after a finished Celtic Cross only', () => {
+    vi.stubGlobal('document', { baseURI: 'https://example.test/' })
+    const ten = Array.from({ length: 10 }, () => placed)
+    const finished: ReadingView = { ...baseReading, drawn: [...ten.slice(0, 9), { cardId: 'wands-13', reversed: false }] }
+    const html = render(finished)
+    expect(html).toContain('Repeat with Queen of Wands as the Significator')
+    expect(html).toContain('doubtful, or is a Court Card')
+    expect(render({ ...finished, drawn: ten.slice(0, 9) })).not.toContain('Repeat with')
+    expect(render({ ...finished, method: 'plain', significator: null, facing: null, draws: 3, turns: [1, 1, 1], drawn: [placed, placed, placed] })).not.toContain('Repeat with')
     vi.unstubAllGlobals()
   })
 

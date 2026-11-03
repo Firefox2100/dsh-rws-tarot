@@ -50,6 +50,7 @@ describe('methods', () => {
     expect(alternative.layout.map(l => [l.lines, l.fromEach])).toEqual([[1, 1], [2, 2], [3, 3]])
     expect([alternative.querent.male, alternative.querent.female]).toEqual(['major-01', 'major-02'])
     expect(alternative.direction).toBe('right-to-left')
+    expect(alternative.diagram).toMatchObject({ dealt: { packets: 6, firstAt: 'right' }, regrouped: { packets: 7, firstAt: 'right' }, laid: { lines: 6, perLine: 7, numberedFrom: 'right' } })
   })
   it('holds the thirty-five card continuation with six lines of unequal length', async () => {
     const { getMethod, positionName, positionMeaning } = await import('../src/index.ts')
@@ -58,6 +59,7 @@ describe('methods', () => {
     expect(method.packets.sizes.reduce((a, b) => a + b, 0)).toBe(35)
     expect(method.continues).toBe('alternative')
     expect(method.direction).toBe('left-to-right')
+    expect(method.diagram.packets).toMatchObject({ sizes: [7, 6, 5, 4, 2, 11], firstAt: 'right' })
     expect(method.positions[4]!.meaning).toContain('consolation')
     expect(positionName('thirtyfive', method.positions[0]!, 'zh')).toBe('第一行')
     expect(positionMeaning('thirtyfive', method.positions[4]!, 'zh')).toContain('慰藉')

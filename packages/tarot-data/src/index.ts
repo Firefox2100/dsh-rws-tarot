@@ -49,12 +49,15 @@ function validateMethods(list: readonly Method[]): readonly Method[] {
       method.positions.forEach((p, i) => {
         if (p.number !== i + 1) throw new Error(`tarot data: method ${method.id} position ${i + 1} is numbered ${p.number}`)
       })
+      if (method.kind === 'continuation' && method.diagram.packets.sizes.join() !== method.packets.sizes.join()) throw new Error(`tarot data: method ${method.id} has a diagram that disagrees with its packets`)
       if (method.kind === 'continuation' && method.packets.sizes.length !== method.positions.length) throw new Error(`tarot data: method ${method.id} has ${method.packets.sizes.length} packets for ${method.positions.length} lines`)
     } else {
       const dealt = method.dealing.packets * method.dealing.perPacket
       const laid = method.layout.reduce((n, l) => n + l.lines * method.dealing.perPacket, 0)
       if (laid !== dealt) throw new Error(`tarot data: method ${method.id} lays ${laid} cards of ${dealt} dealt`)
       if (method.layout.reduce((n, l) => n + l.fromEach, 0) !== method.dealing.packets) throw new Error(`tarot data: method ${method.id} does not use every card of a packet`)
+      const { dealt: drawn, regrouped, laid: lines } = method.diagram
+      if (drawn.packets !== method.dealing.packets || regrouped.packets !== method.dealing.perPacket || lines.perLine !== regrouped.packets || lines.lines !== method.layout.reduce((n, l) => n + l.lines, 0)) throw new Error(`tarot data: method ${method.id} has a diagram that disagrees with its dealing`)
     }
   }
   return list

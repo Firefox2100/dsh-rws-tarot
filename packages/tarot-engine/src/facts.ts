@@ -1,5 +1,6 @@
 import { cardName, finalCardText, followUpTexts, getCard, getMethod, guidanceTexts, pickLocale, positionMeaning, positionName, rankName, type Card, type Recurrence } from '@dsh-rws-tarot/data'
 import type { Placed } from './pack.ts'
+import { isLayout, type LayoutId } from './layouts.ts'
 import { PLAIN_METHOD } from './plain.ts'
 import { newRecurrences } from './recurrence.ts'
 import { turnAt, type Reading } from './table.ts'
@@ -39,6 +40,21 @@ interface Words {
   readonly plainTurned: (n: number, total: number, name: string) => string
   readonly plainLast: string
   readonly recurrence: (count: number, rank: string, reversed: boolean, means: string) => string
+  readonly layoutStyle: Readonly<Record<LayoutId, readonly string[]>>
+  readonly layoutLast: Readonly<Record<LayoutId, string>>
+  /** The three-card layout's places in order: past, present, future. */
+  readonly threeSlots: readonly string[]
+  readonly nineRows: readonly Slot[]
+  readonly nineColumns: readonly Slot[]
+  readonly nineCell: (row: string, column: string) => string
+  readonly nineCentre: string
+  readonly nineCorner: string
+  readonly ended: (drawn: number, total: number) => string
+}
+
+interface Slot {
+  readonly name: string
+  readonly meaning: string
 }
 
 const en: Words = {
@@ -95,6 +111,41 @@ const en: Words = {
   plainTurned: (n, total, name) => `Card ${n} of ${total} has just been turned over: ${name}.`,
   recurrence: (count, rank, reversed, means) => `${count} ${rank}s${reversed ? ' reversed' : ''} now lie on the table together: ${means}.`,
   plainLast: 'This is the last card. After speaking to it, bring the cards together into one closing reading that answers them.',
+  layoutStyle: {
+    three: [
+      'You are reading tarot for the person asking. Three cards are laid for the past, the present and the future, and each card they turn over is handed to you as it appears.',
+      '',
+      'How to answer: speak to them directly, as "you", the way a thoughtful reader would across a table. Say what the card means in the place where it fell and, once other cards are down, how it works with them: what is passing away, what surrounds them now, what is coming.',
+      'Use plain flowing prose: no headings, lists, bold or card numbers, and put the position in your own words instead of quoting its label. In the meanings below, "him", "he" and "the Querent" mean the person asking or the matter asked about; never use the word "Querent" yourself.',
+      'Do not name or cite any source, do not write "according to" or "the text says", do not list or quote the meanings below, and do not bring in meanings that are not given here. A short paragraph for each card is enough.',
+    ],
+    nine: [
+      'You are reading tarot for the person asking. Nine cards are laid in three rows of three, and each card they turn over is handed to you as it appears, the top row first and each row from left to right. The columns are stretches of time (the past, the present and the near future, no further than about a month ahead) and the rows are levels (what they think and aim for, the reality of their days, and the undercurrent beneath). Every card has a place of its own, given with it.',
+      '',
+      'How to answer: speak to them directly, as "you", the way a thoughtful reader would across a table. Say what the card means in the place where it fell and, once other cards are down, how it works with them and with its neighbours.',
+      'Use plain flowing prose: no headings, lists, bold or card numbers, and put the position in your own words instead of quoting its label. In the meanings below, "him", "he" and "the Querent" mean the person asking or the matter asked about; never use the word "Querent" yourself.',
+      'Do not name or cite any source, do not write "according to" or "the text says", do not list or quote the meanings below, and do not bring in meanings that are not given here. A short paragraph for each card is enough.',
+    ],
+  },
+  layoutLast: {
+    three: 'This is the last card. After speaking to it, bring the past, the present and the future together into one closing reading that answers them.',
+    nine: 'This is the last card. After speaking to it, read the nine together: each column as a stretch of time, each row as a level, the corners as the frame of the matter, the two cards at the ends of each row against one another, and the two diagonals as the direction things are moving. Then bring it all into one closing reading that answers them.',
+  },
+  threeSlots: ['Past', 'Present', 'Future'],
+  nineRows: [
+    { name: 'Thought', meaning: 'what is above them: their ideas, dreams and aspirations, what they aim for' },
+    { name: 'Reality', meaning: 'their present state and day-to-day life, whether hard or good' },
+    { name: 'Undercurrent', meaning: 'the foundations the matter rests on: where they come from and what they carry with them' },
+  ],
+  nineColumns: [
+    { name: 'Past', meaning: 'what lies behind' },
+    { name: 'Present', meaning: 'what is now' },
+    { name: 'Near future', meaning: 'what awaits them soon' },
+  ],
+  nineCell: (row, column) => `${row}, ${column}`,
+  nineCentre: 'It lies at the centre: the underlying theme of the whole reading, its core and essence.',
+  nineCorner: 'It lies at a corner, and with the other corners frames the context of the reading.',
+  ended: (drawn, total) => `The person has ended the reading after ${drawn} of ${total} cards. Set it aside: say nothing more of its cards, and do not carry them into whatever they ask next unless they ask you to.`,
 }
 
 const zh: Words = {
@@ -151,6 +202,41 @@ const zh: Words = {
   plainTurned: (n, total, name) => `第 ${n} 张（共 ${total} 张）刚刚翻开：${name}。`,
   recurrence: (count, rank, reversed, means) => `桌上现在有 ${count} 张${reversed ? '逆位' : ''}${rank}：${means}。`,
   plainLast: '这是最后一张牌。说完这张之后，把所有的牌合起来，给出一个回答他们问题的总结。',
+  layoutStyle: {
+    three: [
+      '你正在为提问的人占卜塔罗。三张牌分别代表过去、现在和未来，他们每翻开一张牌，这张牌就会交到你手里。',
+      '',
+      '回答方式：像一位体贴的占卜师坐在桌子对面那样，直接对他们说话，用“你”。说清这张牌落在这个位置上意味着什么；等桌上有了别的牌，再说它们如何彼此呼应：什么正在过去，什么围绕着你，什么即将到来。',
+      '用平实流畅的行文：不要标题、列表、粗体和牌的序号；位置请用你自己的话说出来，不要照搬位置名称。下面资料里的“他”和“Querent”都指提问的人或所问之事，你自己说话时不要使用“Querent”这个词。',
+      '不要提及或引用任何出处，不要写“根据”“书中说”，不要罗列或照抄下面的牌义，也不要加入下面没有给出的含义。每张牌写一小段就够了。资料中的牌义是英文原文，请用你自己的话、用中文回答。',
+    ],
+    nine: [
+      '你正在为提问的人占卜塔罗。九张牌排成三行三列，他们每翻开一张牌，这张牌就会交到你手里，先翻第一行，每行从左到右。每一列是一段时间（过去、现在和近期，最多看到大约一个月之内），每一行是一个层面（他们的想法与追求、日常的现实、以及底下的暗流）。每张牌都有自己的位置，会随牌一同给出。',
+      '',
+      '回答方式：像一位体贴的占卜师坐在桌子对面那样，直接对他们说话，用“你”。说清这张牌落在这个位置上意味着什么；等桌上有了别的牌，再说它如何与它们、与身旁的牌彼此呼应。',
+      '用平实流畅的行文：不要标题、列表、粗体和牌的序号；位置请用你自己的话说出来，不要照搬位置名称。下面资料里的“他”和“Querent”都指提问的人或所问之事，你自己说话时不要使用“Querent”这个词。',
+      '不要提及或引用任何出处，不要写“根据”“书中说”，不要罗列或照抄下面的牌义，也不要加入下面没有给出的含义。每张牌写一小段就够了。资料中的牌义是英文原文，请用你自己的话、用中文回答。',
+    ],
+  },
+  layoutLast: {
+    three: '这是最后一张牌。说完这张之后，把过去、现在和未来合起来，给出一个回答他们问题的总结。',
+    nine: '这是最后一张牌。说完这张之后，把九张牌放在一起读：每一列是一段时间，每一行是一个层面，四个角给事情定下背景，每一行两端的牌互相对照，两条对角线显示事情发展的方向。然后把这一切合成一个回答他们问题的总结。',
+  },
+  threeSlots: ['过去', '现在', '未来'],
+  nineRows: [
+    { name: '思想', meaning: '他们头顶之上的东西：想法、梦想与追求，他们所向往的' },
+    { name: '现实', meaning: '他们目前的状况与日常生活，无论艰难还是顺遂' },
+    { name: '暗流', meaning: '事情所依托的根基：他们从何而来，身上带着什么' },
+  ],
+  nineColumns: [
+    { name: '过去', meaning: '身后的事' },
+    { name: '现在', meaning: '眼下的事' },
+    { name: '近期', meaning: '不久后等待他们的事' },
+  ],
+  nineCell: (row, column) => `${row}，${column}`,
+  nineCentre: '它位于正中：整个占卜的底层主题，核心与本质。',
+  nineCorner: '它位于一个角上，与其他三个角一起为这次占卜勾勒背景。',
+  ended: (drawn, total) => `对方在第 ${drawn} 张（共 ${total} 张）之后结束了这次占卜。请把它搁在一边：不要再谈它的牌，除非对方要求，也不要把这些牌带进他们接下来问的事。`,
 }
 
 const WORDS: Readonly<Record<string, Words>> = { en, zh }
@@ -288,8 +374,52 @@ function describePlain(reading: Reading, index: number): string {
   return out.join('\n')
 }
 
+/** The place card `index` of a layout lies in: its name, and what that place stands for. */
+function layoutSlot(id: LayoutId, index: number, locale: string, words: Words): Slot {
+  if (id === 'three') {
+    // The book's own account of what is behind, around and before the person, here the one card each place has.
+    const celtic = getMethod('celtic')
+    const position = celtic.positions[[4, 0, 5][index]!]!
+    return { name: words.threeSlots[index]!, meaning: positionMeaning(celtic.id, position, locale) }
+  }
+  const row = words.nineRows[Math.floor(index / 3)]!
+  const column = words.nineColumns[index % 3]!
+  const role = index === 4 ? words.nineCentre : index % 2 === 0 ? words.nineCorner : null
+  return { name: words.nineCell(row.name, column.name), meaning: [`${row.meaning}; ${column.meaning}.`, role].filter(Boolean).join(' ') }
+}
+
+/** The same for a modern layout of three or nine cards: the card just turned, its place and the places already filled. */
+function describeLayout(reading: Reading, id: LayoutId, index: number): string {
+  const locale = reading.language
+  const words = pickLocale(WORDS, locale, 'en')
+  const placed = reading.order[index]
+  if (placed === undefined || index >= reading.drawn) throw new RangeError(`describeTurn: card ${index + 1} has not been turned up`)
+  const named = (p: Placed): string => {
+    const name = cardName(getCard(p.cardId), locale)
+    return p.reversed ? words.reversedName(name) : name
+  }
+  const slot = (i: number): Slot => layoutSlot(id, i, locale, words)
+  const out: string[] = []
+  if (index === 0) {
+    out.push(...words.layoutStyle[id], '')
+    if (reading.question.trim() !== '') out.push(words.asks(reading.question.trim()), '')
+  }
+  out.push(words.turned(index + 1, reading.draws, named(placed)))
+  out.push(words.position(slot(index).name, slot(index).meaning), ...meaningLines(getCard(placed.cardId), placed, '  ', words))
+  if (index > 0) out.push('', words.table, ...reading.order.slice(0, index).map((p, i) => `  ${i + 1}. ${slot(i).name}: ${named(p)}`))
+  out.push(...recurrenceLines(reading, index, 1, words))
+  if (index + 1 === reading.draws) out.push('', words.layoutLast[id])
+  return out.join('\n')
+}
+
+/** What to tell the model when the person ends a reading before its last card. */
+export function describeEnd(reading: Reading): string {
+  return pickLocale(WORDS, reading.language, 'en').ended(reading.drawn, reading.draws)
+}
+
 /** What to put in front of the model when the person turns up the next cards of a reading, from card `from`. */
 export function describeTurn(reading: Reading, from: number): string {
   if (reading.method === PLAIN_METHOD) return describePlain(reading, from)
+  if (isLayout(reading.method)) return describeLayout(reading, reading.method, from)
   return getMethod(reading.method).kind === 'celtic' ? describeCard(reading, from) : describeLine(reading, from)
 }

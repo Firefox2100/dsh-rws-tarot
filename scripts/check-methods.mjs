@@ -48,5 +48,28 @@ function walk(node, path) {
 }
 walk(data, 'methods')
 walk(JSON.parse(readFileSync(join(root, 'packages/tarot-data/data/recurrence.json'), 'utf8')), 'recurrence')
-console.log(`${quotes} quotes checked, ${missing} missing`)
+
+// The book's four diagrams (HTML tables in the transcription) must say what `diagram` in methods.json says.
+const part3 = readFileSync(join(textDir, readdirSync(textDir).find(f => f.startsWith('03-part-3'))), 'utf8')
+const cellText = c => withoutTags(withoutComments(c)).replace(/\s+/g, ' ').trim()
+const tables = [...part3.matchAll(/<table[\s\S]*?<\/table>/g)].map(t => [...t[0].matchAll(/<tr[\s\S]*?<\/tr>/g)].map(tr => [...tr[0].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map(td => cellText(td[1])).filter(Boolean)))
+const alternative = data.methods.find(m => m.id === 'alternative')
+const continuation = data.methods.find(m => m.id === 'thirtyfive')
+let diagrams = 0
+const expect = (what, ok) => { diagrams++; if (!ok) { missing++; console.error(`diagram disagrees with the book: ${what}`) } }
+const [dealt, regrouped, laid, packets] = tables
+const ordinals = row => row.map(c => Number.parseInt(c, 10))
+expect('four diagrams in Part III', tables.length === 4)
+if (tables.length === 4) {
+  const d = alternative.diagram
+  const dealtRow = dealt.find(r => r.length > 0 && r.every(c => /packet$/.test(c)))
+  expect('packets dealt', dealtRow.length === d.dealt.packets && ordinals(dealtRow).join() === [6, 5, 4, 3, 2, 1].join() && d.dealt.firstAt === 'right')
+  const regroupedRow = regrouped.find(r => r.length > 0 && r.every(c => /packet$/.test(c)))
+  expect('packets regrouped', regroupedRow.length === d.regrouped.packets && ordinals(regroupedRow).join() === [7, 6, 5, 4, 3, 2, 1].join() && d.regrouped.firstAt === 'right')
+  const lines = laid.filter(r => r.length === 7 && r.every(c => /^\d$/.test(c)))
+  expect('lines laid', lines.length === d.laid.lines && lines.every(r => r.join() === '7,6,5,4,3,2,1') && d.laid.numberedFrom === 'right')
+  const sizeRow = packets.find(r => r.length > 0 && r.every(c => /cards$/.test(c)))
+  expect('packets of the thirty-five', sizeRow.map(c => Number.parseInt(c, 10)).reverse().join() === continuation.diagram.packets.sizes.join() && continuation.diagram.packets.firstAt === 'right')
+}
+console.log(`${quotes} quotes and ${diagrams} diagram facts checked, ${missing} missing`)
 process.exit(missing === 0 ? 0 : 1)

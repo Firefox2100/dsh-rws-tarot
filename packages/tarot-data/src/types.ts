@@ -78,6 +78,14 @@ export interface MethodPosition {
   readonly source: Source
 }
 
+type Side = 'left' | 'right'
+
+/** A diagram of packets laid in a row, the first on the side `firstAt`. */
+interface Diagram {
+  readonly firstAt: Side
+  readonly source: Source
+}
+
 interface MethodBase {
   readonly id: string
   readonly name: string
@@ -122,6 +130,12 @@ export interface LinesMethod extends MethodBase {
     readonly dealt: Passage
   }
   readonly reading: Passage
+  /** The book's diagrams of the layout: packets as they lie, from the side the first one is on, and the numbering of a line. */
+  readonly diagram: {
+    readonly dealt: Diagram & { readonly packets: number }
+    readonly regrouped: Diagram & { readonly packets: number }
+    readonly laid: { readonly lines: number, readonly perLine: number, readonly numberedFrom: Side, readonly source: Source }
+  }
   /** The side each line is read from. */
   readonly direction: 'right-to-left' | 'left-to-right'
   readonly guidance: readonly (Passage & { readonly id: string })[]
@@ -136,6 +150,8 @@ export interface ContinuationMethod extends MethodBase {
   /** The packets the remaining cards are dealt into, and how many cards each holds; each becomes one line. */
   readonly packets: Passage & { readonly sizes: readonly number[] }
   readonly layout: Passage
+  /** The book's diagram of the packets as they lie, the first on the side given. */
+  readonly diagram: { readonly packets: Diagram & { readonly sizes: readonly number[] } }
   /** The lines, in order, with what the book says each stands for. */
   readonly positions: readonly MethodPosition[]
   readonly reading: Passage

@@ -1,7 +1,7 @@
 {
   "name": "dsh-rws-tarot",
-  "version": "0.2.1",
-  "description": "Rider-Waite-Smith tarot for DeepSeek Harness: lay the book's three methods or a plain draw in the right dock, then turn the cards and have them read from Waite's Pictorial Key.",
+  "version": "0.3.0",
+  "description": "Rider-Waite-Smith tarot for DeepSeek Harness: lay the book's three methods, or a plain draw, three cards or nine in the right dock, then turn the cards and have them read from Waite's Pictorial Key.",
   "author": {
     "name": "Firefox2100",
     "url": "https://github.com/Firefox2100"

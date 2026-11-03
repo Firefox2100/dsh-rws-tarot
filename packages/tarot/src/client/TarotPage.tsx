@@ -3,7 +3,7 @@ import { Button } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
 import type {} from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
 import { cardName, cards, getCard, getMethod, positionMeaning, positionName, type MethodPosition, type Suit } from '@dsh-rws-tarot/data'
-import { PLAIN_LIMIT, significatorFor, type Person, type Placed } from '@dsh-rws-tarot/engine'
+import { LAYOUT_SIZES, PLAIN_LIMIT, significatorFor, type Person, type Placed } from '@dsh-rws-tarot/engine'
 import type { ReadingView } from '../types.ts'
 import { plateUrl } from './plates.ts'
 import type { TarotInjected } from './index.ts'
@@ -19,7 +19,7 @@ const SUITS: readonly Suit[] = ['wands', 'cups', 'swords', 'pentacles']
 const DEFAULT_MAX_QUESTION = 500
 
 /** A method that begins from the person's own choices; the continuation has none. */
-type Chosen = 'celtic' | 'alternative' | 'plain'
+type Chosen = 'celtic' | 'alternative' | 'plain' | 'three' | 'nine'
 type MethodId = Chosen | 'thirtyfive'
 
 const cx = (...names: (string | false | undefined)[]): string => names.filter(Boolean).join(' ')
@@ -163,6 +163,11 @@ function LinesBoard({ rows, rightToLeft, querent, drawn, next, busy, onTurn, nam
 
 interface PlainBoardProps {
   count: number
+  /** How many cards stand in a row. */
+  columns: number
+  /** The place card `index` lies in, shown under the card when the layout has named places. */
+  slotName: (index: number) => string
+  captioned: boolean
   drawn: readonly Placed[]
   next: number | null
   busy: boolean
@@ -171,17 +176,17 @@ interface PlainBoardProps {
   t: T
 }
 
-/** A plain draw as it lies: a row of cards, wrapping after six, turned one at a time from the first. */
-function PlainBoard({ count, drawn, next, busy, onTurn, nameOf, t }: PlainBoardProps) {
+/** A draw without the book's positions as it lies (a plain draw, three cards or nine): cards in rows, turned one at a time from the first. */
+function PlainBoard({ count, columns, slotName, captioned, drawn, next, busy, onTurn, nameOf, t }: PlainBoardProps) {
   return (
-    <div className={css.layout} style={{ gridTemplateColumns: `repeat(${Math.min(count, 6)}, minmax(0, 1fr))` }}>
+    <div className={cx(css.layout, captioned && css.captioned)} style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
       {Array.from({ length: count }, (_, index) => {
         const n = index + 1
         const placed = drawn[index]
         const isNext = index === next
         const label = placed === undefined
           ? t(isNext ? 'plain.turn' : 'plain.back', { n })
-          : `${t('plain.card', { n })}: ${nameOf(placed.cardId)}, ${t(placed.reversed ? 'reversed' : 'upright')}`
+          : `${slotName(index)}: ${nameOf(placed.cardId)}, ${t(placed.reversed ? 'reversed' : 'upright')}`
         return (
           <div key={index} className={css.slot}>
             <button
@@ -189,7 +194,7 @@ function PlainBoard({ count, drawn, next, busy, onTurn, nameOf, t }: PlainBoardP
               className={cx(css.card, placed !== undefined && css.flipped, isNext && css.next)}
               disabled={!isNext || busy}
               aria-label={label}
-              title={t('plain.card', { n })}
+              title={slotName(index)}
               onClick={onTurn}
             >
               <span className={css.inner}>
@@ -199,6 +204,7 @@ function PlainBoard({ count, drawn, next, busy, onTurn, nameOf, t }: PlainBoardP
                 </span>
               </span>
             </button>
+            {captioned && <span className={css.caption}>{slotName(index)}</span>}
           </div>
         )
       })}
@@ -245,6 +251,9 @@ function Turned({ reading, where, nameOf, t }: TurnedProps) {
   )
 }
 
+/** A place of a layout of modern practice and what the book says of the position it borrows. */
+interface Place { number: number; name: string; meaning: string }
+
 interface Options {
   mode: 'person' | 'card'
   person: Person
@@ -257,7 +266,7 @@ interface Options {
   count: number
 }
 
-const initialOptions: Options = { mode: 'person', person: { sex: 'female', fortyOrOver: false }, suit: 'wands', picked: 'major-00', facing: 'left', reversals: { celtic: false, alternative: true, plain: false }, count: 3 }
+const initialOptions: Options = { mode: 'person', person: { sex: 'female', fortyOrOver: false }, suit: 'wands', picked: 'major-00', facing: 'left', reversals: { celtic: false, alternative: true, plain: false, three: false, nine: false }, count: 3 }
 
 export function startCommand(methodId: MethodId, question: string, count: number, language: string, significatorId: string | null, options: Options): string {
   const asked = question.replace(/\s+/g, ' ').trim()
@@ -266,6 +275,8 @@ export function startCommand(methodId: MethodId, question: string, count: number
     ? `/tarot continue ${asked}`
     : methodId === 'plain'
       ? `/tarot start plain ${count} ${orientation} ${language} ${asked}`
+      : methodId === 'three' || methodId === 'nine'
+      ? `/tarot start ${methodId} ${orientation} ${language} ${asked}`
       : methodId === 'alternative'
         ? `/tarot start alternative ${options.person.sex} ${orientation} ${language} ${asked}`
         : `/tarot start celtic ${significatorId} ${options.facing} ${orientation} ${language} ${asked}`
@@ -275,7 +286,7 @@ export function startCommand(methodId: MethodId, question: string, count: number
 function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chosen; value: Options; onChange: (next: Options) => void; nameOf: NameOf; t: T }) {
   const [cardSearch, setCardSearch] = useState('')
   const method = getMethod('celtic')
-  const lines = methodId !== 'celtic'
+  const lines = methodId === 'alternative'
   const normalizedSearch = cardSearch.trim().toLocaleLowerCase()
   const matchingCards = cards.filter(card => normalizedSearch === '' || card.id.includes(normalizedSearch) || nameOf(card.id).toLocaleLowerCase().includes(normalizedSearch))
   const sex = (name: string) => (
@@ -295,7 +306,7 @@ function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chos
         <h4>{t('deck.title')}</h4>
         <select disabled value="full" aria-label={t('deck.title')}><option value="full">{t('deck.full')}</option></select>
       </section>
-      {methodId === 'plain' ? null : lines ? (
+      {methodId === 'plain' || methodId === 'three' || methodId === 'nine' ? null : lines ? (
         <section>
           <h4>{t('querent.title')}</h4>
           <p className={css.muted}>{t('querent.help')}</p>
@@ -363,12 +374,12 @@ function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chos
   )
 }
 
-function MethodGuide({ methodId, positions, linePositions, t }: { methodId: MethodId; positions: readonly MethodPosition[]; linePositions: readonly MethodPosition[]; t: T }) {
-  const items = methodId === 'celtic' ? positions : methodId === 'thirtyfive' ? linePositions : []
+function MethodGuide({ methodId, positions, linePositions, threePositions, t }: { methodId: MethodId; positions: readonly MethodPosition[]; linePositions: readonly MethodPosition[]; threePositions: readonly Place[]; t: T }) {
+  const items: readonly { number: number; name: string; meaning: string }[] = methodId === 'celtic' ? positions : methodId === 'thirtyfive' ? linePositions : methodId === 'three' ? threePositions : []
   return (
     <details className={css.guide}>
       <summary>{t('guide.title')}</summary>
-      <p>{t(methodId === 'celtic' ? 'guide.celtic' : methodId === 'alternative' ? 'guide.alternative' : methodId === 'thirtyfive' ? 'guide.thirtyfive' : 'guide.plain')}</p>
+      <p>{t(`guide.${methodId}`)}</p>
       {items.length > 0 && (
         <ol>
           {items.map(position => <li key={position.number}><strong>{position.name}</strong><span>{position.meaning}</span></li>)}
@@ -378,7 +389,7 @@ function MethodGuide({ methodId, positions, linePositions, t }: { methodId: Meth
   )
 }
 
-function Completion({ reading, canContinue, methodLabel, nameOf, onContinue, onNew, t }: { reading: ReadingView; canContinue: boolean; methodLabel: string; nameOf: NameOf; onContinue: () => void; onNew: () => void; t: T }) {
+function Completion({ reading, canContinue, repeatCard, methodLabel, nameOf, onContinue, onRepeat, onNew, busy, t }: { reading: ReadingView; canContinue: boolean; repeatCard: string | null; methodLabel: string; nameOf: NameOf; onContinue: () => void; onRepeat: () => void; onNew: () => void; busy: boolean; t: T }) {
   return (
     <section className={css.completion}>
       <div>
@@ -391,8 +402,10 @@ function Completion({ reading, canContinue, methodLabel, nameOf, onContinue, onN
         ))}
       </div>
       <p className={css.muted}>{t('complete.help')}</p>
+      {repeatCard !== null && <p className={css.muted}>{t('complete.repeatHelp')}</p>}
       <div className={css.actions}>
         {canContinue && <Button variant="outline" size="sm" onClick={onContinue}>{t('complete.continue')}</Button>}
+        {repeatCard !== null && <Button variant="outline" size="sm" disabled={busy} onClick={onRepeat}>{t('complete.repeat', { name: nameOf(repeatCard) })}</Button>}
         <Button variant="outline" size="sm" onClick={onNew}>{t('newReading')}</Button>
       </div>
     </section>
@@ -420,20 +433,32 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const continuation = getMethod('thirtyfive')
   const positions = celtic.positions.map(p => ({ ...p, name: positionName(celtic.id, p, language), meaning: positionMeaning(celtic.id, p, language) }))
   const linePositions = continuation.positions.map(p => ({ ...p, name: positionName(continuation.id, p, language), meaning: positionMeaning(continuation.id, p, language) }))
+  /** Past, present and future take the book's account of the card behind him, the one that covers him and the one before him. */
+  const threePlaces: Place[] = ([['three.past', 5], ['three.present', 1], ['three.future', 6]] as const).map(([key, number], i) => {
+    const position = celtic.positions.find(p => p.number === number)!
+    return { number: i + 1, name: t(key), meaning: positionMeaning(celtic.id, position, language) }
+  })
+  const nineCell = (index: number): string => t('nine.cell', {
+    row: t((['nine.thought', 'nine.reality', 'nine.undercurrent'] as const)[Math.floor(index / 3)]!),
+    column: t((['three.past', 'three.present', 'nine.near'] as const)[index % 3]!),
+  })
   const last = view?.readings.at(-1)
   const finished = last !== undefined && last.drawn.length >= last.draws
   const reading = last !== undefined && !last.abandoned && !(fresh && finished) ? last : undefined
   const canContinue = finished && last.method === continuation.continues
+  /** The book's follow-up to a Celtic Cross: its tenth card taken as the Significator of a fresh one. */
+  const repeatCard = finished && last.method === 'celtic' ? last.drawn[9]?.cardId ?? null : null
   const methodId: MethodId = reading === undefined
     ? chosenId === 'thirtyfive' && !canContinue ? 'celtic' : chosenId
-    : reading.method === 'alternative' || reading.method === 'thirtyfive' || reading.method === 'plain' ? reading.method : 'celtic'
+    : reading.method === 'alternative' || reading.method === 'thirtyfive' || reading.method === 'plain' || reading.method === 'three' || reading.method === 'nine' ? reading.method : 'celtic'
   const lines = methodId === 'alternative' || methodId === 'thirtyfive'
   const plain = methodId === 'plain'
+  const free = plain || methodId === 'three' || methodId === 'nine'
   const rows: readonly number[] = methodId === 'thirtyfive'
     ? reading?.turns ?? continuation.packets.sizes
     : Array.from({ length: alternative.dealing.packets }, () => alternative.dealing.perPacket)
-  const count = reading !== undefined ? reading.draws : options.count
-  const total = plain ? count : lines ? rows.reduce((a, b) => a + b, 0) : positions.length
+  const count = reading !== undefined ? reading.draws : plain ? options.count : methodId === 'three' || methodId === 'nine' ? LAYOUT_SIZES[methodId] : 0
+  const total = free ? count : lines ? rows.reduce((a, b) => a + b, 0) : positions.length
   const drawn = reading?.drawn ?? []
   const next = drawn.length < total ? drawn.length : null
   const facing = reading?.facing ?? options.facing
@@ -441,7 +466,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
     ? reading.significator
     : methodId === 'thirtyfive'
       ? last?.significator ?? null
-      : methodId === 'plain'
+      : free
         ? null
       : methodId === 'alternative'
         ? { cardId: options.person.sex === 'male' ? alternative.querent.male : alternative.querent.female, reversed: false }
@@ -456,6 +481,8 @@ export function TarotPage({ useProjection, run, t }: Props) {
   /** The place card `index` of a reading lies in, and what the book says of that place when it does. */
   const whereIn = (r: ReadingView) => (index: number): { name: string; meaning: string | null } => {
     if (r.method === 'plain') return { name: t('plain.card', { n: index + 1 }), meaning: null }
+    if (r.method === 'three') return { name: threePlaces[index]!.name, meaning: threePlaces[index]!.meaning }
+    if (r.method === 'nine') return { name: nineCell(index), meaning: null }
     if (r.method === 'celtic') return { name: positions[index]!.name, meaning: positions[index]!.meaning }
     let row = 0
     let start = 0
@@ -463,7 +490,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
     return { name: t('line.label', { line: row + 1, n: index - start + 1 }), meaning: r.method === 'thirtyfive' ? linePositions[row]!.meaning : null }
   }
   const earlier = (view?.readings ?? []).filter(r => r !== reading).reverse()
-  const methodLabel = (id: string): string => t(id === 'alternative' ? 'method.alt42' : id === 'thirtyfive' ? 'method.alt35' : id === 'plain' ? 'method.plain' : 'method.celtic')
+  const methodLabel = (id: string): string => t(id === 'alternative' ? 'method.alt42' : id === 'thirtyfive' ? 'method.alt35' : id === 'plain' ? 'method.plain' : id === 'three' ? 'method.three' : id === 'nine' ? 'method.nine' : 'method.celtic')
 
   const turn = async (): Promise<void> => {
     if (next === null) return
@@ -485,7 +512,16 @@ export function TarotPage({ useProjection, run, t }: Props) {
     try {
       const failure = await run('/tarot abandon')
       if (failure !== null) setError(failure)
-      else setQuestion('')
+      else { setQuestion(''); setChosenId(methodId) }
+    } finally { setBusy(false) }
+  }
+  const repeat = async (): Promise<void> => {
+    setBusy(true)
+    setError(null)
+    try {
+      const failure = await run(`/tarot repeat ${options.reversals.celtic ? 'reversed' : 'upright'}`)
+      if (failure !== null) setError(failure)
+      else { setFresh(false); setChosenId('celtic') }
     } finally { setBusy(false) }
   }
   const nextRow = next === null ? 0 : lineOf(next).row
@@ -495,10 +531,10 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const instruction = busy
     ? t('hint.busy')
     : next === null
-      ? t(lines || plain ? 'hint.doneLines' : 'hint.done')
+      ? t(lines || free ? 'hint.doneLines' : 'hint.done')
       : reading === undefined
-        ? t(plain ? 'hint.begin' : lines ? 'hint.beginLines' : 'hint.begin')
-        : plain ? t('hint.nextPlain', { n: next + 1 }) : lines ? t('hint.nextLine', { line: nextRow + 1 }) : t('hint.next', { position: positions[next]!.name })
+        ? t(free ? 'hint.begin' : lines ? 'hint.beginLines' : 'hint.begin')
+        : free ? t('hint.nextPlain', { n: next + 1 }) : lines ? t('hint.nextLine', { line: nextRow + 1 }) : t('hint.next', { position: positions[next]!.name })
   const onTurn = (): void => { void turn() }
 
   return (
@@ -506,13 +542,15 @@ export function TarotPage({ useProjection, run, t }: Props) {
       <div className={css.top}>
         <label className={css.field}>
           <span>{t('how.label')}</span>
-          <select value={methodId} onChange={(e) => { setChosenId(e.target.value === 'alternative' || e.target.value === 'thirtyfive' || e.target.value === 'plain' ? e.target.value : 'celtic'); setFresh(true) }} disabled={reading !== undefined && !finished}>
+          <select value={methodId} onChange={(e) => { setChosenId(['alternative', 'thirtyfive', 'plain', 'three', 'nine'].includes(e.target.value) ? e.target.value as MethodId : 'celtic'); setFresh(true) }} disabled={reading !== undefined && !finished}>
             <option value="celtic">{t('method.celtic')} — {t('method.celtic.detail')}</option>
             <option value="alternative">{t('method.alt42')} — {t('method.alt42.detail')}</option>
             <option value="thirtyfive" disabled={!canContinue && methodId !== 'thirtyfive'}>
               {t('method.alt35')} — {t('method.alt35.detail')}{!canContinue && methodId !== 'thirtyfive' ? ` (${t('method.needsAlt')})` : ''}
             </option>
             <option value="plain">{t('method.plain')} — {t('method.plain.detail')}</option>
+            <option value="three">{t('method.three')} — {t('method.three.detail')}</option>
+            <option value="nine">{t('method.nine')} — {t('method.nine.detail')}</option>
           </select>
         </label>
         {plain && (
@@ -535,15 +573,15 @@ export function TarotPage({ useProjection, run, t }: Props) {
         </label>
       </div>
 
-      {reading === undefined && <MethodGuide methodId={methodId} positions={positions} linePositions={linePositions} t={t} />}
+      {reading === undefined && <MethodGuide methodId={methodId} positions={positions} linePositions={linePositions} threePositions={threePlaces} t={t} />}
 
       <div className={css.progress} role="status" aria-live="polite">
         <span className={css.progressCount}>{progress}</span>
         <span>{instruction}</span>
       </div>
 
-      {plain
-        ? <PlainBoard count={count} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
+      {free
+        ? <PlainBoard count={count} columns={plain ? Math.min(count, 6) : 3} slotName={methodId === 'three' ? i => threePlaces[i]!.name : methodId === 'nine' ? nineCell : n => t('plain.card', { n: n + 1 })} captioned={!plain} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
         : lines
         ? <LinesBoard rows={rows} rightToLeft={(methodId === 'alternative' ? alternative : continuation).direction === 'right-to-left'} querent={methodId === 'alternative' ? significator : null} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
         : <Board positions={positions} facing={facing} significator={significator} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />}
@@ -563,10 +601,13 @@ export function TarotPage({ useProjection, run, t }: Props) {
         <Completion
           reading={reading}
           canContinue={canContinue}
+          repeatCard={repeatCard}
+          busy={busy}
           methodLabel={methodLabel(reading.method)}
           nameOf={nameOf}
           onContinue={() => { setChosenId('thirtyfive'); setFresh(true); setQuestion('') }}
-          onNew={() => { setFresh(true); setQuestion('') }}
+          onRepeat={() => { void repeat() }}
+          onNew={() => { setFresh(true); setQuestion(''); setChosenId(methodId) }}
           t={t}
         />
       )}

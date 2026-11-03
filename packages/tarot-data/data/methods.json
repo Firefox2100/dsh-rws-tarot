@@ -577,7 +577,46 @@
           }
         }
       ],
-      "direction": "right-to-left"
+      "direction": "right-to-left",
+      "diagram": {
+        "dealt": {
+          "packets": 6,
+          "firstAt": "right",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              319,
+              319
+            ]
+          }
+        },
+        "regrouped": {
+          "packets": 7,
+          "firstAt": "right",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              319,
+              319
+            ]
+          }
+        },
+        "laid": {
+          "lines": 6,
+          "perLine": 7,
+          "numberedFrom": "right",
+          "source": {
+            "part": 3,
+            "section": "§ 8",
+            "pdfPages": [
+              320,
+              321
+            ]
+          }
+        }
+      }
     },
     {
       "kind": "continuation",
@@ -748,7 +787,28 @@
           ]
         }
       },
-      "direction": "left-to-right"
+      "direction": "left-to-right",
+      "diagram": {
+        "packets": {
+          "sizes": [
+            7,
+            6,
+            5,
+            4,
+            2,
+            11
+          ],
+          "firstAt": "right",
+          "source": {
+            "part": 3,
+            "section": "§ 9",
+            "pdfPages": [
+              327,
+              327
+            ]
+          }
+        }
+      }
     }
   ]
 }
