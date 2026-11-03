@@ -259,6 +259,19 @@ interface Options {
 
 const initialOptions: Options = { mode: 'person', person: { sex: 'female', fortyOrOver: false }, suit: 'wands', picked: 'major-00', facing: 'left', reversals: { celtic: false, alternative: true, plain: false }, count: 3 }
 
+export function startCommand(methodId: MethodId, question: string, count: number, language: string, significatorId: string | null, options: Options): string {
+  const asked = question.replace(/\s+/g, ' ').trim()
+  const orientation = methodId !== 'thirtyfive' && options.reversals[methodId] ? 'reversed' : 'upright'
+  const command = methodId === 'thirtyfive'
+    ? `/tarot continue ${asked}`
+    : methodId === 'plain'
+      ? `/tarot start plain ${count} ${orientation} ${language} ${asked}`
+      : methodId === 'alternative'
+        ? `/tarot start alternative ${options.person.sex} ${orientation} ${language} ${asked}`
+        : `/tarot start celtic ${significatorId} ${options.facing} ${orientation} ${language} ${asked}`
+  return command.trim()
+}
+
 function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chosen; value: Options; onChange: (next: Options) => void; nameOf: NameOf; t: T }) {
   const [cardSearch, setCardSearch] = useState('')
   const method = getMethod('celtic')
@@ -458,16 +471,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
     setError(null)
     try {
       if (reading === undefined) {
-        const asked = question.replace(/\s+/g, ' ').trim()
-        const orientation = methodId !== 'thirtyfive' && options.reversals[methodId] ? 'reversed' : 'upright'
-        const begin = methodId === 'thirtyfive'
-          ? `/tarot continue ${asked}`
-          : methodId === 'plain'
-            ? `/tarot start plain ${count} ${orientation} ${language} ${asked}`
-          : methodId === 'alternative'
-            ? `/tarot start alternative ${options.person.sex} ${orientation} ${language} ${asked}`
-            : `/tarot start celtic ${significator!.cardId} ${options.facing} ${orientation} ${language} ${asked}`
-        const failure = await run(begin.trim())
+        const failure = await run(startCommand(methodId, question, count, language, significator?.cardId ?? null, options))
         if (failure !== null) { setError(failure); return }
         setFresh(false)
       }

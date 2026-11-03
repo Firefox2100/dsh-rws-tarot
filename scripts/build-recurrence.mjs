@@ -24,9 +24,13 @@ for (const line of lines.slice(start, end)) {
   else if (/^\d /.test(line)) {
     if (position === null) throw new Error(`a recurrence before its heading: ${line}`)
     for (const part of line.split(';')) {
-      const found = /^\s*([432]) (\w+) = (.+?)\.?\s*$/.exec(part)
-      if (!found || RANKS[found[2]] === undefined) throw new Error(`cannot read recurrence "${part}"`)
-      entries.push({ rank: RANKS[found[2]], count: Number(found[1]), position, text: `${found[1]} ${found[2]} = ${found[3]}`, means: found[3], pdfPage: page })
+      const entry = part.trim()
+      const separator = entry.indexOf(' = ')
+      const [count, rank, extra] = entry.slice(0, separator).split(' ')
+      const value = entry.slice(separator + 3)
+      const means = value.endsWith('.') ? value.slice(0, -1) : value
+      if (separator < 0 || extra !== undefined || !['4', '3', '2'].includes(count) || RANKS[rank] === undefined || means === '') throw new Error(`cannot read recurrence "${part}"`)
+      entries.push({ rank: RANKS[rank], count: Number(count), position, text: `${count} ${rank} = ${means}`, means, pdfPage: page })
     }
   }
 }

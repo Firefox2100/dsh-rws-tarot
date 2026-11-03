@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { en, type TarotKey } from '../src/client/locales.ts'
 import { plateUrl } from '../src/client/plates.ts'
 import { TarotCall } from '../src/client/TarotCall.tsx'
-import { TarotPage } from '../src/client/TarotPage.tsx'
+import { startCommand, TarotPage } from '../src/client/TarotPage.tsx'
 import { getCard, getMethod } from '@dsh-rws-tarot/data'
 import type { ReadingView, TarotView } from '../src/types.ts'
 
@@ -30,6 +30,17 @@ function render(...readings: ReadingView[]): string {
 }
 
 describe('client page', () => {
+  it('builds the command for every way a reading can begin', () => {
+    const options = {
+      mode: 'person', person: { sex: 'female', fortyOrOver: false }, suit: 'wands', picked: 'major-00', facing: 'right',
+      reversals: { celtic: false, alternative: true, plain: true }, count: 3,
+    } as const
+    expect(startCommand('celtic', '  What   now? ', 10, 'en', 'cups-13', options)).toBe('/tarot start celtic cups-13 right upright en What now?')
+    expect(startCommand('alternative', '', 42, 'zh', 'major-02', options)).toBe('/tarot start alternative female reversed zh')
+    expect(startCommand('plain', 'One card', 1, 'en', null, options)).toBe('/tarot start plain 1 reversed en One card')
+    expect(startCommand('thirtyfive', 'Further?', 35, 'en', 'major-02', options)).toBe('/tarot continue Further?')
+  })
+
   it('builds plate URLs relative to the configured page base', () => {
     vi.stubGlobal('document', { baseURI: 'https://example.test/app/' })
     expect(plateUrl(getCard('major-00'))).toMatch(/^https:\/\/example\.test\/app\/rws-tarot\/plates\/.*\.jpg$/)
