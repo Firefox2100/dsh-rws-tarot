@@ -43,10 +43,8 @@ describe('client page', () => {
     expect(startCommand('thirtyfive', 'Further?', 35, 'en', 'major-02', options)).toBe('/tarot continue Further?')
   })
 
-  it('builds plate URLs relative to the configured page base', () => {
-    vi.stubGlobal('document', { baseURI: 'https://example.test/app/' })
-    expect(plateUrl(getCard('major-00'))).toMatch(/^https:\/\/example\.test\/app\/rws-tarot\/plates\/.*\.jpg$/)
-    vi.unstubAllGlobals()
+  it('names each plate by the package-asset URL the build gave its file', () => {
+    expect(plateUrl(getCard('major-00'))).toBe('plugins/dsh-rws-tarot/assets/plates/Pictorial_Key_to_the_Tarot_00_The_Fool.jpg')
   })
 
   it('renders a new spread with only the first card enabled', () => {

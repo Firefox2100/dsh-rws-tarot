@@ -1,7 +1,9 @@
+import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
-import { dirname, relative, resolve } from 'node:path'
+import { basename, dirname, relative, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { transform } from 'lightningcss'
-import { defineConfig, type TsdownPlugin, type UserConfig } from 'tsdown'
+import { defineConfig, Rolldown, type TsdownPlugin, type UserConfig } from 'tsdown'
 import pkg from './package.json' with { type: 'json' }
 
 const ID = pkg.name
@@ -40,6 +42,50 @@ function cssModules(): TsdownPlugin {
   }
 }
 
+const root = fileURLToPath(new URL('../..', import.meta.url))
+const PLATES = 'virtual:rws-plates'
+/** Placeholder the module text carries until the render turns it into the module loader's `require.asset` call. */
+const ASSET_CALL = '__dshPackageAsset_5f8e2c1a9b7d'
+
+/**
+ * Publish the 78 plates the way the host's package-asset route expects: each file under `lib/assets/plates/` with the
+ * first 12 hex digits of its SHA-1 before the extension, referenced as `plugins/<package>/assets/<path>`. The plates
+ * stay in `references/`, so a file whose bytes differ from the card data's SHA-256 stops the build instead of shipping.
+ */
+function plates(): TsdownPlugin {
+  const id = `\0${PLATES}`
+  return {
+    name: 'rws-plates',
+    resolveId: source => source === PLATES ? id : null,
+    async load(source: string) {
+      if (source !== id) return null
+      const { cards } = JSON.parse(await readFile(resolve(root, 'packages/tarot-data/data/cards.json'), 'utf8')) as {
+        cards: { id: string, image: { file: string, sha256: string } }[]
+      }
+      const entries: string[] = []
+      for (const card of cards) {
+        const file = resolve(root, card.image.file)
+        const bytes = await readFile(file)
+        if (createHash('sha256').update(bytes).digest('hex') !== card.image.sha256) throw new Error(`${card.id}: ${card.image.file} does not match its recorded SHA-256`)
+        const name = basename(file)
+        const dot = name.lastIndexOf('.')
+        const emitted = `plates/${name.slice(0, dot)}-${createHash('sha1').update(bytes).digest('hex').slice(0, 12)}${name.slice(dot)}`
+        this.emitFile({ type: 'asset', fileName: `assets/${emitted}`, source: bytes, originalFileName: file })
+        this.addWatchFile(file)
+        const url = `plugins/${ID}/assets/${emitted.split('/').map(encodeURIComponent).join('/')}`
+        entries.push(`${JSON.stringify(name)}: ${ASSET_CALL}(${JSON.stringify(url)})`)
+      }
+      return `export default { ${entries.join(', ')} };`
+    },
+    renderChunk(code: string) {
+      if (!code.includes(ASSET_CALL)) return null
+      const rendered = new Rolldown.RolldownMagicString(code)
+      for (const match of code.matchAll(new RegExp(`\\b${ASSET_CALL}\\(`, 'gu'))) rendered.overwrite(match.index, match.index + match[0].length, 'require.asset(')
+      return rendered
+    },
+  }
+}
+
 const host: UserConfig = {
   name: `${ID}/host`,
   entry: { index: 'src/index.ts' },
@@ -67,7 +113,7 @@ const client: UserConfig = {
   fixedExtension: false,
   deps: { neverBundle: specifier => shared.has(specifier), alwaysBundle: specifier => !shared.has(specifier) },
   define: { 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'production') },
-  plugins: [cssModules()],
+  plugins: [cssModules(), plates()],
   outputOptions: {
     entryFileNames: 'client.js',
     sourcemapExcludeSources: false,

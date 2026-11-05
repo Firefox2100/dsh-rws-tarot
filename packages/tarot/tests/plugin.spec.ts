@@ -4,9 +4,11 @@ import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
 import CommandRuntime from '@deepseek-ai/dsh-commands'
 import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 import ToolRegistry from '@deepseek-ai/dsh-tools'
+import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
 import SessionStore, { SessionId } from '@deepseek-ai/dsh-session'
 import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
 import * as tarot from '../src/index.ts'
+import { callTool } from './tool.ts'
 
 interface Harness {
   readonly ctx: Context
@@ -25,6 +27,7 @@ async function harness(config: Partial<tarot.Config> = {}): Promise<Harness> {
   await ctx.plugin(AgentRegistry)
   await ctx.plugin(SystemPrompt)
   await ctx.plugin(ToolRegistry)
+  await ctx.plugin(NativeToolExecutor)
   const plugin = await ctx.plugin(tarot, tarot.Config(config as tarot.Config))
   const session = ctx.sessions.create(SessionId(`tarot-${Math.random()}`))
   const followups: string[] = []
@@ -64,7 +67,7 @@ describe('model-facing tool contract', () => {
 })
 
 function tableOrder(test: Harness): string[] {
-  const state = test.ctx.sessionProjections.stateOf(test.agent.session, 'tarot') as { readings: { order: { cardId: string }[] }[] }
+  const state = test.ctx.sessionProjections.checkpoint(test.agent.session).tarot!.val as { readings: { order: { cardId: string }[] }[] }
   return state.readings.at(-1)!.order.map(p => p.cardId)
 }
 
@@ -119,8 +122,7 @@ describe('/tarot', () => {
 
   it('lets the model lay a spread, which the person then turns card by card', async () => {
     const test = await harness({ defaultLanguage: 'zh' })
-    const tools = test.ctx.tools
-    const call = (args: Record<string, unknown>) => tools.execute({ callId: 'c1' as never, name: 'tarot_lay_spread', arguments: args, agent: test.agent, signal: new AbortController().signal } as never)
+    const call = (args: Record<string, unknown>) => callTool(test.ctx, test.agent, 'tarot_lay_spread', args)
     const refused = await call({ question: 'Will I pass?' })
     expect(JSON.stringify(refused)).toContain('name the Significator')
     expect(view(test).readings).toEqual([])
@@ -230,7 +232,7 @@ describe('/tarot', () => {
 
   it('lets the model lay the alternative layout from the person\'s sex alone', async () => {
     const test = await harness()
-    const call = (args: Record<string, unknown>) => test.ctx.tools.execute({ callId: 'c2' as never, name: 'tarot_lay_spread', arguments: args, agent: test.agent, signal: new AbortController().signal } as never)
+    const call = (args: Record<string, unknown>) => callTool(test.ctx, test.agent, 'tarot_lay_spread', args)
     expect(JSON.stringify(await call({ method: 'alternative' }))).toContain('name the sex')
     const laid = await call({ method: 'alternative', sex: 'man' })
     expect(JSON.stringify(laid)).toContain('six lines of seven')
@@ -257,7 +259,7 @@ describe('/tarot', () => {
 
   it('lets the model lay three cards or nine without any choice but the layout', async () => {
     const test = await harness()
-    const call = (args: Record<string, unknown>) => test.ctx.tools.execute({ callId: 'c3' as never, name: 'tarot_lay_spread', arguments: args, agent: test.agent, signal: new AbortController().signal } as never)
+    const call = (args: Record<string, unknown>) => callTool(test.ctx, test.agent, 'tarot_lay_spread', args)
     expect(JSON.stringify(await call({ method: 'three', question: 'My week' }))).toContain('for the past, the present and the future')
     expect(view(test).readings[0]).toMatchObject({ method: 'three', draws: 3, question: 'My week' })
     expect(JSON.stringify(await call({ method: 'nine' }))).toContain('a reading is already in progress')

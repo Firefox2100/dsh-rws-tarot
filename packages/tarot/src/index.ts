@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import type { Context } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-commands'
-import type {} from '@deepseek-ai/dsh-host-webserver'
 import type {} from '@deepseek-ai/dsh-session'
 import type {} from '@deepseek-ai/dsh-session-projection'
 import { createUserMessage } from '@deepseek-ai/dsh-llm'
@@ -15,7 +14,6 @@ import {
 } from '@dsh-rws-tarot/engine'
 import z from '@deepseek-ai/schemastery'
 import { z as zod } from 'zod'
-import { registerPlates } from './plates.ts'
 import type { TarotView } from './types.ts'
 
 export type { ReadingView, TarotView } from './types.ts'
@@ -37,12 +35,6 @@ declare module '@deepseek-ai/dsh-session/types' {
     'plugin:dsh-rws-tarot/draw': DrawEvent
     /** The person ends the reading that is open. */
     'plugin:dsh-rws-tarot/abandon': AbandonEvent
-  }
-}
-
-declare module '@deepseek-ai/dsh-session-projection/types' {
-  interface SessionProjectionStateMap {
-    tarot: Table
   }
 }
 
@@ -85,10 +77,8 @@ export const Config: z<Config> = z.object({
   maxQuestion: z.natural().default(500),
 })
 
-export function apply(ctx: Context, config: Config): void {
-  registerPlates(ctx)
-
-  ctx.sessionProjections.register({
+export async function apply(ctx: Context, config: Config): Promise<void> {
+  const projection = await ctx.sessionProjections.register({
     key: 'tarot',
     stateVersion: 7,
     stateSchema: table,
@@ -119,7 +109,7 @@ export function apply(ctx: Context, config: Config): void {
     },
   })
 
-  const tableOf = (agent: Agent): Table => ctx.sessionProjections.stateOf(agent.session, 'tarot') ?? emptyTable
+  const tableOf = (agent: Agent): Table => projection.stateOf(agent.session)
   const openReading = (agent: Agent): Reading | undefined => {
     const last = tableOf(agent).readings.at(-1)
     return last !== undefined && !last.abandoned && last.drawn < last.draws ? last : undefined

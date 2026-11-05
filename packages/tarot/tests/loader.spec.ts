@@ -8,12 +8,13 @@ import Loader from '@deepseek-ai/cordis-plugin-loader'
 import Include from '@deepseek-ai/cordis-plugin-include'
 import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
 import CommandRuntime from '@deepseek-ai/dsh-commands'
-import { ToolCallId } from '@deepseek-ai/dsh-llm'
 import SessionStore, { SessionId } from '@deepseek-ai/dsh-session'
 import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
 import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 import ToolRegistry from '@deepseek-ai/dsh-tools'
+import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
 import * as tarot from '../src/index.ts'
+import { callTool } from './tool.ts'
 
 let root: string | undefined
 let context: Context | undefined
@@ -36,6 +37,7 @@ async function boot(configLines: readonly string[]): Promise<Context> {
     "- name: '@deepseek-ai/dsh-agent'",
     "- name: '@deepseek-ai/dsh-system-prompt'",
     "- name: '@deepseek-ai/dsh-tools'",
+    "- name: '@deepseek-ai/dsh-tool-executor-native'",
     '- name: dsh-rws-tarot',
     ...configLines.length > 0 ? ['  config:', ...configLines] : [],
     '',
@@ -53,6 +55,7 @@ async function boot(configLines: readonly string[]): Promise<Context> {
     ['@deepseek-ai/dsh-agent', AgentRegistry],
     ['@deepseek-ai/dsh-system-prompt', SystemPrompt],
     ['@deepseek-ai/dsh-tools', ToolRegistry],
+    ['@deepseek-ai/dsh-tool-executor-native', NativeToolExecutor],
     ['dsh-rws-tarot', tarot],
   ])
   ctx.loader.internal = {
@@ -86,10 +89,7 @@ describe('rws-tarot booted through the real Loader from a cordis.yml', () => {
     expect(ctx.tools.schemas().some(s => s.name === 'tarot_lay_spread')).toBe(true)
     const agent = await agentOf(ctx)
 
-    const result = await ctx.tools.execute({
-      signal: new AbortController().signal, callId: ToolCallId('plain'), name: 'tarot_lay_spread',
-      arguments: { method: 'plain', count: 2 }, agent,
-    })
+    const result = await callTool(ctx, agent, 'tarot_lay_spread', { method: 'plain', count: 2 })
     expect(result.isError).toBe(false)
     const view = ctx.sessionProjections.snapshot(agent.session).values.tarot as tarot.TarotView
     expect(view.maxQuestion).toBe(20)

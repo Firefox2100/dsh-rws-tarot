@@ -10,7 +10,7 @@ The cards are drawn by code, not by the model: the shuffle, the cuts, the layout
 dsh plugin --profile <profile> add dsh-rws-tarot
 ```
 
-Requires DeepSeek Harness `>=0.2.1-rc.5 <0.2.2` and a model the profile can already use. The plugin adds a page to the right dock and does not change any existing page.
+Requires DeepSeek Harness `>=0.2.2-rc.1 <0.2.3` and a model the profile can already use. The plugin adds a page to the right dock and does not change any existing page.
 
 ## Use
 
