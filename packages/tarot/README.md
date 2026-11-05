@@ -2,6 +2,20 @@
 
 Rider-Waite-Smith tarot for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Open a **Tarot** page in the right dock, pick a spread (the three methods of the book, a plain draw, or three or nine cards in modern layouts), and click the glowing card to turn it over. Each card is read to you in the conversation as it is turned.
 
+This is a tool for reflection, study and entertainment. It cannot foretell anything: please read the [disclaimer](#disclaimer).
+
+## Features
+
+- **Six ways to draw.** Three methods from Waite's book (the Celtic Cross, the alternative method of 42 cards, and the thirty-five card continuation), a plain draw of 1 to 12 cards, and two layouts of modern practice, three cards (past, present, future) and nine cards (a 3 × 3 grid).
+- **A right-dock page.** The spread lies on the page with the card backs up. The next card to turn glows, and only that card can be clicked; the plates are Pamela Colman Smith's, as printed in the book.
+- **One card at a time.** Each card you turn is handed to the conversation with its position, its meanings from the book and the cards already down, and the model answers for it. After the last card it draws the whole spread together.
+- **The book's own words.** Card meanings, position explanations and the methods come from *The Pictorial Key to the Tarot* and are supplied by code, never recalled by the model. Where the book is silent a field stays empty rather than being filled in from elsewhere.
+- **Reversals, recurrences, repeats.** Optional reversed cards, the book's remark when a rank comes up two, three or four times, and the follow-up the book suggests for a doubtful tenth card.
+- **Durable readings.** A reading is stored in its conversation and survives a reload or a restart; a session can hold any number of them.
+- **Command and tool.** `/tarot` runs every step from the composer, and the model has a `tarot_lay_spread` tool to lay a spread when you ask in conversation.
+- **Languages.** English and Chinese (card and position names, instructions to the model and the page); other languages fall back to English. The plugin's name and description on the Plugins page are translated into every language the shell offers.
+- **Non-intrusive.** The plugin adds a page and one row for its own tool; it replaces nothing of the host.
+
 The cards are drawn by code, not by the model: the shuffle, the cuts, the layout and the position of every card are done deterministically (with a cryptographic random source), and what each card means in its position comes from the text of Arthur Edward Waite's *The Pictorial Key to the Tarot* (1910), which the plugin carries. The model only reasons on top of those facts, so it is never asked to recall a card's meaning, and it is told to say nothing about a card that has not been turned.
 
 ## Install
@@ -44,6 +58,49 @@ Settings of the `rws-tarot` plugin in the profile (all optional):
 | `reversedShare` | `0.5` | Share of cards that lie reversed when reversed cards are turned on. |
 | `maxQuestion` | `500` | Longest question accepted, in characters. |
 | `defaultLanguage` | `en` | Language of a reading the model begins when it names none. |
+
+## How it works
+
+- A reading begins with a cryptographically random shuffle and cut done by code (the draw is reproducible from its seed in the tests). The order of the whole pack, the placement of each card and whether it is reversed are fixed at that moment and stored in the conversation; the model never chooses or turns a card.
+- When you turn a card, the plugin assembles the facts for it (the card, its position, the book's meanings and position explanation, the cards already turned, any recurrence) and hands them to the model with a short style note: speak to the person as "you", plain prose, no citations, nothing about cards not yet turned. The book's name never reaches the model.
+- Everything is held in the conversation as ignorable plugin records, replayed on load, so a session never fails to open because of this plugin.
+
+## Development
+
+The repository is a pnpm workspace:
+
+| Package | What it is |
+|---|---|
+| `packages/tarot-data` | The book's card, method and recurrence data (JSON, each text with its source page), the schemas and the card names. No DSH import. |
+| `packages/tarot-engine` | The deterministic engine: decks, seeded shuffle and cut, reversals, layouts, the facts handed to the model. No DSH import. |
+| `packages/tarot` | The DSH plugin (this package): host (command, tool, projection), client (the dock page) and the plates, with the two libraries bundled in. |
+
+```bash
+pnpm install
+pnpm typecheck        # needs a large heap: NODE_OPTIONS=--max-old-space-size=12288
+pnpm test
+node scripts/check-cards.mjs     # card data against the book, image hashes, gap report
+node scripts/check-methods.mjs   # every quoted method text and diagram against the book
+pnpm --filter dsh-rws-tarot build
+```
+
+To try a build, add the package folder to a scratch profile and start DSH on it:
+
+```bash
+dsh plugin --profile <scratch> add ./packages/tarot
+dsh --profile <scratch>
+```
+
+Card data is generated from the book's text in `references/` by `scripts/build-cards.mjs` and `scripts/build-recurrence.mjs`; the check scripts fail when data and book disagree. A transcription error is fixed in the book text and the data regenerated, never patched in the JSON.
+
+## Disclaimer
+
+Tarot is a traditional practice of symbolism and reflection. This plugin follows documented, published conventions: the card meanings and methods of Waite's 1910 book, and, for the three-card and nine-card layouts, common modern practice. It does not and cannot predict or interpret real events in anyone's life.
+
+- The cards are drawn at random by software. A card has no connection to your circumstances, and the readings the model gives are generated text built on the book's wording, not insight into your situation. A language model can also be wrong, inconsistent or misleading.
+- Do not use a reading as guidance for decisions about health, medicine, mental health, law, money, relationships, safety or anything else that matters. For such matters consult a qualified professional.
+- It is offered for entertainment, study and personal reflection only. You are solely responsible for what you decide and do.
+- The software is provided as is, without warranty of any kind, under the GPL-3.0 licence.
 
 ## Sources and licence
 
