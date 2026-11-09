@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Context } from '@deepseek-ai/cordis'
 import AgentRegistry, { type Agent } from '@deepseek-ai/dsh-agent'
 import CommandRuntime from '@deepseek-ai/dsh-commands'
+import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 import ToolRegistry from '@deepseek-ai/dsh-tools'
 import * as NativeToolExecutor from '@deepseek-ai/dsh-tool-executor-native'
@@ -92,6 +93,21 @@ describe('/tarot', () => {
     await run(test, '/tarot draw')
     expect(test.followups[0]).toContain('你正在为提问的人占卜塔罗')
     expect(test.followups[0]).toContain('他们问：搬家顺利吗？')
+  })
+
+  it('names the interface language only in the first message of a fresh conversation', async () => {
+    const fresh = await harness()
+    await run(fresh, '/tarot start celtic cups-13 left upright zh 搬家顺利吗？')
+    await run(fresh, '/tarot draw')
+    expect(fresh.followups[0]).toContain('界面语言是“zh”')
+    await run(fresh, '/tarot draw')
+    expect(fresh.followups[1]).not.toContain('界面语言是')
+
+    const talking = await harness()
+    talking.agent.session.append('user/message', createUserMessage({ content: [{ type: 'text', text: 'hello' }], source: { kind: 'user' } }), { surfaceOp: 'append' })
+    await run(talking, '/tarot start celtic cups-13 left upright zh')
+    await run(talking, '/tarot draw')
+    expect(talking.followups[0]).not.toContain('界面语言是')
   })
 
   it('turns cards reversed only when asked, and reads them as reversed', async () => {

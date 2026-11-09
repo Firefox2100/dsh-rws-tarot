@@ -11,7 +11,7 @@ const ID = pkg.name
 /** Packages the web shell already holds one instance of; the client bundle must not carry a second copy. */
 const shared = new Set([
   'react', 'react/jsx-runtime', 'react-dom', 'react-dom/client',
-  '@deepseek-ai/cordis', '@deepseek-ai/dsh-client-store', '@deepseek-ai/dsh-client-ui-slots', '@deepseek-ai/dsh-client-ui-primitives',
+  '@deepseek-ai/cordis', '@deepseek-ai/dsh-client-ui-slots',
 ])
 
 function cssModules(): TsdownPlugin {

@@ -1,10 +1,10 @@
 import { useState, type CSSProperties } from 'react'
-import { Button } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
 import type {} from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
-import { cardName, cards, getCard, getMethod, positionMeaning, positionName, type MethodPosition, type Suit } from '@dsh-rws-tarot/data'
+import { cardName, cards, colouringText, facingText, getCard, getMethod, meaningText, positionMeaning, positionName, querentText, reserveText, type MethodPosition, type Suit } from '@dsh-rws-tarot/data'
 import { LAYOUT_SIZES, PLAIN_LIMIT, significatorFor, type Person, type Placed } from '@dsh-rws-tarot/engine'
 import type { ReadingView } from '../types.ts'
+import { Button } from './Button.tsx'
 import { plateUrl } from './plates.ts'
 import type { TarotInjected } from './index.ts'
 import css from './TarotPage.module.css'
@@ -39,6 +39,45 @@ function cell(position: number, facing: 'left' | 'right'): { col: number; row: n
   }
 }
 
+/** One mark of a spread's miniature: a card, or a line of a lines layout, as a rectangle of the diagram. */
+interface Shape { x: number; y: number; w?: number; h?: number }
+
+const CARD_SHAPE = { w: 10, h: 19 } as const
+
+/** The miniature each spread tile draws, as percentages of the diagram's box. */
+const DIAGRAMS: Readonly<Record<MethodId, readonly Shape[]>> = {
+  celtic: [
+    { x: 45, y: 40 }, { x: 45, y: 10 }, { x: 45, y: 70 }, { x: 25, y: 40 }, { x: 65, y: 40 },
+    { x: 30, y: 45, w: 25, h: 10 },
+    { x: 80, y: 8 }, { x: 80, y: 30 }, { x: 80, y: 52 }, { x: 80, y: 74 },
+  ],
+  alternative: [5, 20, 35, 50, 65, 80].map(y => ({ x: 15, y, w: 70, h: 6 })),
+  thirtyfive: [70, 60, 50, 40, 20, 55].map((w, i) => ({ x: 15, y: 5 + i * 15, w, h: 6 })),
+  plain: [8, 31, 54, 77].map(x => ({ x, y: 40 })),
+  three: [15, 45, 75].map(x => ({ x, y: 40 })),
+  nine: [15, 45, 75].flatMap(x => [12, 40, 68].map(y => ({ x, y }))),
+}
+
+const SPREADS = [
+  { id: 'celtic', name: 'method.celtic', detail: 'method.celtic.detail' },
+  { id: 'alternative', name: 'method.alt42', detail: 'method.alt42.detail' },
+  { id: 'thirtyfive', name: 'method.alt35', detail: 'method.alt35.detail' },
+  { id: 'plain', name: 'method.plain', detail: 'method.plain.detail' },
+  { id: 'three', name: 'method.three', detail: 'method.three.detail' },
+  { id: 'nine', name: 'method.nine', detail: 'method.nine.detail' },
+] as const
+
+/** The miniature a spread tile carries: the layout at a glance, drawn from its own shapes. */
+function Diagram({ method }: { method: MethodId }) {
+  return (
+    <span className={css.diagram} aria-hidden="true">
+      {DIAGRAMS[method].map((shape, index) => (
+        <i key={index} style={{ left: `${shape.x}%`, top: `${shape.y}%`, width: `${shape.w ?? CARD_SHAPE.w}%`, height: `${shape.h ?? CARD_SHAPE.h}%` }} />
+      ))}
+    </span>
+  )
+}
+
 function Face({ placed, label }: { placed: Placed; label: string }) {
   return <img className={cx(css.plate, placed.reversed && css.upside)} src={plateUrl(getCard(placed.cardId))} alt={label} draggable={false} />
 }
@@ -51,12 +90,14 @@ interface BoardProps {
   next: number | null
   busy: boolean
   onTurn: () => void
+  /** Open the enlarged view of a card already turned. */
+  onPeek: (index: number) => void
   nameOf: NameOf
   t: T
 }
 
 /** The spread as it lies: the Significator face up, every other card face down until it is turned over. */
-function Board({ positions, facing, significator, drawn, next, busy, onTurn, nameOf, t }: BoardProps) {
+function Board({ positions, facing, significator, drawn, next, busy, onTurn, onPeek, nameOf, t }: BoardProps) {
   return (
     <div className={css.board}>
       {significator !== null && (
@@ -80,10 +121,11 @@ function Board({ positions, facing, significator, drawn, next, busy, onTurn, nam
             <button
               type="button"
               className={cx(css.card, placed !== undefined && css.flipped, isNext && css.next)}
-              disabled={!isNext || busy}
-              aria-label={label}
-              title={position.name}
-              onClick={onTurn}
+              style={{ '--i': index } as CSSProperties}
+              disabled={placed === undefined && (!isNext || busy)}
+              aria-label={placed === undefined ? label : `${label}. ${t('peek')}`}
+              title={placed === undefined ? position.name : `${position.name} · ${t('peek')}`}
+              onClick={() => { if (placed === undefined) onTurn(); else onPeek(index) }}
             >
               <span className={css.inner}>
                 <span className={css.back}><span className={css.number}>{position.number}</span></span>
@@ -180,12 +222,14 @@ interface PlainBoardProps {
   next: number | null
   busy: boolean
   onTurn: () => void
+  /** Open the enlarged view of a card already turned. */
+  onPeek: (index: number) => void
   nameOf: NameOf
   t: T
 }
 
 /** A draw without the book's positions as it lies (a plain draw, three cards or nine): cards in rows, turned one at a time from the first. */
-function PlainBoard({ count, columns, slotName, captioned, drawn, next, busy, onTurn, nameOf, t }: PlainBoardProps) {
+function PlainBoard({ count, columns, slotName, captioned, drawn, next, busy, onTurn, onPeek, nameOf, t }: PlainBoardProps) {
   return (
     <div className={cx(css.layout, captioned && css.captioned)} style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
       {Array.from({ length: count }, (_, index) => {
@@ -200,10 +244,11 @@ function PlainBoard({ count, columns, slotName, captioned, drawn, next, busy, on
             <button
               type="button"
               className={cx(css.card, placed !== undefined && css.flipped, isNext && css.next)}
-              disabled={!isNext || busy}
-              aria-label={label}
-              title={slotName(index)}
-              onClick={onTurn}
+              style={{ '--i': index } as CSSProperties}
+              disabled={placed === undefined && (!isNext || busy)}
+              aria-label={placed === undefined ? label : `${label}. ${t('peek')}`}
+              title={placed === undefined ? slotName(index) : `${slotName(index)} · ${t('peek')}`}
+              onClick={() => { if (placed === undefined) onTurn(); else onPeek(index) }}
             >
               <span className={css.inner}>
                 <span className={css.back}><span className={css.number}>{n}</span></span>
@@ -230,6 +275,7 @@ interface TurnedProps {
 
 function Turned({ reading, where, nameOf, t }: TurnedProps) {
   if (reading.drawn.length === 0) return null
+  const language = t('language')
   return (
     <details className={css.turned}>
       <summary>{t('cards')}</summary>
@@ -237,7 +283,9 @@ function Turned({ reading, where, nameOf, t }: TurnedProps) {
         {reading.drawn.map((placed, i) => {
           const card = getCard(placed.cardId)
           const scenario = placed.reversed ? 'reversed' : 'upright'
-          const meanings = card.meanings.filter(m => m.scenario === scenario)
+          const entries = card.meanings.map((meaning, index) => ({ meaning, index })).filter(({ meaning }) => meaning.scenario === scenario)
+          const divinatory = entries.filter(({ meaning }) => meaning.context === 'divinatory')
+          const additional = entries.filter(({ meaning }) => meaning.context === 'additional')
           return (
             <li key={i}>
               <details>
@@ -247,9 +295,9 @@ function Turned({ reading, where, nameOf, t }: TurnedProps) {
                   <span className={css.muted}>{nameOf(card.id)} · {t(placed.reversed ? 'reversed' : 'upright')}</span>
                 </summary>
                 {where(i).meaning !== null && <p className={css.quote}><em>{t('position.meaning')}:</em> {where(i).meaning}</p>}
-                {meanings.filter(m => m.context === 'divinatory').map((m, k) => <p key={`d${k}`}><strong>{t('card.meaning')}.</strong> {m.text}</p>)}
-                {!meanings.some(m => m.context === 'divinatory') && <p className={css.muted}>{t('card.none')}</p>}
-                {meanings.filter(m => m.context === 'additional').map((m, k) => <p key={`a${k}`}><strong>{t('card.also')}.</strong> {m.text}</p>)}
+                {divinatory.map(({ index }) => <p key={`d${index}`}><strong>{t('card.meaning')}.</strong> {meaningText(card, index, language)}</p>)}
+                {divinatory.length === 0 && <p className={css.muted}>{t('card.none')}</p>}
+                {additional.map(({ index }) => <p key={`a${index}`}><strong>{t('card.also')}.</strong> {meaningText(card, index, language)}</p>)}
               </details>
             </li>
           )
@@ -304,18 +352,20 @@ export function startCommand(methodId: MethodId, question: string, count: number
   return command.trim()
 }
 
-function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chosen; value: Options; onChange: (next: Options) => void; nameOf: NameOf; t: T }) {
+function OptionsPanel({ methodId, value, onChange, nameOf, language, t }: { methodId: Chosen; value: Options; onChange: (next: Options) => void; nameOf: NameOf; language: string; t: T }) {
   const [cardSearch, setCardSearch] = useState('')
   const method = getMethod('celtic')
   const lines = methodId === 'alternative'
   const normalizedSearch = cardSearch.trim().toLocaleLowerCase()
   const matchingCards = cards.filter(card => normalizedSearch === '' || card.id.includes(normalizedSearch) || nameOf(card.id).toLocaleLowerCase().includes(normalizedSearch))
   const sex = (name: string) => (
-    <div className={css.row}>
-      <span>{t('significator.sex')}</span>
-      {radio(name, value.person.sex === 'male', () => { set({ person: { ...value.person, sex: 'male' } }) }, t('significator.male'))}
-      {radio(name, value.person.sex === 'female', () => { set({ person: { ...value.person, sex: 'female' } }) }, t('significator.female'))}
-    </div>
+    <fieldset className={css.group}>
+      <legend>{t('significator.sex')}</legend>
+      <div className={css.row}>
+        {radio(name, value.person.sex === 'male', () => { set({ person: { ...value.person, sex: 'male' } }) }, t('significator.male'))}
+        {radio(name, value.person.sex === 'female', () => { set({ person: { ...value.person, sex: 'female' } }) }, t('significator.female'))}
+      </div>
+    </fieldset>
   )
   const set = (patch: Partial<Options>): void => { onChange({ ...value, ...patch }) }
   const radio = (name: string, on: boolean, change: () => void, label: string) => (
@@ -323,16 +373,12 @@ function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chos
   )
   return (
     <div className={css.options}>
-      <section>
-        <h4>{t('deck.title')}</h4>
-        <select disabled value="full" aria-label={t('deck.title')}><option value="full">{t('deck.full')}</option></select>
-      </section>
       {methodId === 'plain' || methodId === 'three' || methodId === 'nine' ? null : lines ? (
         <section>
           <h4>{t('querent.title')}</h4>
           <p className={css.muted}>{t('querent.help')}</p>
           {sex('querentSex')}
-          <p className={css.muted}>{getMethod('alternative').querent.text}</p>
+          <p className={css.muted}>{querentText(getMethod('alternative'), language)}</p>
         </section>
       ) : (
       <section>
@@ -345,24 +391,23 @@ function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chos
         {value.mode === 'person' ? (
           <>
             {sex('sex')}
-            <div className={css.row}>
-              <span>{t('significator.age')}</span>
-              {radio('age', !value.person.fortyOrOver, () => { set({ person: { ...value.person, fortyOrOver: false } }) }, t('significator.under40'))}
-              {radio('age', value.person.fortyOrOver, () => { set({ person: { ...value.person, fortyOrOver: true } }) }, t('significator.over40'))}
-            </div>
-            <div className={css.colouring}>
-              <span>{t('significator.colouring')}</span>
-              {SUITS.map((s) => {
-                const rule = method.significator.colouring.find(c => c.suit === s)!
-                return (
-                  <label key={s} className={css.choice}>
-                    <input type="radio" name="suit" aria-label={t(`suit.${s}`)} checked={value.suit === s} onChange={() => { set({ suit: s }) }} />
-                    <span><strong>{t(`suit.${s}`)}</strong> <span className={css.muted}>{rule.text}</span></span>
-                  </label>
-                )
-              })}
-              <p className={css.muted}>{method.significator.reserve.text}</p>
-            </div>
+            <fieldset className={css.group}>
+              <legend>{t('significator.age')}</legend>
+              <div className={css.row}>
+                {radio('age', !value.person.fortyOrOver, () => { set({ person: { ...value.person, fortyOrOver: false } }) }, t('significator.under40'))}
+                {radio('age', value.person.fortyOrOver, () => { set({ person: { ...value.person, fortyOrOver: true } }) }, t('significator.over40'))}
+              </div>
+            </fieldset>
+            <fieldset className={css.colouring}>
+              <legend>{t('significator.colouring')}</legend>
+              {SUITS.map((s) => (
+                <label key={s} className={css.choice}>
+                  <input type="radio" name="suit" aria-label={t(`suit.${s}`)} checked={value.suit === s} onChange={() => { set({ suit: s }) }} />
+                  <span><strong>{t(`suit.${s}`)}</strong> <span className={css.muted}>{colouringText(method, s, language)}</span></span>
+                </label>
+              ))}
+              <p className={css.muted}>{reserveText(method, language)}</p>
+            </fieldset>
           </>
         ) : (
           <div className={css.cardPicker}>
@@ -378,12 +423,14 @@ function OptionsPanel({ methodId, value, onChange, nameOf, t }: { methodId: Chos
             </select>
           </div>
         )}
-        <div className={css.row}>
-          <span>{t('significator.facing')}</span>
-          {radio('facing', value.facing === 'left', () => { set({ facing: 'left' }) }, t('significator.left'))}
-          {radio('facing', value.facing === 'right', () => { set({ facing: 'right' }) }, t('significator.right'))}
-        </div>
-        <p className={css.muted}>{t('significator.facingHelp')} {method.facing.text}</p>
+        <fieldset className={css.group}>
+          <legend>{t('significator.facing')}</legend>
+          <div className={css.row}>
+            {radio('facing', value.facing === 'left', () => { set({ facing: 'left' }) }, t('significator.left'))}
+            {radio('facing', value.facing === 'right', () => { set({ facing: 'right' }) }, t('significator.right'))}
+          </div>
+        </fieldset>
+        <p className={css.muted}>{t('significator.facingHelp')} {facingText(method, language)}</p>
       </section>
       )}
       <section>
@@ -410,7 +457,7 @@ function MethodGuide({ methodId, positions, linePositions, threePositions, t }: 
   )
 }
 
-function Completion({ reading, canContinue, repeatCard, methodLabel, nameOf, onContinue, onRepeat, onNew, busy, t }: { reading: ReadingView; canContinue: boolean; repeatCard: string | null; methodLabel: string; nameOf: NameOf; onContinue: () => void; onRepeat: () => void; onNew: () => void; busy: boolean; t: T }) {
+function Completion({ reading, canContinue, repeatCard, methodLabel, nameOf, onContinue, onRepeat, onNew, onPeek, busy, t }: { reading: ReadingView; canContinue: boolean; repeatCard: string | null; methodLabel: string; nameOf: NameOf; onContinue: () => void; onRepeat: () => void; onNew: () => void; onPeek: (index: number) => void; busy: boolean; t: T }) {
   return (
     <section className={css.completion}>
       <div>
@@ -419,15 +466,20 @@ function Completion({ reading, canContinue, repeatCard, methodLabel, nameOf, onC
       </div>
       <div className={css.recap} aria-label={t('complete.cards')}>
         {reading.drawn.map((placed, index) => (
-          <img key={index} className={placed.reversed ? css.upside : undefined} src={plateUrl(getCard(placed.cardId))} alt={nameOf(placed.cardId)} title={nameOf(placed.cardId)} draggable={false} />
+          <figure key={index}>
+            <button type="button" className={css.recapCard} aria-label={`${nameOf(placed.cardId)} · ${t('peek')}`} onClick={() => { onPeek(index) }}>
+              <img className={placed.reversed ? css.upside : undefined} src={plateUrl(getCard(placed.cardId))} alt={nameOf(placed.cardId)} draggable={false} />
+            </button>
+            <figcaption>{nameOf(placed.cardId)}</figcaption>
+          </figure>
         ))}
       </div>
       <p className={css.muted}>{t('complete.help')}</p>
       {repeatCard !== null && <p className={css.muted}>{t('complete.repeatHelp')}</p>}
       <div className={css.actions}>
-        {canContinue && <Button variant="primary" size="sm" onClick={onContinue}>{t('complete.continue')}</Button>}
-        {repeatCard !== null && <Button variant="primary" size="sm" disabled={busy} onClick={onRepeat}>{t('complete.repeat', { name: nameOf(repeatCard) })}</Button>}
-        <Button variant="outline" size="sm" onClick={onNew}>{t('newReading')}</Button>
+        {canContinue && <Button variant="primary" onClick={onContinue}>{t('complete.continue')}</Button>}
+        {repeatCard !== null && <Button variant="primary" disabled={busy} onClick={onRepeat}>{t('complete.repeat', { name: nameOf(repeatCard) })}</Button>}
+        <Button variant={canContinue || repeatCard !== null ? 'outline' : 'primary'} onClick={onNew}>{t('newReading')}</Button>
       </div>
     </section>
   )
@@ -446,6 +498,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [confirmEnd, setConfirmEnd] = useState(false)
+  const [peek, setPeek] = useState<number | null>(null)
 
   const language = t('language')
   const maxQuestion = view?.maxQuestion ?? DEFAULT_MAX_QUESTION
@@ -518,6 +571,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
     if (next === null) return
     setBusy(true)
     setError(null)
+    setPeek(null)
     try {
       if (reading === undefined) {
         const failure = await run(startCommand(methodId, question, count, language, significator?.cardId ?? null, options))
@@ -531,6 +585,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const end = async (): Promise<void> => {
     setBusy(true)
     setError(null)
+    setPeek(null)
     try {
       const failure = await run('/tarot abandon')
       if (failure !== null) setError(failure)
@@ -540,6 +595,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const repeat = async (): Promise<void> => {
     setBusy(true)
     setError(null)
+    setPeek(null)
     try {
       const failure = await run(`/tarot repeat ${options.reversals.celtic ? 'reversed' : 'upright'}`)
       if (failure !== null) setError(failure)
@@ -550,6 +606,9 @@ export function TarotPage({ useProjection, run, t }: Props) {
   const progress = lines
     ? t('progress.lines', { n: next === null ? rows.length : nextRow, m: rows.length })
     : t('progress.cards', { n: drawn.length, m: total })
+  const turnedCount = lines ? (next === null ? rows.length : nextRow) : drawn.length
+  const turnTotal = lines ? rows.length : total
+  const ratio = turnTotal === 0 ? 0 : Math.min(1, turnedCount / turnTotal)
   const instruction = busy
     ? t('hint.busy')
     : next === null
@@ -558,57 +617,99 @@ export function TarotPage({ useProjection, run, t }: Props) {
         ? t(free ? 'hint.begin' : lines ? 'hint.beginLines' : 'hint.begin')
         : free ? t('hint.nextPlain', { n: next + 1 }) : lines ? t('hint.nextLine', { line: nextRow + 1 }) : t('hint.next', { position: positions[next]!.name })
   const onTurn = (): void => { void turn() }
+  /** Show a card already turned at a readable size; clicking it again folds the view away. */
+  const peekAt = (index: number): void => { setPeek(current => current === index ? null : index) }
+  const askedLine = reading !== undefined && reading.question !== '' ? ` · ${reading.question}` : ''
+  const statusLabel = `${methodLabel(methodId)}${askedLine}`
 
   return (
     <div className={css.page} aria-busy={busy}>
-      <div className={css.top}>
-        <label className={css.field}>
-          <span>{t('how.label')}</span>
-          <select value={methodId} onChange={(e) => { setChosenId(['alternative', 'thirtyfive', 'plain', 'three', 'nine'].includes(e.target.value) ? e.target.value as MethodId : 'celtic'); setFresh(true) }} disabled={reading !== undefined && !finished}>
-            <option value="celtic">{t('method.celtic')} — {t('method.celtic.detail')}</option>
-            <option value="alternative">{t('method.alt42')} — {t('method.alt42.detail')}</option>
-            <option value="thirtyfive" disabled={!canContinue && methodId !== 'thirtyfive'}>
-              {t('method.alt35')} — {t('method.alt35.detail')}{!canContinue && methodId !== 'thirtyfive' ? ` (${t('method.needsAlt')})` : ''}
-            </option>
-            <option value="plain">{t('method.plain')} — {t('method.plain.detail')}</option>
-            <option value="three">{t('method.three')} — {t('method.three.detail')}</option>
-            <option value="nine">{t('method.nine')} — {t('method.nine.detail')}</option>
-          </select>
-        </label>
-        {plain && (
-          <label className={css.field}>
-            <span>{t('plain.count')}</span>
-            {reading === undefined
-              ? (
+      {reading === undefined && (
+        <div className={css.setup}>
+          <div className={css.top}>
+            <fieldset className={css.spreads}>
+              <legend>{t('how.label')}</legend>
+              {SPREADS.map((spread) => {
+                const unavailable = spread.id === 'thirtyfive' && !canContinue
+                return (
+                  <label key={spread.id} className={cx(css.spreadTile, methodId === spread.id && css.spreadTileOn, unavailable && css.spreadTileOff)}>
+                    <input
+                      type="radio"
+                      name="spread"
+                      className={css.srOnly}
+                      checked={methodId === spread.id}
+                      disabled={unavailable}
+                      onChange={() => { setChosenId(spread.id); setFresh(true) }}
+                    />
+                    <Diagram method={spread.id} />
+                    <span className={css.spreadText}>
+                      <span className={css.spreadName}>{t(spread.name)}</span>
+                      <span className={css.spreadDetail}>{unavailable ? t('method.needsAlt') : t(spread.detail)}</span>
+                    </span>
+                  </label>
+                )
+              })}
+            </fieldset>
+            {plain && (
+              <label className={css.field}>
+                <span>{t('plain.count')}</span>
                 <select value={options.count} onChange={(e) => { setOptions({ ...options, count: Number(e.target.value) }) }}>
                   {COUNTS.map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
-              )
-              : <p className={css.asked}>{reading.draws}</p>}
-          </label>
-        )}
-        <label className={css.field}>
-          <span>{t('question.label')}</span>
-          {reading === undefined
-            ? <textarea rows={2} value={question} maxLength={maxQuestion} placeholder={t(methodId === 'thirtyfive' ? 'question.placeholderContinue' : lines ? 'question.placeholderLines' : 'question.placeholder')} onChange={(e) => { setQuestion(e.target.value) }} />
-            : <p className={css.asked}>{reading.question === '' ? '—' : reading.question}</p>}
-        </label>
+              </label>
+            )}
+            <label className={css.field}>
+              <span>{t('question.label')}</span>
+              <textarea rows={2} value={question} maxLength={maxQuestion} placeholder={t(methodId === 'thirtyfive' ? 'question.placeholderContinue' : lines ? 'question.placeholderLines' : 'question.placeholder')} onChange={(e) => { setQuestion(e.target.value) }} />
+              {maxQuestion - question.length <= 50 && <span className={css.counter}>{question.length} / {maxQuestion}</span>}
+            </label>
+          </div>
+
+          <details className={css.optionsBox} key={methodId}>
+            <summary>{t('options')}{significator === null ? '' : ` · ${t(lines ? 'querent.chosen' : 'significator.chosen', { name: nameOf(significator.cardId) })}`}</summary>
+            {methodId === 'thirtyfive'
+              ? <p className={css.muted}>{t('options.continue')}</p>
+              : <OptionsPanel methodId={methodId} value={options} onChange={setOptions} nameOf={nameOf} language={language} t={t} />}
+          </details>
+
+          <div className={css.actions}>
+            <Button variant="primary" size="md" disabled={busy} onClick={onTurn}>{t('start')}</Button>
+          </div>
+        </div>
+      )}
+
+      <div className={css.progress} role="status" aria-live="polite">
+        <span className={css.progressTitle} title={statusLabel}>{statusLabel}</span>
+        <span className={css.progressCount}>{progress}</span>
+        <span>{instruction}</span>
+        <span className={css.progressTrack} aria-hidden="true"><span className={css.progressFill} style={{ width: `${Math.round(ratio * 100)}%` }} /></span>
       </div>
+
+      {peek !== null && reading !== undefined && reading.drawn[peek] !== undefined && (
+        <div className={css.peek}>
+          <img
+            className={cx(css.peekCard, reading.drawn[peek]!.reversed && css.upside)}
+            src={plateUrl(getCard(reading.drawn[peek]!.cardId))}
+            alt={nameOf(reading.drawn[peek]!.cardId)}
+            draggable={false}
+          />
+          <div className={css.peekText}>
+            <strong>{nameOf(reading.drawn[peek]!.cardId)}</strong>
+            <span className={css.muted}>{whereIn(reading)(peek).name} · {t(reading.drawn[peek]!.reversed ? 'reversed' : 'upright')}</span>
+            <Button variant="outline" onClick={() => { setPeek(null) }}>{t('close')}</Button>
+          </div>
+        </div>
+      )}
+
+      {(reading === undefined || !finished) && (free
+        ? <PlainBoard count={count} columns={plain ? Math.min(count, 6) : 3} slotName={methodId === 'three' ? i => threePlaces[i]!.name : methodId === 'nine' ? nineCell : n => t('plain.card', { n: n + 1 })} captioned={!plain} drawn={drawn} next={next} busy={busy} onTurn={onTurn} onPeek={peekAt} nameOf={nameOf} t={t} />
+        : lines
+        ? <LinesBoard rows={rows} rightToLeft={(methodId === 'alternative' ? alternative : continuation).direction === 'right-to-left'} querent={methodId === 'alternative' ? significator : null} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
+        : <Board positions={positions} facing={facing} significator={significator} drawn={drawn} next={next} busy={busy} onTurn={onTurn} onPeek={peekAt} nameOf={nameOf} t={t} />)}
 
       {reading === undefined && <MethodGuide methodId={methodId} positions={positions} linePositions={linePositions} threePositions={threePlaces} t={t} />}
 
-      <div className={css.progress} role="status" aria-live="polite">
-        <span className={css.progressCount}>{progress}</span>
-        <span>{instruction}</span>
-      </div>
-
-      {(reading === undefined || !finished) && (free
-        ? <PlainBoard count={count} columns={plain ? Math.min(count, 6) : 3} slotName={methodId === 'three' ? i => threePlaces[i]!.name : methodId === 'nine' ? nineCell : n => t('plain.card', { n: n + 1 })} captioned={!plain} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
-        : lines
-        ? <LinesBoard rows={rows} rightToLeft={(methodId === 'alternative' ? alternative : continuation).direction === 'right-to-left'} querent={methodId === 'alternative' ? significator : null} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />
-        : <Board positions={positions} facing={facing} significator={significator} drawn={drawn} next={next} busy={busy} onTurn={onTurn} nameOf={nameOf} t={t} />)}
-
-      {significator !== null && (
+      {reading !== undefined && significator !== null && (
         <div className={css.chip} title={t(lines ? 'querent.help' : 'significator.help')}>
           <img src={plateUrl(getCard(significator.cardId))} alt="" draggable={false} />
           <span>{t(lines ? 'querent.chosen' : 'significator.chosen', { name: nameOf(significator.cardId) })}</span>
@@ -621,11 +722,11 @@ export function TarotPage({ useProjection, run, t }: Props) {
           ? <div className={css.endConfirm}>
               <p>{t('end.confirm', { n: reading.drawn.length, m: reading.draws })}</p>
               <div className={css.actions}>
-                <Button variant="outline" size="sm" disabled={busy} onClick={() => { setConfirmEnd(false) }}>{t('end.cancel')}</Button>
-                <Button variant="outline" size="sm" className={css.dangerAction} disabled={busy} onClick={() => { void end() }}>{t('end.confirmAction')}</Button>
+                <Button variant="outline" disabled={busy} onClick={() => { setConfirmEnd(false) }}>{t('end.cancel')}</Button>
+                <Button variant="outline" className={css.dangerAction} disabled={busy} onClick={() => { void end() }}>{t('end.confirmAction')}</Button>
               </div>
             </div>
-          : <div className={css.actions}><Button variant="outline" size="sm" disabled={busy} onClick={() => { setConfirmEnd(true) }}>{t('end')}</Button></div>
+          : <div className={css.actions}><Button variant="outline" disabled={busy} onClick={() => { setConfirmEnd(true) }}>{t('end')}</Button></div>
       )}
       {finished && reading !== undefined && (
         <Completion
@@ -635,6 +736,7 @@ export function TarotPage({ useProjection, run, t }: Props) {
           busy={busy}
           methodLabel={methodLabel(reading.method)}
           nameOf={nameOf}
+          onPeek={peekAt}
           onContinue={() => { setChosenId('thirtyfive'); setFresh(true); setQuestion('') }}
           onRepeat={() => { void repeat() }}
           onNew={() => { setFresh(true); setQuestion(''); setChosenId(methodId) }}
@@ -652,15 +754,6 @@ export function TarotPage({ useProjection, run, t }: Props) {
           ))}
         </details>
       )}
-
-      <details className={css.optionsBox}>
-        <summary>{t('options')}</summary>
-        {reading !== undefined
-          ? <p className={css.muted}>{t('options.locked')}</p>
-          : methodId === 'thirtyfive'
-            ? <p className={css.muted}>{t('options.continue')}</p>
-            : <OptionsPanel methodId={methodId} value={options} onChange={setOptions} nameOf={nameOf} t={t} />}
-      </details>
     </div>
   )
 }

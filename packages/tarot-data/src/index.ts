@@ -4,7 +4,7 @@ import rawRecurrence from '../data/recurrence.json' with { type: 'json' }
 import type { Card, CelticMethod, ContinuationMethod, LinesMethod, Method, Rank, Recurrence, TarotData } from './types.ts'
 
 export type * from './types.ts'
-export { cardName, rankName, finalCardText, followUpTexts, guidanceTexts, pickLocale, positionMeaning, positionName } from './names.ts'
+export { cardName, rankName, finalCardText, followUpTexts, guidanceTexts, pickLocale, positionMeaning, positionName, colouringText, reserveText, facingText, querentText, meaningText } from './names.ts'
 
 const SUITS = ['wands', 'cups', 'swords', 'pentacles'] as const
 

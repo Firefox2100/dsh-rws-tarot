@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cards, getCard, hasCard, recurrence, tarotData } from '../src/index.ts'
+import { cards, getCard, hasCard, meaningText, recurrence, tarotData } from '../src/index.ts'
 
 describe('tarot data', () => {
   it('holds the 78 cards: 22 trumps and 14 per suit', () => {
@@ -31,6 +31,17 @@ describe('tarot data', () => {
 
   it('keeps the book notes', () => {
     expect(tarotData.sectionNotes.map(n => n.id)).toEqual(['lesser-arcana-remark', 'additional-meanings-remark'])
+  })
+
+  it('translates every meaning into Chinese, and falls back to the book in other languages', () => {
+    for (const card of cards) {
+      card.meanings.forEach((meaning, index) => {
+        const text = meaningText(card, index, 'zh')
+        expect(text, `${card.id}[${index}]`).not.toBe(meaning.text)
+        expect(text, `${card.id}[${index}]`).not.toMatch(/[A-Za-z]/)
+        expect(meaningText(card, index, 'en'), `${card.id}[${index}]`).toBe(meaning.text)
+      })
+    }
   })
 })
 

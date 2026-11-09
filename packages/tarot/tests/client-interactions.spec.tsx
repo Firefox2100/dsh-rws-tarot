@@ -5,10 +5,6 @@ import { en, type TarotKey } from '../src/client/locales.ts'
 import { TarotPage } from '../src/client/TarotPage.tsx'
 import type { ReadingView, TarotView } from '../src/types.ts'
 
-vi.mock('@deepseek-ai/dsh-client-ui-primitives', () => ({
-  Button: ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => <button {...props}>{children}</button>,
-}))
-
 afterEach(() => { cleanup() })
 
 const t = (key: TarotKey, values?: Record<string, string | number>): string => {
@@ -31,7 +27,7 @@ describe('client page interactions', () => {
   it('configures and starts a plain draw, normalizing the question before drawing', async () => {
     const run = vi.fn(async () => null)
     page(run)
-    fireEvent.change(screen.getByRole('combobox', { name: 'Spread' }), { target: { value: 'plain' } })
+    fireEvent.click(screen.getByRole('radio', { name: /Plain draw/ }))
     fireEvent.change(screen.getByRole('combobox', { name: 'Number of cards' }), { target: { value: '2' } })
     fireEvent.change(screen.getByRole('textbox', { name: 'Your question (optional)' }), { target: { value: '  What   now? ' } })
     fireEvent.click(screen.getByRole('button', { name: 'Turn over card 1' }))
@@ -41,6 +37,29 @@ describe('client page interactions', () => {
         ['/tarot draw'],
       ])
     })
+  })
+
+  it('starts from the setup button, with the options folded to a summary', async () => {
+    const run = vi.fn(async (_line: string) => null)
+    page(run)
+    const options = (): HTMLElement => screen.getByText(/^Options/)
+    expect(options().closest('details')?.open).toBe(false)
+    expect(options().textContent).toContain('Significator: Page of Wands')
+    fireEvent.click(screen.getByRole('radio', { name: /Plain draw/ }))
+    expect(options().textContent).not.toContain('Significator')
+    fireEvent.click(screen.getByRole('radio', { name: /Celtic Cross/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Start the reading' }))
+    await waitFor(() => expect(run).toHaveBeenCalledTimes(2))
+    expect(run.mock.calls[0]![0]).toMatch(/^\/tarot start celtic \S+ left upright en$/)
+    expect(run.mock.calls[1]![0]).toBe('/tarot draw')
+  })
+
+  it('opens a card already turned at a readable size', () => {
+    page(async () => null, { maxQuestion: 500, readings: [openReading] })
+    fireEvent.click(screen.getByRole('button', { name: /Click to enlarge/ }))
+    expect(screen.getByAltText('The Fool')).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+    expect(screen.queryByRole('button', { name: 'Close' })).toBeNull()
   })
 
   it('shows start and end failures, and clears an ended reading after success', async () => {
@@ -74,13 +93,20 @@ describe('client page interactions', () => {
     fireEvent.click(screen.getByRole('button', { name: 'End reading' }))
     await waitFor(() => { expect(run).toHaveBeenCalledWith('/tarot abandon') })
     rerender(<TarotPage {...props()} />)
-    await waitFor(() => { expect((screen.getByRole('combobox', { name: 'Spread' }) as HTMLSelectElement).value).toBe('plain') })
+    await waitFor(() => { expect((screen.getByRole('radio', { name: /Plain draw/ }) as HTMLInputElement).checked).toBe(true) })
 
     cleanup()
     const done: ReadingView = { ...openReading, method: 'nine', draws: 9, turns: Array.from({ length: 9 }, () => 1), drawn: Array.from({ length: 9 }, () => placed) }
     page(async () => null, { maxQuestion: 500, readings: [done] })
     fireEvent.click(screen.getByRole('button', { name: 'New reading' }))
-    expect((screen.getByRole('combobox', { name: 'Spread' }) as HTMLSelectElement).value).toBe('nine')
+    expect((screen.getByRole('radio', { name: /Nine cards/ }) as HTMLInputElement).checked).toBe(true)
+  })
+
+  it('opens a recap card from the completion screen at a readable size', () => {
+    const celtic: ReadingView = { ...openReading, method: 'celtic', facing: 'left', significator: placed, draws: 10, turns: Array.from({ length: 10 }, () => 1), drawn: Array.from({ length: 10 }, () => placed) }
+    page(async () => null, { maxQuestion: 500, readings: [celtic] })
+    fireEvent.click(screen.getAllByRole('button', { name: /Click to enlarge/ })[0]!)
+    expect(screen.getByRole('button', { name: 'Close' })).toBeDefined()
   })
 
   it('repeats a finished Celtic Cross with its tenth card', async () => {
@@ -102,9 +128,9 @@ describe('client page interactions', () => {
     fireEvent.click(screen.getByRole('radio', { name: 'Right' }))
     fireEvent.click(screen.getByRole('radio', { name: /On \(some cards/ }))
 
-    fireEvent.change(screen.getByRole('combobox', { name: 'Spread' }), { target: { value: 'alternative' } })
+    fireEvent.click(screen.getByRole('radio', { name: /Alternative method/ }))
     fireEvent.click(screen.getByRole('radio', { name: 'a man' }))
-    expect(screen.getByText('Querent: The Magician')).toBeDefined()
+    expect(screen.getByText(/Querent: The Magician/)).toBeDefined()
   })
 
   it('moves from a completed alternative reading into its continuation or a new reading', () => {
@@ -119,6 +145,6 @@ describe('client page interactions', () => {
     cleanup()
     page(async () => null, { maxQuestion: 500, readings: [complete] })
     fireEvent.click(screen.getByRole('button', { name: 'New reading' }))
-    expect(screen.getByRole('combobox', { name: 'Spread' })).toBeDefined()
+    expect(screen.getByRole('radio', { name: /Alternative method/ })).toBeDefined()
   })
 })

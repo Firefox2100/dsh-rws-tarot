@@ -1,4 +1,5 @@
 import raw from '../data/names.json' with { type: 'json' }
+import meaningTables from '../data/meanings.json' with { type: 'json' }
 import type { Card, CelticMethod, LinesMethod, MethodPosition, Rank, Suit } from './types.ts'
 
 interface Names {
@@ -11,6 +12,12 @@ interface Names {
     readonly finalCard?: string
     readonly followUp?: Readonly<Record<string, string>>
     readonly guidance?: Readonly<Record<string, string>>
+    readonly significator?: {
+      readonly colouring?: Readonly<Record<Suit, string>>
+      readonly reserve?: string
+      readonly facing?: string
+    }
+    readonly querent?: string
   }>>
 }
 
@@ -54,6 +61,36 @@ export function positionName(methodId: string, position: MethodPosition, locale:
 /** What a position means, in the locale; the book's own sentence where no translation exists. */
 export function positionMeaning(methodId: string, position: MethodPosition, locale: string | undefined): string {
   return namesFor(locale)?.methods[methodId]?.positions?.[position.number - 1] ?? position.meaning
+}
+
+/** The colouring a suit's Court Cards stand for, in the locale; the book's own sentence where no translation exists. */
+export function colouringText(method: CelticMethod, suit: Suit, locale: string | undefined): string {
+  return namesFor(locale)?.methods[method.id]?.significator?.colouring?.[suit]
+    ?? method.significator.colouring.find(rule => rule.suit === suit)!.text
+}
+
+/** The book's note on choosing a Significator by temperament, in the locale. */
+export function reserveText(method: CelticMethod, locale: string | undefined): string {
+  return namesFor(locale)?.methods[method.id]?.significator?.reserve ?? method.significator.reserve.text
+}
+
+/** The book's rule for which way an ambiguous Significator faces, in the locale. */
+export function facingText(method: CelticMethod, locale: string | undefined): string {
+  return namesFor(locale)?.methods[method.id]?.significator?.facing ?? method.facing.text
+}
+
+/** The book's account of the Querent's card, in the locale. */
+export function querentText(method: LinesMethod, locale: string | undefined): string {
+  return namesFor(locale)?.methods[method.id]?.querent ?? method.querent.text
+}
+
+const translations = meaningTables as unknown as Readonly<Record<string, Readonly<Record<string, readonly string[]>>>>
+
+/** A meaning's text in the locale, by its place in the card's meanings; the book's English where no translation exists. */
+export function meaningText(card: Card, index: number, locale: string | undefined): string {
+  const language = locale?.split(/[-_]/)[0]
+  const table = locale === undefined ? undefined : translations[locale] ?? (language === undefined ? undefined : translations[language])
+  return table?.[card.id]?.[index] ?? card.meanings[index]!.text
 }
 
 /** The book's guidance for the last card of a method, in the locale. */

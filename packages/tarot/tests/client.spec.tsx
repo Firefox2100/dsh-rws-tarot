@@ -7,10 +7,6 @@ import { startCommand, TarotPage } from '../src/client/TarotPage.tsx'
 import { getCard, getMethod } from '@dsh-rws-tarot/data'
 import type { ReadingView, TarotView } from '../src/types.ts'
 
-vi.mock('@deepseek-ai/dsh-client-ui-primitives', () => ({
-  Button: ({ children }: { children: unknown }) => <button>{children as never}</button>,
-}))
-
 const t = (key: TarotKey, values?: Record<string, string | number>): string => {
   let text = en[key]
   for (const [name, value] of Object.entries(values ?? {})) text = text.replace(`{${name}}`, String(value))
@@ -111,10 +107,10 @@ describe('thirty-five card continuation', () => {
   it('offers the continuation only once an alternative reading is finished', () => {
     vi.stubGlobal('document', { baseURI: 'https://example.test/' })
     const html = render(done())
-    expect(html).toContain('<option value="thirtyfive">')
     expect(html).toContain('Continue with the 35 cards left')
-    expect(render({ ...done(), drawn: [] })).toContain('<option value="thirtyfive" disabled="">')
-    expect(render({ ...baseReading, drawn: [] })).toContain('finish a reading of the alternative method first')
+    expect(html).not.toContain('Thirty-five card method')
+    expect(render()).toContain('Thirty-five card method')
+    expect(render()).toContain('finish a reading of the alternative method first')
     vi.unstubAllGlobals()
   })
 

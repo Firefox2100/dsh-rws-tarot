@@ -2,14 +2,10 @@ import { describe, expect, it, vi } from 'vitest'
 import type { Context } from '@deepseek-ai/cordis'
 import { apply } from '../src/client/index.ts'
 
-vi.mock('@deepseek-ai/dsh-client-ui-primitives', () => ({
-  Button: ({ children }: { children: unknown }) => children,
-}))
-
 describe('client plugin', () => {
   it('registers its dictionaries, tab, page and tool row, and adapts command results', async () => {
     const effects: (() => unknown)[] = []
-    const registrations: { key: string; inject?: (sessionId: string) => { run: (line: string) => Promise<string | null> } }[] = []
+    const registrations: { name: string; key: string; inject?: (sessionId: string) => { run: (line: string) => Promise<string | null> } }[] = []
     const execute = vi.fn()
     const ctx = {
       locale: { bind: () => (key: string) => key, register: vi.fn() },
@@ -23,10 +19,11 @@ describe('client plugin', () => {
     } as unknown as Context
 
     apply(ctx)
-    expect(effects).toHaveLength(4)
+    expect(effects).toHaveLength(5)
     expect(ctx.locale.register).toHaveBeenCalledWith('tarot', expect.objectContaining({ zh: expect.any(Object), en: expect.any(Object) }))
     expect(ctx.sidebarRightTabs.register).toHaveBeenCalledWith(expect.objectContaining({ id: 'dsh-rws-tarot', kind: 'tarot' }))
-    expect(registrations.map(item => item.key)).toEqual(['dsh-rws-tarot', 'tarot_lay_spread'])
+    expect(registrations.map(item => item.name)).toEqual(['sidebar.right.pane.tab', 'sidebar.right.pane.tab.title', 'tool.call.toolview'])
+    expect(registrations.map(item => item.key)).toEqual(['dsh-rws-tarot', 'dsh-rws-tarot', 'tarot_lay_spread'])
 
     const run = registrations[0]!.inject!('session').run
     execute.mockResolvedValueOnce({ ok: false, error: { message: 'offline', code: 'unavailable' } })

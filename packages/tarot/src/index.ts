@@ -62,6 +62,24 @@ const LAYOUT_NAMES = { three: 'Three cards', nine: 'Nine cards' } as const
 
 const USAGE = '/tarot start celtic <significator-id> <left|right> <upright|reversed> <language> [question] | start alternative <male|female> <upright|reversed> <language> [question] | start plain <count> <upright|reversed> <language> [question] | start three|nine <upright|reversed> <language> [question] | continue [question] | repeat <upright|reversed> [question] | draw | abandon'
 
+/** Sessions where the plugin has already told the model which language to answer in. */
+const noted = new WeakSet<object>()
+
+/**
+ * What to say before the first message the model hears from this plugin, or '' when the conversation already has
+ * something in it: a reading that starts a fresh chat would otherwise meet English facts with no language at all,
+ * and answer in English. Once the session has a user or assistant message, its language is already settled.
+ */
+function languageNote(agent: Agent, reading: Reading): string {
+  if (noted.has(agent.session)) return ''
+  const spoken = agent.session.deriveMessages().some(message => message.role === 'user' || message.role === 'assistant')
+  if (spoken) return ''
+  noted.add(agent.session)
+  return reading.language.split(/[-_]/)[0] === 'zh'
+    ? `界面语言是“${reading.language}”，请用这种语言回复。`
+    : `The interface language is "${reading.language}". Reply in that language.`
+}
+
 export interface Config {
   /** The language of the facts for a reading the model begins, when it names none. */
   defaultLanguage: string
@@ -224,7 +242,8 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
         if (current === undefined) return { kind: 'error', text: 'no reading in progress' }
         appendPluginRecord(session, 'plugin:dsh-rws-tarot/abandon', { readingId: current.id })
         if (openReading(agent) !== undefined) throw new Error('rws-tarot: the reading was not ended')
-        agent.inject(createUserMessage({ content: [{ type: 'text', text: describeEnd(current) }], source: { kind: 'rws-tarot' } }))
+        const note = languageNote(agent, current)
+        agent.inject(createUserMessage({ content: [{ type: 'text', text: note === '' ? describeEnd(current) : `${note}\n\n${describeEnd(current)}` }], source: { kind: 'rws-tarot' } }))
         await ctx.sessions.flush(session)
         return { kind: 'success', text: `reading ended after ${current.drawn} of ${current.draws} cards` }
       }
@@ -235,8 +254,9 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
         appendPluginRecord(session, 'plugin:dsh-rws-tarot/draw', { readingId: current.id, index: current.drawn })
         const after = openReading(agent) ?? tableOf(agent).readings.at(-1)
         if (after === undefined || after.drawn !== current.drawn + (turnAt(current, current.drawn)?.size ?? 0)) throw new Error('rws-tarot: the draw was not applied')
+        const note = languageNote(agent, after)
         agent.followup(createUserMessage({
-          content: [{ type: 'text', text: describeTurn(after, current.drawn) }],
+          content: [{ type: 'text', text: note === '' ? describeTurn(after, current.drawn) : `${note}\n\n${describeTurn(after, current.drawn)}` }],
           source: { kind: 'rws-tarot' },
         }))
         await ctx.sessions.flush(session)

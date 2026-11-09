@@ -10,7 +10,9 @@ import type { SessionId } from '@deepseek-ai/dsh-session/types'
 import type {} from '../types.ts'
 import { en, zh, type TarotKey } from './locales.ts'
 import { TarotCall } from './TarotCall.tsx'
+import { TarotGlyph } from './TarotGlyph.tsx'
 import { TarotPage } from './TarotPage.tsx'
+import { TarotTitle } from './TarotTitle.tsx'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
@@ -37,7 +39,7 @@ export function apply(ctx: Context): void {
     id: ID,
     kind: 'tarot',
     title: () => t('title'),
-    guide: [{ id: 'open', order: 40, title: () => t('title'), description: () => t('description') }],
+    guide: [{ id: 'open', order: 40, title: () => t('title'), description: () => t('description'), icon: TarotGlyph }],
   }), 'dsh-rws-tarot: tab type')
   ctx.effect(() => ctx.slots.inject('sidebar.right.pane.tab', () => ctx.slots.register({
     name: 'sidebar.right.pane.tab',
@@ -52,6 +54,11 @@ export function apply(ctx: Context): void {
       },
     }),
   }, TarotPage)), 'dsh-rws-tarot: page')
+  ctx.effect(() => ctx.slots.inject('sidebar.right.pane.tab.title', () => ctx.slots.register({
+    name: 'sidebar.right.pane.tab.title',
+    key: ID,
+    locale: NAMESPACE,
+  }, TarotTitle)), 'dsh-rws-tarot: tab title')
   // Keyed by the tool's own name: no other tool's row is touched.
   ctx.effect(() => ctx.slots.inject('tool.call.toolview', () => ctx.slots.register({
     name: 'tool.call.toolview',
