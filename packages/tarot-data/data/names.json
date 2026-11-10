@@ -48,16 +48,16 @@
     },
     "positions": {
       "celtic": [
-        "覆盖他的",
-        "横跨他的",
-        "冠于他之上的",
-        "在他之下的",
-        "在他身后的",
-        "在他面前的",
-        "他自身",
-        "他的家",
-        "他的希望或恐惧",
-        "将要到来的"
+        "覆盖",
+        "交叉",
+        "冠冕",
+        "基底",
+        "过去",
+        "未来",
+        "自身",
+        "环境",
+        "希望与恐惧",
+        "结果"
       ],
       "thirtyfive": [
         "第一行",
@@ -71,50 +71,765 @@
     "methods": {
       "celtic": {
         "positions": [
-          "这张牌给出对此人或所问之事总体上起作用的影响，也就是其他各股潮流在其中运作的氛围。",
-          "它显示此事中阻碍的性质。若是一张吉牌，对立的力量不会严重；也可能表示某件本身是好的事物，在这一特定关联中并不带来好处。",
-          "它代表：（a）问卜者在此事中的目标或理想；（b）在当下情形下所能达到的最好结果，但尚未成为现实。",
-          "它显示此事的根基或基础，即已经成为现实、并已被指示牌当事者纳为己有的东西。",
-          "它给出刚刚过去、或正在消逝的影响。",
-          "它显示正在开始发挥作用、并将在不久的将来起作用的影响。",
-          "代表他自己，即指示牌所代表者，无论是人还是事物，并显示它在这些情形中的处境或态度。",
-          "代表他的家，即他的环境，以及其中对此事有影响的各种倾向，例如他的社会地位、身边朋友的影响等。",
-          "给出他在此事中的希望或恐惧。",
-          "是将要到来的事，即最终结果，是由占卜中已翻开的其他牌所显示的各种影响促成的归结。"
+          "此牌代表影响求问者或所问事项的总体力量，即其他力量运作的氛围。",
+          "它显示事项中的障碍性质。如果是一张吉牌，则对立力量并不严重；或者它可能表示某事本身虽好，但在特定关联中未必产生好结果。",
+          "它代表（a）求问者在此事中的目标或理想；（b）在现有条件下能达到的最佳结果，但尚未成为现实。",
+          "它显示事项的根基或基础，即已转化为现实且代表者已拥有的部分。",
+          "它代表刚刚过去或正在消逝的影响。",
+          "它显示即将生效并将在近期发挥作用的影响。",
+          "代表自身，即代表牌，并显示其在当前环境中的位置或态度。",
+          "代表其居所，即其环境及其中对事项产生影响的力量，例如，其社会地位、亲密朋友的影响等。",
+          "显示其在此事中的希望或恐惧。",
+          "显示最终结果，即由其他已翻出的牌所显示的力量所促成的结局。"
         ],
         "significator": {
           "colouring": {
-            "wands": "权杖的四张宫廷牌代表肤色很白的人：金黄或赤褐色头发，皮肤白皙，蓝眼睛。",
-            "cups": "圣杯的宫廷牌指浅棕色或暗淡的浅色头发，灰色或蓝色眼睛的人。",
-            "swords": "宝剑的宫廷牌代表榛色或灰色眼睛、深棕色头发、肤色暗淡的人。",
-            "pentacles": "星币的宫廷牌指深棕或黑色头发、深色眼睛、面色蜡黄或黝黑的人。"
+            "wands": "权杖的四张宫廷牌代表非常体面的人，拥有黄色或红褐色头发、白皙肤色和蓝色眼睛。",
+            "cups": "圣杯的宫廷牌代表拥有浅棕色或暗淡浅色头发以及灰色或蓝色眼睛的人。",
+            "swords": "宝剑代表拥有榛色或灰色眼睛、深棕色头发和暗淡肤色的人。",
+            "pentacles": "代表拥有非常深棕色或黑色头发、深色眼睛以及蜡黄或黝黑肤色的人。"
           },
-          "reserve": "有时也可以凭你所知道的性情来定夺：肤色极深的人可能精力充沛，与其用星币牌，不如用宝剑牌来代表；反过来，肤色很白却懒散倦怠的人，与其归入权杖，不如归入圣杯。",
-          "facing": "如果指示牌是一张大牌，或任何说不上朝向哪一边的小牌，占卜者须在开始前决定把它当作朝哪一面。"
+          "reserve": "有时你可以依据已知人物的性格来引导：一个肤色极深的人可能精力充沛，用宝剑牌比星币牌更合适。另一方面，一个肤色极白且懒惰、无精打采的人，应归为圣杯牌而非权杖牌。",
+          "facing": "如果代表牌是王牌或任何无法明确区分正反面的小牌，占卜师必须在开始操作前决定将其视为哪一面朝上。"
         },
-        "finalCard": "占卜者应特别在这张牌上集中他的直觉和记忆，回想与之相关的正式占卜牌义。它应当体现你从桌上其他牌中所能占得的一切，包括指示牌本身，以及与他或它有关的一切；如果这张用于启示的牌恰是一张大阿卡纳，还可能有如天火星迸般的更高层面的启示。",
+        "finalCard": "占卜师应特别在此牌上集中其直觉能力和记忆力，回顾其附带的官方占卜含义。它应包含你从桌上其他牌（包括代表牌本身及其相关信息）中占卜到的一切内容，如果作为神谕的牌恰好是王牌，还可能迸发出如天火般的高层意义火花。",
         "followUp": {
-          "dubious-tenth": "如果最后一张牌含义可疑，无法由它得出最终判断，或似乎并未指示事情的最终结局，不妨重做一次：这一次以第十张牌作为指示牌，取代之前所用的那张。牌须重新洗并切三次，再如前摆出最先的十张牌。这样可以对“将要到来的事”得到更详细的说明。",
-          "court-card-tenth": "如果在某次占卜中第十张牌是宫廷牌，则表示占卜之事最终落入该牌所代表之人的手中，其结局主要取决于他。此时也不妨将这张宫廷牌作为指示牌重新占卜一次，了解他对此事的影响的性质，以及他会把事情带向何种结局。"
+          "dubious-tenth": "如果最后一张牌性质模棱两可，无法得出最终结论，或未显示出事情的最终结局，最好重复操作，将第十张牌作为代表牌，替换之前使用的那张。重新洗牌并切牌三次，然后像之前一样摆出前十张牌。这样可以获得关于“最终结果”更详细的描述。",
+          "court-card-tenth": "如果任何占卜中第十张牌是宫廷牌，则显示求问事项最终落入该牌所代表之人的手中，其结局主要取决于他。在这种情况下，也将该宫廷牌作为新操作中的代表牌，以发现其在此事中的影响性质及其将导致的结局。"
         }
       },
       "alternative": {
         "guidance": {
-          "relative": "牌必须结合所问之人或所问之事来解读：牌的一切通行含义都可以、也应当加以调整，使之与这一具体情形相合——问卜者（或为之占卜的那个人）所处的境况、年龄阶段和性别。",
-          "trumps": "请记住：按塔罗的设想，大阿卡纳所代表的力量比小牌更强、更具决定性。"
+          "relative": "牌必须相对于求问者进行解读，这意味着所有官方和传统的牌义都应调整，以与当前特定案例的条件相协调，即求问者的位置、人生阶段和性别，或进行咨询的对象。",
+          "trumps": "应记住，按照塔罗的体系，大阿尔卡那代表的力量比小阿尔卡那更强大、更具决定性。"
         },
-        "querent": "这种占法里，问卜者若为男性，由魔术师代表；若为女性，由女祭司代表。但无论哪种情况，这张牌都要等四十二张牌按上述方式摆好之后，才从牌堆中取出。"
+        "querent": "在此方法中，求问者，如果是男性，由魔术师代表，如果是女性，由女祭司代表；但无论哪种情况，这张牌都要在如上所述的四十二张牌全部摆出后才从牌堆中取出。"
       },
       "thirtyfive": {
         "positions": [
-          "第一行代表家宅、环境等。",
-          "第二行代表占卜所涉的人或事。",
-          "第三行代表发生在外部的事，如事件、人物等。",
-          "第四行代表意外、出乎意料之事等。",
-          "第五行代表慰藉，可以缓和前几行中一切不利之事。",
-          "第六行用来阐明其他几行中那些晦涩难解的神谕；离开它们，这一行本身并不重要。"
+          "第一行代表居所、环境等。",
+          "第二行代表求问事项的人物或主体。",
+          "第三行代表外部发生的事件、人物等。",
+          "第四行代表惊喜、意外等。",
+          "第五行代表安慰，并可缓和前面各行中所有不利的因素。",
+          "第六行用于阐明其他各行晦涩的预示；离开其他各行单独来看，它本身并无意义。"
         ]
       }
-    }
+    },
+    "minor": "{suit}{rank}"
+  },
+  "de": {
+    "major": {
+      "major-00": "Der Narr",
+      "major-01": "Der Magier",
+      "major-02": "Die Hohe Priesterin",
+      "major-03": "Die Kaiserin",
+      "major-04": "Der Kaiser",
+      "major-05": "Der Hierophant",
+      "major-06": "Die Liebenden",
+      "major-07": "Der Wagen",
+      "major-08": "Die Kraft",
+      "major-09": "Der Eremit",
+      "major-10": "Das Rad des Schicksals",
+      "major-11": "Die Gerechtigkeit",
+      "major-12": "Der Gehängte",
+      "major-13": "Der Tod",
+      "major-14": "Die Mäßigkeit",
+      "major-15": "Der Teufel",
+      "major-16": "Der Turm",
+      "major-17": "Der Stern",
+      "major-18": "Der Mond",
+      "major-19": "Die Sonne",
+      "major-20": "Das Jüngste Gericht",
+      "major-21": "Die Welt"
+    },
+    "suits": {
+      "wands": "Stäbe",
+      "cups": "Kelche",
+      "swords": "Schwerter",
+      "pentacles": "Münzen"
+    },
+    "ranks": {
+      "ace": "Ass",
+      "two": "Zwei",
+      "three": "Drei",
+      "four": "Vier",
+      "five": "Fünf",
+      "six": "Sechs",
+      "seven": "Sieben",
+      "eight": "Acht",
+      "nine": "Neun",
+      "ten": "Zehn",
+      "page": "Bube",
+      "knight": "Ritter",
+      "queen": "Königin",
+      "king": "König"
+    },
+    "positions": {
+      "celtic": [
+        "Was ihn bedeckt",
+        "Was ihn kreuzt",
+        "Was ihn krönt",
+        "Was unter ihm ist",
+        "Was hinter ihm ist",
+        "Was vor ihm ist",
+        "Er selbst",
+        "Sein Haus",
+        "Seine Hoffnungen oder Ängste",
+        "Was kommen wird"
+      ],
+      "thirtyfive": [
+        "Erste Reihe",
+        "Zweite Reihe",
+        "Dritte Reihe",
+        "Vierte Reihe",
+        "Fünfte Reihe",
+        "Sechste Reihe"
+      ]
+    },
+    "methods": {
+      "celtic": {
+        "positions": [
+          "Diese Karte gibt den Einfluss, der die Person oder Angelegenheit der Frage allgemein betrifft, die Atmosphäre, in der die anderen Strömungen wirken.",
+          "Sie zeigt die Natur der Hindernisse in der Angelegenheit. Wenn es eine günstige Karte ist, werden die entgegenwirkenden Kräfte nicht ernst sein, oder es kann anzeigen, dass etwas an sich Gutes in der besonderen Verbindung nicht von gutem Ergebnis sein wird.",
+          "Sie repräsentiert (a) das Ziel oder Ideal des Fragenden in der Angelegenheit; (b) das Beste, das unter den Umständen erreicht werden kann, aber das noch nicht verwirklicht wurde.",
+          "Sie zeigt das Fundament oder die Grundlage der Angelegenheit, das, was bereits in die Wirklichkeit übergegangen ist und was der Signifikator sich zu eigen gemacht hat.",
+          "Sie gibt den Einfluss, der gerade vergangen ist oder jetzt vorübergeht.",
+          "Sie zeigt den Einfluss, der in Aktion tritt und in naher Zukunft wirken wird.",
+          "bedeutet sich selbst, das heißt, den Signifikator, ob Person oder Sache, und zeigt seine Position oder Haltung in den Umständen.",
+          "bedeutet sein Haus, also seine Umgebung und die dort wirkenden Einflüsse auf die Angelegenheit, etwa seine Stellung im Leben oder den Einfluss enger Freunde.",
+          "gibt seine Hoffnungen oder Ängste in der Angelegenheit.",
+          "ist das, was kommen wird, das Endergebnis, der Höhepunkt, der durch die Einflüsse bewirkt wird, die von den anderen Karten gezeigt werden, die in der Weissagung aufgedeckt wurden."
+        ],
+        "significator": {
+          "colouring": {
+            "wands": "Die vier Hofkarten der Stäbe repräsentieren sehr faire Personen, mit gelbem oder kastanienbraunem Haar, hellem Teint und blauen Augen.",
+            "cups": "Die Hofkarten der Kelche bedeuten Personen mit hellbraunem oder stumpf hellem Haar und grauen oder blauen Augen.",
+            "swords": "Diejenigen in Schwertern stehen für Personen mit haselnussbraunen oder grauen Augen, dunkelbraunem Haar und stumpfem Teint.",
+            "pentacles": "werden auf Personen mit sehr dunkelbraunem oder schwarzem Haar, dunklen Augen und fahlem oder gebräuntem Teint bezogen."
+          },
+          "reserve": "Man kann sich gelegentlich vom bekannten Temperament einer Person leiten lassen; ein sehr Dunkler kann sehr energisch sein und würde besser durch eine Schwerter-Karte als eine Münzen-Karte dargestellt. Auf der anderen Seite sollte ein sehr Heller, der träge und lethargisch ist, eher den Kelchen als den Stäben zugeordnet werden.",
+          "facing": "Wenn der Signifikator ein Trumpf oder eine kleine Karte ist, die nicht als in eine bestimmte Richtung zeigend bezeichnet werden kann, muss der Weissager vor Beginn der Operation entscheiden, welche Seite er als nach vorn zeigend nimmt."
+        },
+        "finalCard": "Auf diese Karte sollte der Weissager seine intuitiven Fähigkeiten und sein Gedächtnis in Bezug auf die offiziellen deuterativen Bedeutungen, die damit verbunden sind, besonders konzentrieren. Sie sollte alles verkörpern, was man aus den anderen Karten auf dem Tisch, einschließlich des Signifikators selbst und bezüglich ihm oder ihr, gedeutet hat, nicht ausgenommen solche Erkenntnisse über höhere Bedeutung, die wie Funken vom Himmel fallen könnten, wenn die Karte, die als Orakel dient, die Karte zum Lesen, zufällig ein großer Trumpf ist.",
+        "followUp": {
+          "dubious-tenth": "sollte es geschehen, dass die letzte Karte von zweifelhafter Natur ist, aus der keine endgültige Entscheidung gezogen werden kann, oder die nicht das endgültige Ergebnis der Angelegenheit anzuzeigen scheint, kann es gut sein, die Operation zu wiederholen, wobei man in diesem Fall die Zehnte Karte als Signifikator nimmt, anstatt die zuvor verwendete. Das Deck muss erneut gemischt und dreimal geschnitten werden, und die ersten zehn Karten werden wie zuvor ausgelegt. Dadurch kann ein detaillierterer Bericht über \"Was kommen wird\" erhalten werden.",
+          "court-card-tenth": "Wenn in irgendeiner Weissagung die Zehnte Karte eine Hofkarte sein sollte, zeigt es, dass der Gegenstand der Weissagung letztlich in die Hände einer Person fällt, die durch diese Karte repräsentiert wird, und ihr Ende hängt hauptsächlich von ihm ab. In diesem Fall ist es auch nützlich, die betreffende Hofkarte als Signifikator in einer frischen Operation zu nehmen und zu entdecken, was die Natur seines Einflusses in der Angelegenheit ist und zu welchem Ergebnis er sie führen wird."
+        }
+      },
+      "alternative": {
+        "guidance": {
+          "relative": "die Karten müssen relativ zum Subjekt interpretiert werden, was bedeutet, dass alle offiziellen und konventionellen Bedeutungen der Karten angepasst werden können und sollten, um mit den Bedingungen dieses besonderen Falls in Frage zu harmonisieren, die Position, das Lebensalter und das Geschlecht des Fragenden, oder der Person, für die die Konsultation gemacht wird.",
+          "trumps": "Nach der Vorstellung des Tarots stehen die Großen Arkana für stärkere und zwingendere Kräfte als die Kleinen Arkana."
+        },
+        "querent": "In dieser Methode wird der Fragende, wenn männlichen Geschlechts, durch den Magier repräsentiert, und wenn weiblich durch die Hohe Priesterin; aber die Karte wird in jedem Fall nicht aus dem Deck genommen, bis die vierzig zwei Karten wie oben angeordnet ausgelegt wurden."
+      },
+      "thirtyfive": {
+        "positions": [
+          "Die Erste Reihe steht für das Haus, die Umgebung und so weiter.",
+          "Die Zweite Reihe steht für die Person oder den Gegenstand der Weissagung.",
+          "Die Dritte Reihe steht für das, was draußen vor sich geht, Ereignisse, Personen, etc.",
+          "Die Vierte Reihe steht für eine Überraschung, das Unerwartete, etc.",
+          "Die Fünfte Reihe steht für Trost und kann alles Ungünstige in den vorhergehenden Reihen mildern.",
+          "Die Sechste Reihe ist die, die konsultiert werden muss, um die rätselhaften Orakel der anderen zu erläutern; abgesehen von ihnen hat sie keine Bedeutung."
+        ]
+      }
+    },
+    "minor": "{rank} der {suit}"
+  },
+  "es": {
+    "major": {
+      "major-00": "El Loco",
+      "major-01": "El Mago",
+      "major-02": "La Sacerdotisa",
+      "major-03": "La Emperatriz",
+      "major-04": "El Emperador",
+      "major-05": "El Hierofante",
+      "major-06": "Los Enamorados",
+      "major-07": "El Carro",
+      "major-08": "La Fuerza",
+      "major-09": "El Ermitaño",
+      "major-10": "La Rueda de la Fortuna",
+      "major-11": "La Justicia",
+      "major-12": "El Colgado",
+      "major-13": "La Muerte",
+      "major-14": "La Templanza",
+      "major-15": "El Diablo",
+      "major-16": "La Torre",
+      "major-17": "La Estrella",
+      "major-18": "La Luna",
+      "major-19": "El Sol",
+      "major-20": "El Juicio Final",
+      "major-21": "El Mundo"
+    },
+    "suits": {
+      "wands": "Bastos",
+      "cups": "Copas",
+      "swords": "Espadas",
+      "pentacles": "Oros"
+    },
+    "ranks": {
+      "ace": "As",
+      "two": "Dos",
+      "three": "Tres",
+      "four": "Cuatro",
+      "five": "Cinco",
+      "six": "Seis",
+      "seven": "Siete",
+      "eight": "Ocho",
+      "nine": "Nueve",
+      "ten": "Diez",
+      "page": "Paje",
+      "knight": "Caballero",
+      "queen": "Reina",
+      "king": "Rey"
+    },
+    "positions": {
+      "celtic": [
+        "Lo que lo cubre",
+        "Lo que lo cruza",
+        "Lo que lo corona",
+        "Lo que está bajo él",
+        "Lo que está detrás de él",
+        "Lo que está delante de él",
+        "Él mismo",
+        "Su casa",
+        "Sus esperanzas o miedos",
+        "Lo que vendrá"
+      ],
+      "thirtyfive": [
+        "Primera Línea",
+        "Segunda Línea",
+        "Tercera Línea",
+        "Cuarta Línea",
+        "Quinta Línea",
+        "Sexta Línea"
+      ]
+    },
+    "methods": {
+      "celtic": {
+        "positions": [
+          "Esta carta da la influencia que afecta a la persona o asunto de la consulta en general, la atmósfera en la que operan las demás corrientes.",
+          "Muestra la naturaleza de los obstáculos en el asunto. Si es una carta favorable, las fuerzas opuestas no serán graves, o puede indicar que algo bueno en sí mismo no será productivo de bien en la conexión particular.",
+          "Representa (a) el objetivo o ideal del Consultante en el asunto; (b) lo mejor que puede lograrse bajo las circunstancias, pero que aún no se ha hecho realidad.",
+          "Muestra el fundamento o base del asunto, lo que ya ha pasado a la realidad y que el Significador ha hecho suyo.",
+          "Da la influencia que acaba de pasar, o que se está desvaneciendo ahora.",
+          "Muestra la influencia que está entrando en acción y operará en el futuro cercano.",
+          "significa a sí mismo, es decir, el Significador, ya sea persona o cosa, y muestra su posición o actitud en las circunstancias.",
+          "significa su casa, es decir, su entorno y las tendencias en acción en él que tienen un efecto en el asunto, por ejemplo, su posición en la vida, la influencia de amigos inmediatos, etc.",
+          "da sus esperanzas o miedos en el asunto.",
+          "es lo que vendrá, el resultado final, la culminación que es producida por las influencias mostradas por las demás cartas que han sido volteadas en la adivinación."
+        ],
+        "significator": {
+          "colouring": {
+            "wands": "Las cuatro Cartas de Corte de Bastos representan personas muy justas, con cabello amarillo o castaño rojizo, tez clara y ojos azules.",
+            "cups": "Las Cartas de Corte de Copas significan personas con cabello castaño claro o pálido y ojos grises o azules.",
+            "swords": "Las de Espadas representan personas con ojos avellana o grises, cabello castaño oscuro y tez apagada.",
+            "pentacles": "se refieren a personas con cabello castaño muy oscuro o negro, ojos oscuros y tez amarillenta o bronceada."
+          },
+          "reserve": "A veces puedes guiarte por el temperamento conocido de una persona; uno que es extremadamente oscuro puede ser muy enérgico, y estaría mejor representado por una carta de Espadas que de Oros. Por otro lado, un sujeto muy claro que es indolente y letárgico debería referirse a Copas en lugar de a Bastos.",
+          "facing": "Si el Significador es un Trump o cualquier carta pequeña que no pueda decirse que mira hacia ningún lado, el Adivino debe decidir antes de comenzar la operación qué lado tomará como mirando hacia adelante."
+        },
+        "finalCard": "Es en esta carta en la que el Adivino debe concentrar especialmente sus facultades intuitivas y su memoria con respecto a los significados adivinatorios oficiales adjuntos a ella. Debería encarnar todo lo que hayas adivinado de las demás cartas en la mesa, incluido el propio Significador y sobre él o ella, sin exceptuar tales luces sobre un significado superior que puedan caer como chispas del cielo si la carta que sirve de oráculo, la carta para leer, resulta ser un Trump Mayor.",
+        "followUp": {
+          "dubious-tenth": "si ocurriera que la última carta es de naturaleza dudosa, de la cual no se puede extraer una decisión final, o que no parece indicar la conclusión última del asunto, puede ser bueno repetir la operación, tomando en este caso la Décima Carta como el Significador, en lugar de la previamente usada. La baraja debe ser barajada de nuevo y cortada tres veces y las primeras diez cartas dispuestas como antes. Por esto se puede obtener un relato más detallado de \"Lo que vendrá\".",
+          "court-card-tenth": "Si en cualquier adivinación la Décima Carta fuera una Carta de Corte, muestra que el sujeto de la adivinación cae finalmente en manos de una persona representada por esa carta, y su final depende principalmente de él. En este evento también es útil tomar la Carta de Corte en cuestión como el Significador en una operación fresca, y descubrir cuál es la naturaleza de su influencia en el asunto y a qué resultado lo llevará."
+        }
+      },
+      "alternative": {
+        "guidance": {
+          "relative": "las cartas deben interpretarse relativamente al sujeto, lo que significa que todos los significados oficiales y convencionales de las cartas pueden y deben adaptarse para armonizar con las condiciones de este caso particular en consulta, la posición, época de la vida y sexo del Consultante, o persona para quien se hace la consulta.",
+          "trumps": "Conviene recordar que los arcanos mayores representan fuerzas más poderosas y apremiantes, según la concepción del Tarot, que las cartas menores."
+        },
+        "querent": "En este método, el Consultante, si es de sexo masculino, es representado por el Mago, y si es femenino por la Sacerdotisa; pero la carta, en cualquier caso, no se toma de la baraja hasta que las cuarenta y dos cartas hayan sido dispuestas, como se dirigió anteriormente."
+      },
+      "thirtyfive": {
+        "positions": [
+          "La Primera Línea representa la casa, el entorno, etc.",
+          "La Segunda Línea representa a la persona o sujeto de la adivinación.",
+          "La Tercera Línea representa lo que está pasando afuera, eventos, personas, etc.",
+          "La Cuarta Línea representa una sorpresa, lo inesperado, etc.",
+          "La Quinta Línea representa consuelo, y puede moderar todo lo desfavorable en las líneas precedentes.",
+          "La Sexta Línea es la que debe consultarse para elucidar los oráculos enigmáticos de las demás; aparte de ellas no tiene importancia."
+        ]
+      }
+    },
+    "minor": "{rank} de {suit}"
+  },
+  "fr": {
+    "major": {
+      "major-00": "Le Mat",
+      "major-01": "Le Bateleur",
+      "major-02": "La Papesse",
+      "major-03": "L'Impératrice",
+      "major-04": "L'Empereur",
+      "major-05": "Le Pape",
+      "major-06": "Les Amoureux",
+      "major-07": "Le Chariot",
+      "major-08": "La Force",
+      "major-09": "L'Ermite",
+      "major-10": "La Roue de Fortune",
+      "major-11": "La Justice",
+      "major-12": "Le Pendu",
+      "major-13": "La Mort",
+      "major-14": "La Tempérance",
+      "major-15": "Le Diable",
+      "major-16": "La Tour",
+      "major-17": "L'Étoile",
+      "major-18": "La Lune",
+      "major-19": "Le Soleil",
+      "major-20": "Le Jugement",
+      "major-21": "Le Monde"
+    },
+    "suits": {
+      "wands": "Bâtons",
+      "cups": "Coupes",
+      "swords": "Épées",
+      "pentacles": "Deniers"
+    },
+    "ranks": {
+      "ace": "As",
+      "two": "Deux",
+      "three": "Trois",
+      "four": "Quatre",
+      "five": "Cinq",
+      "six": "Six",
+      "seven": "Sept",
+      "eight": "Huit",
+      "nine": "Neuf",
+      "ten": "Dix",
+      "page": "Valet",
+      "knight": "Cavalier",
+      "queen": "Reine",
+      "king": "Roi"
+    },
+    "positions": {
+      "celtic": [
+        "Ce qui couvre",
+        "Ce qui croise",
+        "Ce qui couronne",
+        "Ce qui est sous",
+        "Ce qui est derrière",
+        "Ce qui est devant",
+        "Lui-même",
+        "Sa maison",
+        "Ses espoirs ou ses craintes",
+        "Ce qui viendra"
+      ],
+      "thirtyfive": [
+        "Première ligne",
+        "Deuxième ligne",
+        "Troisième ligne",
+        "Quatrième ligne",
+        "Cinquième ligne",
+        "Sixième ligne"
+      ]
+    },
+    "methods": {
+      "celtic": {
+        "positions": [
+          "Cette carte donne l'influence qui affecte généralement la personne ou la matière de la question, l'atmosphère dans laquelle les autres courants agissent.",
+          "Elle montre la nature des obstacles dans la matière. Si c'est une carte favorable, les forces opposées ne seront pas sérieuses, ou cela peut indiquer que quelque chose de bon en soi ne sera pas productif dans la connexion particulière.",
+          "Elle représente (a) le but ou l'idéal du Querant dans la matière ; (b) le meilleur qui peut être réalisé dans les circonstances, mais qui n'a pas encore été rendu actuel.",
+          "Elle montre le fondement ou la base de la matière, ce qui est déjà passé dans l'actualité et que le Significateur s'est approprié.",
+          "Elle donne l'influence qui vient de passer, ou qui est en train de s'éloigner.",
+          "Elle montre l'influence qui entre en action et opérera dans un proche avenir.",
+          "signifie lui-même, c'est-à-dire le Significateur, qu'il s'agisse d'une personne ou d'une chose, et montre sa position ou son attitude dans les circonstances.",
+          "signifie sa maison, c'est-à-dire son environnement et les tendances qui y agissent et qui ont un effet sur la matière, par exemple, sa position dans la vie, l'influence des amis immédiats, et ainsi de suite.",
+          "donne ses espoirs ou ses craintes dans la matière.",
+          "est ce qui viendra, le résultat final, le point culminant qui est amené par les influences montrées par les autres cartes qui ont été retournées dans la divination."
+        ],
+        "significator": {
+          "colouring": {
+            "wands": "Les quatre figures de Bâtons représentent des personnes très avenantes, aux cheveux blonds ou auburn, au teint clair et aux yeux bleus.",
+            "cups": "Les figures de Coupes représentent des personnes aux cheveux châtain clair ou blond terne et aux yeux gris ou bleus.",
+            "swords": "Ceux en Épées représentent des personnes ayant des yeux noisette ou gris, des cheveux bruns foncés et un teint terne.",
+            "pentacles": "se réfèrent à des personnes aux cheveux très bruns ou noirs, aux yeux foncés et au teint jaune ou basané."
+          },
+          "reserve": "Vous pouvez être guidé de temps en temps par le tempérament connu d'une personne ; quelqu'un d'excessivement sombre peut être très énergique, et serait mieux représenté par une carte d'Épée que par un Denier. D'un autre côté, un sujet très clair qui est indolent et léthargique devrait être référé aux Coupes plutôt qu'aux Bâtons.",
+          "facing": "Si le Significateur est un Trump ou n'importe quelle petite carte qui ne peut pas dire faire face des deux côtés, le Divinateur doit décider avant de commencer l'opération de quel côté il va le prendre comme faisant face."
+        },
+        "finalCard": "C'est sur cette carte que le Divinateur devrait concentrer ses facultés intuitives et sa mémoire par rapport aux significations divinatoires officielles qui y sont attachées. Elle devrait incarner tout ce que vous avez divinisé des autres cartes sur la table, y compris le Significateur lui-même et concernant lui ou elle, sans exception de telles lumières sur la signification plus élevée qui pourraient tomber comme des étincelles du ciel si la carte qui sert d'oracle, la carte pour la lecture, devait être un Trump Major.",
+        "followUp": {
+          "dubious-tenth": "s'il arrive que la dernière carte soit d'une nature douteuse, à partir de laquelle aucune décision finale ne peut être tirée, ou qui ne semble pas indiquer la conclusion ultime de l'affaire, il peut être bon de répéter l'opération, en prenant cette fois la Dixième Carte comme le Significateur, au lieu de celle précédemment utilisée. Le paquet doit être à nouveau mélangé et coupé trois fois et les dix premières cartes disposées comme auparavant. Par cela, un compte-rendu plus détaillé de \"Ce qui viendra\" peut être obtenu.",
+          "court-card-tenth": "Si la dixième carte d'un tirage est une figure, le sujet de la divination finit entre les mains de la personne qu'elle représente, et l'issue dépend surtout d'elle. Il est alors utile de reprendre cette figure comme Significateur dans un nouveau tirage, afin de découvrir la nature de son influence et l'issue vers laquelle elle conduira l'affaire."
+        }
+      },
+      "alternative": {
+        "guidance": {
+          "relative": "les cartes doivent être interprétées relativement au sujet, ce qui signifie que toutes les significations officielles et conventionnelles des cartes peuvent et doivent être adaptées pour harmoniser avec les conditions de ce cas particulier en question, la position, le moment de la vie et le sexe du Querant, ou la personne pour qui la consultation est faite.",
+          "trumps": "Il faut se rappeler que les arcanes majeurs représentent, selon la conception du Tarot, des forces plus puissantes et plus impérieuses que les arcanes mineurs."
+        },
+        "querent": "Dans cette méthode, le Querant, s'il est de sexe masculin, est représenté par le Bateleur, et s'il est féminin par la Papesse ; mais la carte, dans les deux cas, n'est pas prise du paquet jusqu'à ce que les quarante-deux cartes aient été disposées, comme dirigé ci-dessus."
+      },
+      "thirtyfive": {
+        "positions": [
+          "La Première Ligne représente la maison, l'environnement et ainsi de suite.",
+          "La Deuxième Ligne représente la personne ou le sujet de la divination.",
+          "La Troisième Ligne représente ce qui se passe à l'extérieur, les événements, les personnes, etc.",
+          "La Quatrième Ligne représente une surprise, l'inattendu, etc.",
+          "La Cinquième Ligne représente la consolation, et peut modérer tout ce qui est défavorable dans les lignes précédentes.",
+          "La Sixième Ligne est celle qui doit être consultée pour élucider les oracles énigmatiques des autres ; à part elles, elle n'a aucune importance."
+        ]
+      }
+    },
+    "minor": "{rank} de {suit}"
+  },
+  "ja": {
+    "major": {
+      "major-00": "愚者",
+      "major-01": "魔術師",
+      "major-02": "女教皇",
+      "major-03": "女帝",
+      "major-04": "皇帝",
+      "major-05": "教皇",
+      "major-06": "恋人",
+      "major-07": "戦車",
+      "major-08": "力",
+      "major-09": "隠者",
+      "major-10": "運命の輪",
+      "major-11": "正義",
+      "major-12": "吊るされた男",
+      "major-13": "死神",
+      "major-14": "節制",
+      "major-15": "悪魔",
+      "major-16": "塔",
+      "major-17": "星",
+      "major-18": "月",
+      "major-19": "太陽",
+      "major-20": "審判",
+      "major-21": "世界"
+    },
+    "suits": {
+      "wands": "ワンド",
+      "cups": "カップ",
+      "swords": "ソード",
+      "pentacles": "ペンタクル"
+    },
+    "ranks": {
+      "ace": "エース",
+      "two": "2",
+      "three": "3",
+      "four": "4",
+      "five": "5",
+      "six": "6",
+      "seven": "7",
+      "eight": "8",
+      "nine": "9",
+      "ten": "10",
+      "page": "ペイジ",
+      "knight": "ナイト",
+      "queen": "クイーン",
+      "king": "キング"
+    },
+    "positions": {
+      "celtic": [
+        "彼を覆うもの",
+        "彼を横切るもの",
+        "彼を戴冠するもの",
+        "彼の下にあるもの",
+        "彼の背後にあるもの",
+        "彼の前にはあるもの",
+        "彼自身",
+        "彼の家庭",
+        "彼の希望または恐れ",
+        "到来するもの"
+      ],
+      "thirtyfive": [
+        "第一行",
+        "第二行",
+        "第三行",
+        "第四行",
+        "第五行",
+        "第六行"
+      ]
+    },
+    "methods": {
+      "celtic": {
+        "positions": [
+          "このカードは、調査対象の人物や事柄に一般的に影響を与えている影響力、他の流れが作用する雰囲気を示す。",
+          "それは事柄における障害の性質を示す。もしそれが好ましいカードであれば、反対勢力は深刻ではないか、あるいはそれ自体は良いものでも、特定の文脈では良い結果を生み出さないことを示すかもしれない。",
+          "それは（a）事柄における質問者の目標または理想、（b）状況の下で達成されうる最善のもの、しかしまだ現実化されていないものを表す。",
+          "それは事柄の基盤または基礎を示し、すでに現実化し、象徴者が自分のものとしたものを示す。",
+          "それは、すでに過ぎ去った、または現在過ぎ去ろうとしている影響力を示す。",
+          "それは、作用し始め、近い将来に作用する影響力を示す。",
+          "象徴者、つまり人物または物を表し、それが状況における位置または態度を示す。",
+          "彼の家庭、つまり彼の環境と、事柄に影響を与えるそこで作用している傾向、例えば彼の社会的地位、近しい友人の影響などを表す。",
+          "事柄における彼の希望または恐れを示す。",
+          "到来するもの、最終結果、占いの他のカードが示す影響力によってもたらされる頂点を表す。"
+        ],
+        "significator": {
+          "colouring": {
+            "wands": "ワンドの4枚のコートカードは、金髪または赤褐色の髪、明るい肌、青い目を持つ、とても感じのよい人物を表す。",
+            "cups": "カップのコートカードは、明るい茶色またはくすんだ金髪、灰色または青い目を持つ人物を表す。",
+            "swords": "ソードのものは、薄褐色または灰色の目、濃い茶色の髪、鈍い肌を持つ人々を表す。",
+            "pentacles": "非常に濃い茶色または黒い髪、暗い目、黄ばんだまたは日焼けした肌を持つ人々に言及される。"
+          },
+          "reserve": "時に、人物の既知の気質によって導かれることができる。非常に暗い人物は非常に活発である可能性があり、ペンタクルよりもソードのカードで表すのがよい。一方、怠惰で無気力な非常に明るい被験者は、ワンドよりもカップに言及されるべきである。",
+          "facing": "象徴者がトランプまたはどちらを向いているとも言いにくい小さなカードである場合、占者は操作を開始する前に、どちらを向いていると見なすかを決断しなければならない。"
+        },
+        "finalCard": "このカードでは、とりわけ直観と記憶を働かせ、定められた占術上の意味も考慮する。それまでに場のカードやシグニフィケーターから読み取ったことをすべて集約し、さらに、神託として読むカードが大アルカナなら、ひらめきのように訪れる高次の意味も含める。",
+        "followUp": {
+          "dubious-tenth": "最後のカードが曖昧で、最終的な判断や事の結末を読み取れないなら、もう一度展開する。このときは、先ほどのカードに代えて第十のカードをシグニフィケーターとする。デッキを再び混ぜて3回カットし、先ほどと同じように最初の10枚を並べる。こうすれば、その後の展開をさらに詳しく読める。",
+          "court-card-tenth": "第十のカードがコートカードなら、占う事柄は最後にはその人物の手に委ねられ、結末も主にその人物次第となる。この場合も、そのコートカードを新しい展開のシグニフィケーターとし、その人物が事柄に及ぼす影響と、どのような結末へ導くかを確かめるとよい。"
+        }
+      },
+      "alternative": {
+        "guidance": {
+          "relative": "カードは対象に対して相対的に解釈されねばならない。これは、カードのすべての公式および慣用的な意味が、問われている特定のケースの状況、占術者の位置、人生の時期、性別、または相談の対象者、と調和するように適応され、かつ適応されるべきであることを意味する。",
+          "trumps": "タロットの考え方では、大アルカナは小アルカナよりも強く、抗いがたい力を表す。"
+        },
+        "querent": "この方法では、占術者が男性の場合はマジシャンが、女性の場合は女教皇がそれに対応するが、いずれの場合も、上記の指示通り 42 枚のカードを並べてから初めてデッキからカードが引かれる。"
+      },
+      "thirtyfive": {
+        "positions": [
+          "第一の列は、家、環境などを表す。",
+          "第二の列は、人物または占術の対象を表す。",
+          "第三の列は、外部で進行中のこと、出来事、人物などを表す。",
+          "第四の列は、驚き、予期せぬことなどを表す。",
+          "第五の列は、慰めを表し、前の列の不吉な要素をすべて和らげる可能性がある。",
+          "第六の列は、他のカードの謎めいた神託を解明するために参照すべきものであり、それらとは無関係には重要性を持たない。"
+        ]
+      }
+    },
+    "minor": "{suit}の{rank}"
+  },
+  "pt": {
+    "major": {
+      "major-00": "O Louco",
+      "major-01": "O Mago",
+      "major-02": "A Sacerdotisa",
+      "major-03": "A Imperatriz",
+      "major-04": "O Imperador",
+      "major-05": "O Hierofante",
+      "major-06": "Os Enamorados",
+      "major-07": "O Carro",
+      "major-08": "A Força",
+      "major-09": "O Eremita",
+      "major-10": "A Roda da Fortuna",
+      "major-11": "A Justiça",
+      "major-12": "O Enforcado",
+      "major-13": "A Morte",
+      "major-14": "A Temperança",
+      "major-15": "O Diabo",
+      "major-16": "A Torre",
+      "major-17": "A Estrela",
+      "major-18": "A Lua",
+      "major-19": "O Sol",
+      "major-20": "O Julgamento",
+      "major-21": "O Mundo"
+    },
+    "suits": {
+      "wands": "Bastões",
+      "cups": "Copas",
+      "swords": "Espadas",
+      "pentacles": "Ouros"
+    },
+    "ranks": {
+      "ace": "Ás",
+      "two": "Dois",
+      "three": "Três",
+      "four": "Quatro",
+      "five": "Cinco",
+      "six": "Seis",
+      "seven": "Sete",
+      "eight": "Oito",
+      "nine": "Nove",
+      "ten": "Dez",
+      "page": "Valete",
+      "knight": "Cavaleiro",
+      "queen": "Rainha",
+      "king": "Rei"
+    },
+    "positions": {
+      "celtic": [
+        "O que o cobre",
+        "O que o cruza",
+        "O que o coroa",
+        "O que está debaixo dele",
+        "O que está atrás dele",
+        "O que está à sua frente",
+        "Ele próprio",
+        "A sua casa",
+        "As suas esperanças ou medos",
+        "O que virá"
+      ],
+      "thirtyfive": [
+        "Primeira Linha",
+        "Segunda Linha",
+        "Terceira Linha",
+        "Quarta Linha",
+        "Quinta Linha",
+        "Sexta Linha"
+      ]
+    },
+    "methods": {
+      "celtic": {
+        "positions": [
+          "Esta carta dá a influência que está a afetar a pessoa ou matéria em questão em geral, a atmosfera em que as outras correntes atuam.",
+          "Mostra a natureza dos obstáculos na matéria. Se for uma carta favorável, as forças opostas não serão sérias, ou pode indicar que algo bom em si mesmo não será produtivo de bom resultado na ligação particular.",
+          "Representa (a) o objetivo ou ideal do Querente na matéria; (b) o melhor que pode ser alcançado sob as circunstâncias, mas que ainda não foi tornado atual.",
+          "Mostra a fundação ou base da matéria, aquilo que já passou para a atualidade e que o Significador se apropriou.",
+          "Dá a influência que acabou de passar, ou que está agora a desaparecer.",
+          "Mostra a influência que está a entrar em ação e que operará no futuro próximo.",
+          "significa ele próprio, ou seja, o Significador, seja pessoa ou coisa, e mostra a sua posição ou atitude nas circunstâncias.",
+          "significa a sua casa, ou seja, o seu ambiente e as tendências em ação nele que têm um efeito na matéria, por exemplo, a sua posição na vida, a influência dos amigos imediatos, e assim por diante.",
+          "dá as suas esperanças ou medos na matéria.",
+          "é o que virá, o resultado final, o culminar que é trazido pelas influências mostradas pelas outras cartas que foram viradas na adivinhação."
+        ],
+        "significator": {
+          "colouring": {
+            "wands": "As quatro figuras de Paus representam pessoas muito agradáveis, de cabelo louro ou ruivo-acastanhado, tez clara e olhos azuis.",
+            "cups": "As figuras de Copas representam pessoas de cabelo castanho-claro ou louro baço e olhos cinzentos ou azuis.",
+            "swords": "Os de Espadas representam pessoas com olhos cor de avelã ou cinzentos, cabelo castanho-escuro e tez opaca.",
+            "pentacles": "referem-se a pessoas com cabelo castanho-muito-escuro ou preto, olhos escuros e tez amarelada ou morena."
+          },
+          "reserve": "Pode ser guiado por vezes pelo temperamento conhecido de uma pessoa; um que é excecionalmente escuro pode ser muito energético, e seria melhor representado por uma carta de Espadas do que de Ouros. Por outro lado, um sujeito muito claro que é indolente e letárgico deve ser referido a Copas em vez de Paus.",
+          "facing": "Se o Significador for um Trump ou qualquer carta pequena que não possa ser dita estar virada para qualquer lado, o Adivinho deve decidir antes de começar a operação de que lado a vai tomar como virada."
+        },
+        "finalCard": "É nesta carta que o Adivinho deve concentrar especialmente as suas faculdades intuitivas e a sua memória no que respeita aos significados divinatórios oficiais a ela associados. Deve conter tudo o que tenha adivinhado a partir das outras cartas na mesa, incluindo o próprio Significador e o que diz respeito a ele ou a ela, sem exceção das luzes sobre o significado superior que possam cair como faíscas do céu se a carta que serve de oráculo, a carta para leitura, acontecer de ser um Tarô Maior.",
+        "followUp": {
+          "dubious-tenth": "caso aconteça que a última carta seja de natureza duvidosa, da qual não se possa tirar uma decisão final, ou que não pareça indicar a conclusão definitiva do assunto, pode ser bom repetir a operação, tomando neste caso a Décima Carta como Significador, em vez da anteriormente usada. O baralho deve ser novamente embaralhado e cortado três vezes, e as dez primeiras cartas dispostas como antes. Desta forma, obter-se-á uma descrição mais detalhada de \"O que virá\".",
+          "court-card-tenth": "Se em qualquer adivinhação a Décima Carta for uma Carta de Corte, mostra que o assunto da adivinhação acaba por cair nas mãos de uma pessoa representada por essa carta, e o seu fim depende principalmente dela. Neste evento, também é útil tomar a Carta de Corte em questão como Significador numa operação nova, e descobrir qual é a natureza da sua influência no assunto e a que resultado a levará."
+        }
+      },
+      "alternative": {
+        "guidance": {
+          "relative": "as cartas devem ser interpretadas relativamente ao assunto, o que significa que todos os significados oficiais e convencionais das cartas podem e devem ser adaptados para harmonizar com as condições deste caso particular em questão, a posição, a idade e o sexo do Querente, ou da pessoa para quem a consulta é feita.",
+          "trumps": "Segundo a conceção do Tarô, os Arcanos Maiores representam forças mais poderosas e imperiosas do que os Arcanos Menores."
+        },
+        "querent": "Neste método, o Querente, se do sexo masculino, é representado pelo Mago, e se feminino pela Sacerdotisa; mas a carta, em qualquer caso, não é retirada do baralho até que as quarenta e duas cartas tenham sido dispostas, como acima indicado."
+      },
+      "thirtyfive": {
+        "positions": [
+          "A Primeira Linha representa a casa, o ambiente e assim por diante.",
+          "A Segunda Linha representa a pessoa ou o assunto da adivinhação.",
+          "A Terceira Linha representa o que está a passar no exterior, eventos, pessoas, etc.",
+          "A Quarta Linha representa uma surpresa, o inesperado, etc.",
+          "A Quinta Linha representa o consolo, e pode moderar tudo o que é desfavorável nas linhas anteriores.",
+          "A Sexta Linha é aquela que deve ser consultada para elucidar os oráculos enigmáticos das outras; apartadas delas, não tem importância."
+        ]
+      }
+    },
+    "minor": "{rank} de {suit}"
+  },
+  "ru": {
+    "major": {
+      "major-00": "Шут",
+      "major-01": "Маг",
+      "major-02": "Верховная Жрица",
+      "major-03": "Императрица",
+      "major-04": "Император",
+      "major-05": "Иерофант",
+      "major-06": "Влюблённые",
+      "major-07": "Колесница",
+      "major-08": "Сила",
+      "major-09": "Отшельник",
+      "major-10": "Колесо Фортуны",
+      "major-11": "Справедливость",
+      "major-12": "Повешенный",
+      "major-13": "Смерть",
+      "major-14": "Умеренность",
+      "major-15": "Дьявол",
+      "major-16": "Башня",
+      "major-17": "Звезда",
+      "major-18": "Луна",
+      "major-19": "Солнце",
+      "major-20": "Суд",
+      "major-21": "Мир"
+    },
+    "suits": {
+      "wands": "Жезлов",
+      "cups": "Кубков",
+      "swords": "Мечей",
+      "pentacles": "Пентаклей"
+    },
+    "ranks": {
+      "ace": "Туз",
+      "two": "Двойка",
+      "three": "Тройка",
+      "four": "Четвёрка",
+      "five": "Пятёрка",
+      "six": "Шестёрка",
+      "seven": "Семёрка",
+      "eight": "Восьмёрка",
+      "nine": "Девятка",
+      "ten": "Десятка",
+      "page": "Паж",
+      "knight": "Рыцарь",
+      "queen": "Королева",
+      "king": "Король"
+    },
+    "positions": {
+      "celtic": [
+        "Что его покрывает",
+        "Что его пересекает",
+        "Что его венчает",
+        "Что под ним",
+        "Что позади него",
+        "Что перед ним",
+        "Он сам",
+        "Его дом",
+        "Его надежды или страхи",
+        "Что придёт"
+      ],
+      "thirtyfive": [
+        "Первая линия",
+        "Вторая линия",
+        "Третья линия",
+        "Четвёртая линия",
+        "Пятая линия",
+        "Шестая линия"
+      ]
+    },
+    "methods": {
+      "celtic": {
+        "positions": [
+          "Эта карта даёт влияние, которое в целом воздействует на спрашивающего или предмет вопроса, атмосферу, в которой действуют другие токи.",
+          "Она показывает природу препятствий в деле. Если карта благоприятная, противодействующие силы не будут серьёзными; возможно и другое: нечто хорошее само по себе в данном сочетании пользы не принесёт.",
+          "Она представляет (a) цель или идеал Спрашивающего в деле; (b) лучшее, что может быть достигнуто при данных обстоятельствах, но что ещё не стало реальностью.",
+          "Она показывает основание дела: то, что уже стало реальностью и что сигнификатор сделал своим.",
+          "Она даёт влияние, которое только что прошло или сейчас уходит.",
+          "Она показывает влияние, которое вступает в действие и будет действовать в ближайшем будущем.",
+          "означает сам сигнификатор, будь то человек или предмет, и показывает его положение или отношение к обстоятельствам.",
+          "означает его дом, то есть его окружение и тенденции, действующие в нём, которые оказывают влияние на дело, например, его положение в жизни, влияние ближайших друзей и так далее.",
+          "даёт его надежды или страхи в деле.",
+          "это то, что придёт, конечный результат, кульминация, которая достигается влияниями, показанными другими картами, которые были открыты при гадании."
+        ],
+        "significator": {
+          "colouring": {
+            "wands": "Четыре Дворцовые карты в Жезлах представляют очень достойных людей с жёлтыми или рыжими волосами, светлой кожей и голубыми глазами.",
+            "cups": "Дворцовые карты в Чашах означают людей со светло-каштановыми или тускло-светлыми волосами и серыми или голубыми глазами.",
+            "swords": "Те, что в Мечах, стоят за людей с орлиными или серыми глазами, тёмно-каштановыми волосами и тусклой кожей.",
+            "pentacles": "относятся к лицам с очень тёмно-каштановыми или чёрными волосами, тёмными глазами и желтоватой или смуглой кожей."
+          },
+          "reserve": "Иногда можно руководствоваться известным темпераментом человека; тот, кто чрезвычайно тёмен, может быть очень энергичным, и его лучше представить картой Мечей, а не Пентаклей. С другой стороны, очень светлый субъект, который ленив и апатичен, должен быть отнесён к Чашам, а не к Жезлам.",
+          "facing": "Если сигнификатор, Старший Аркан или иная карта, которая явно не смотрит ни в одну сторону, гадающий до начала расклада решает, какую сторону считать лицевой."
+        },
+        "finalCard": "Именно на этой карте Вещуну следует особенно сосредоточить свои интуитивные способности и память в отношении официальных гадательных значений, приписываемых ей. Она должна воплощать всё, что вы могли предвидеть из других карт на столе, включая самого Знаменателя и всё, что касается его или неё, не исключая таких озарений относительно высшего смысла, которые могут упасть, как искры с неба, если карта, служащая оракулом, карта для чтения, окажется Старшим Арканом.",
+        "followUp": {
+          "dubious-tenth": "Если случится так, что последняя карта имеет сомнительный характер, из которого нельзя сделать окончательного вывода, или она не указывает на конечный итог дела, будет полезно повторить операцию, взяв в этом случае Десятую карту как Знаменателя вместо ранее использованной. Колоду следует снова перетасовать и разделить три раза, а первые десять карт разложить, как и прежде. Таким образом можно получить более подробное описание того, «Что будет».",
+          "court-card-tenth": "Если в любом гадании Десятая карта окажется Дворовой, это показывает, что предмет гадания в конечном итоге попадает в руки человека, представленного этой картой, и его исход зависит главным образом от него. В этом случае также полезно взять соответствующую Дворовую карту как Знаменателя в новой операции и выяснить, какова природа его влияния на дело и к какому исходу он приведёт его."
+        }
+      },
+      "alternative": {
+        "guidance": {
+          "relative": "Карты должны толковаться относительно предмета гадания, что означает, что все официальные и традиционные значения карт могут и должны быть адаптированы для согласования с условиями данного конкретного вопроса, положением, возрастом и полом Спрашивающего или лица, для которого делается консультация.",
+          "trumps": "Следует помнить, что Старшие Арканы представляют более мощные и побуждающие силы, согласно гипотезе Таро, чем можно отнести к Младшим Арканам."
+        },
+        "querent": "В этом методе Спрашивающий, если мужского пола, представлен Магом, а если женского, Верховной Жрицей; но карта в любом случае берётся из колоды не ранее, чем будут разложены сорок две карты, как указано выше."
+      },
+      "thirtyfive": {
+        "positions": [
+          "Первая линия означает дом, окружение и так далее.",
+          "Вторая линия означает человека или предмет гадания.",
+          "Третья линия означает то, что происходит снаружи, события, лица и т.д.",
+          "Четвёртая линия означает сюрприз, неожиданное и т.д.",
+          "Пятая линия означает утешение и может смягчить всё неблагоприятное в предыдущих линиях.",
+          "К шестой линии обращаются, чтобы прояснить загадочные предсказания остальных; вне их контекста она сама по себе значения не имеет."
+        ]
+      }
+    },
+    "minor": "{rank} {suit}"
   }
 }

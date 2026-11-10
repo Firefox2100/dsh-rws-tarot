@@ -4,6 +4,8 @@
 
 English | [中文](README-zh.md)
 
+Translations into languages other than English are machine-generated, so quality may vary. Corrections are very welcome through a pull request or issue.
+
 Rider-Waite-Smith tarot for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness): lay a spread in the right dock, turn the cards one at a time and have each read from Arthur Edward Waite's *The Pictorial Key to the Tarot* (1910, public domain). Code draws the cards and supplies the book's meanings and methods; the language model only reasons on top of those facts.
 
 For entertainment, study and reflection only. It cannot predict or interpret real events and is no guide for decisions; see the [disclaimer](packages/tarot/README.md#disclaimer).

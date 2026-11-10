@@ -64,6 +64,16 @@ const USAGE = '/tarot start celtic <significator-id> <left|right> <upright|rever
 
 /** Sessions where the plugin has already told the model which language to answer in. */
 const noted = new WeakSet<object>()
+const LANGUAGE_NOTES: Readonly<Record<string, (locale: string) => string>> = {
+  de: locale => `Die Sprache der Oberfläche ist „${locale}“. Antworte in dieser Sprache.`,
+  en: locale => `The interface language is "${locale}". Reply in that language.`,
+  es: locale => `El idioma de la interfaz es «${locale}». Responde en ese idioma.`,
+  fr: locale => `La langue de l'interface est «${locale}». Répondez dans cette langue.`,
+  ja: locale => `インターフェースの言語は「${locale}」です。この言語で答えてください。`,
+  pt: locale => `O idioma da interface é «${locale}». Responda nesse idioma.`,
+  ru: locale => `Язык интерфейса: «${locale}». Отвечайте на этом языке.`,
+  zh: locale => `界面语言是“${locale}”，请用这种语言回复。`,
+}
 
 /**
  * What to say before the first message the model hears from this plugin, or '' when the conversation already has
@@ -75,9 +85,8 @@ function languageNote(agent: Agent, reading: Reading): string {
   const spoken = agent.session.deriveMessages().some(message => message.role === 'user' || message.role === 'assistant')
   if (spoken) return ''
   noted.add(agent.session)
-  return reading.language.split(/[-_]/)[0] === 'zh'
-    ? `界面语言是“${reading.language}”，请用这种语言回复。`
-    : `The interface language is "${reading.language}". Reply in that language.`
+  const language = reading.language.split(/[-_]/)[0]!
+  return (LANGUAGE_NOTES[language] ?? LANGUAGE_NOTES.en!)(reading.language)
 }
 
 export interface Config {

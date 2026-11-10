@@ -91,7 +91,7 @@ describe('/tarot', () => {
     const test = await harness()
     await run(test, '/tarot start celtic cups-13 left upright zh 搬家顺利吗？')
     await run(test, '/tarot draw')
-    expect(test.followups[0]).toContain('你正在为提问的人占卜塔罗')
+    expect(test.followups[0]).toContain('你正在为提问者解读塔罗')
     expect(test.followups[0]).toContain('他们问：搬家顺利吗？')
   })
 
@@ -148,7 +148,7 @@ describe('/tarot', () => {
     expect(test.followups).toEqual([])
     expect(JSON.stringify(await call({ card: 'major-16' }))).toContain('a reading is already in progress')
     await run(test, '/tarot draw')
-    expect(test.followups[0]).toContain('你正在为提问的人占卜塔罗')
+    expect(test.followups[0]).toContain('你正在为提问者解读塔罗')
   })
 
   it('draws a plain number of cards, one at a time, with no positions', async () => {

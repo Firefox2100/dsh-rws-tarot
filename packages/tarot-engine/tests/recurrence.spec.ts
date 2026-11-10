@@ -24,7 +24,7 @@ describe('recurrence of cards', () => {
 
   it('puts the book\'s phrase in front of the model, in the language of the reading', () => {
     const order = [up('wands-14'), up('cups-14')]
-    for (const [language, expected] of [['en', '2 Kings now lie on the table together: minor counsel.'], ['zh', '桌上现在有 2 张国王：minor counsel。']] as const) {
+    for (const [language, expected] of [['en', '2 Kings now lie on the table together: minor counsel.'], ['zh', '桌上现有2张国王：小建议。']] as const) {
       let t = applyStart(emptyTable, { id: 'r', method: 'plain', significator: null, facing: null, question: '', language, draws: 2, turns: [1, 1], order })
       t = applyDraw(applyDraw(t, { readingId: 'r', index: 0 }), { readingId: 'r', index: 1 })
       expect(describeTurn(t.readings[0]!, 0)).not.toContain('together')

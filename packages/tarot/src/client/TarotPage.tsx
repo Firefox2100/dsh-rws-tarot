@@ -313,7 +313,7 @@ function EarlierReading({ reading, methodLabel, where, nameOf, t }: { reading: R
     <details className={css.past} onToggle={(event) => { setOpen(event.currentTarget.open) }}>
       <summary>
         <span>{methodLabel}</span>
-        <span className={css.muted}>{reading.question === '' ? '—' : reading.question} · {t('history.cards', { n: reading.drawn.length, m: reading.draws })}{reading.abandoned ? ` · ${t('history.ended')}` : ''}</span>
+        <span className={css.muted}>{reading.question === '' ? t('history.noQuestion') : reading.question} · {t('history.cards', { n: reading.drawn.length, m: reading.draws })}{reading.abandoned ? ` · ${t('history.ended')}` : ''}</span>
       </summary>
       {open && <Turned reading={reading} where={where} nameOf={nameOf} t={t} />}
     </details>

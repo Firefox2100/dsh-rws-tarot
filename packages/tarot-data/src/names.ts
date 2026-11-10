@@ -1,11 +1,13 @@
 import raw from '../data/names.json' with { type: 'json' }
 import meaningTables from '../data/meanings.json' with { type: 'json' }
+import recurrenceTables from '../data/recurrence-meanings.json' with { type: 'json' }
 import type { Card, CelticMethod, LinesMethod, MethodPosition, Rank, Suit } from './types.ts'
 
 interface Names {
   readonly major: Readonly<Record<string, string>>
   readonly suits: Readonly<Record<Suit, string>>
   readonly ranks: Readonly<Record<Rank, string>>
+  readonly minor: string
   readonly positions: Readonly<Record<string, readonly string[]>>
   readonly methods: Readonly<Record<string, {
     readonly positions?: readonly string[]
@@ -44,7 +46,9 @@ export function cardName(card: Card, locale: string | undefined): string {
   const table = namesFor(locale)
   if (table === undefined) return card.name
   if (card.arcana === 'major') return table.major[card.id] ?? card.name
-  return card.suit === null || card.rank === null ? card.name : `${table.suits[card.suit]}${table.ranks[card.rank]}`
+  return card.suit === null || card.rank === null
+    ? card.name
+    : table.minor.replace('{suit}', table.suits[card.suit]).replace('{rank}', table.ranks[card.rank])
 }
 
 /** A court or number rank's name in the locale, such as `King`, `Ten` or `Ace`. */
@@ -91,6 +95,15 @@ export function meaningText(card: Card, index: number, locale: string | undefine
   const language = locale?.split(/[-_]/)[0]
   const table = locale === undefined ? undefined : translations[locale] ?? (language === undefined ? undefined : translations[language])
   return table?.[card.id]?.[index] ?? card.meanings[index]!.text
+}
+
+const recurrenceTranslations = recurrenceTables as unknown as Readonly<Record<string, Readonly<Record<string, string>>>>
+
+/** A recurrence phrase in the locale; the book's English phrase where no translation exists. */
+export function recurrenceMeaning(recurrence: { rank: Rank, count: number, position: string, means: string }, locale: string | undefined): string {
+  const language = locale?.split(/[-_]/)[0]
+  const table = locale === undefined ? undefined : recurrenceTranslations[locale] ?? (language === undefined ? undefined : recurrenceTranslations[language])
+  return table?.[`${recurrence.rank}/${recurrence.count}/${recurrence.position}`] ?? recurrence.means
 }
 
 /** The book's guidance for the last card of a method, in the locale. */

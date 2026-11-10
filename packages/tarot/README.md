@@ -1,5 +1,7 @@
 # dsh-rws-tarot
 
+Translations into languages other than English are machine-generated, so quality may vary. Corrections are very welcome through a pull request or issue.
+
 Rider-Waite-Smith tarot for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Open a **Tarot** page in the right dock, pick a spread (the three methods of the book, a plain draw, or three or nine cards in modern layouts), and click the glowing card to turn it over. Each card is read to you in the conversation as it is turned.
 
 This is a tool for reflection, study and entertainment. It cannot foretell anything: please read the [disclaimer](#disclaimer).

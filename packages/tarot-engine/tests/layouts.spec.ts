@@ -73,6 +73,6 @@ describe('layouts of three and nine cards', () => {
 
   it('tells the model when a reading is ended, in its language', () => {
     expect(describeEnd(laid('nine').turned(4))).toContain('ended the reading after 4 of 9 cards')
-    expect(describeEnd(laid('three', 'zh').turned(1))).toContain('第 1 张（共 3 张）之后结束了这次占卜')
+    expect(describeEnd(laid('three', 'zh').turned(1))).toContain('已在1张牌（共3张）后结束解读')
   })
 })

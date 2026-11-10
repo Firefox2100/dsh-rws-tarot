@@ -140,7 +140,7 @@ describe('client page interactions', () => {
     }
     page(async () => null, { maxQuestion: 500, readings: [complete] })
     fireEvent.click(screen.getByRole('button', { name: 'Continue with the 35 cards left' }))
-    expect(screen.getByText('This carries the last reading further with the cards it left over; there is nothing to set.')).toBeDefined()
+    expect(screen.getByText('This continues the last reading with the cards it left over, so there is nothing to set.')).toBeDefined()
 
     cleanup()
     page(async () => null, { maxQuestion: 500, readings: [complete] })

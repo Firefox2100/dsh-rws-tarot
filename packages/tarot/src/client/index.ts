@@ -8,7 +8,7 @@ import type {} from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
 import type {} from '@deepseek-ai/dsh-client-ui-tool/client'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
 import type {} from '../types.ts'
-import { en, zh, type TarotKey } from './locales.ts'
+import { de, en, es, fr, ja, pt, ru, zh, type TarotKey } from './locales.ts'
 import { TarotCall } from './TarotCall.tsx'
 import { TarotGlyph } from './TarotGlyph.tsx'
 import { TarotPage } from './TarotPage.tsx'
@@ -34,7 +34,7 @@ export const inject = ['slots', 'locale', 'remote', 'remote.commands', 'sidebarR
 /** A new page in the right dock, reachable from its guide, that adds nothing to any existing page. */
 export function apply(ctx: Context): void {
   const t = ctx.locale.bind(NAMESPACE)
-  ctx.effect(() => ctx.locale.register(NAMESPACE, { zh, en }), 'dsh-rws-tarot: dictionaries')
+  ctx.effect(() => ctx.locale.register(NAMESPACE, { zh, en, de, es, fr, ja, pt, ru }), 'dsh-rws-tarot: dictionaries')
   ctx.effect(() => ctx.sidebarRightTabs.register({
     id: ID,
     kind: 'tarot',

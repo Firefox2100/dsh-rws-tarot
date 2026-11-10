@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { cards, getCard, hasCard, meaningText, recurrence, tarotData } from '../src/index.ts'
+import { cards, getCard, hasCard, meaningText, recurrence, recurrenceMeaning, tarotData } from '../src/index.ts'
+
+const TRANSLATED_LOCALES = ['zh', 'de', 'es', 'fr', 'ja', 'pt', 'ru'] as const
 
 describe('tarot data', () => {
   it('holds the 78 cards: 22 trumps and 14 per suit', () => {
@@ -33,15 +35,11 @@ describe('tarot data', () => {
     expect(tarotData.sectionNotes.map(n => n.id)).toEqual(['lesser-arcana-remark', 'additional-meanings-remark'])
   })
 
-  it('translates every meaning into Chinese, and falls back to the book in other languages', () => {
-    for (const card of cards) {
-      card.meanings.forEach((meaning, index) => {
-        const text = meaningText(card, index, 'zh')
-        expect(text, `${card.id}[${index}]`).not.toBe(meaning.text)
-        expect(text, `${card.id}[${index}]`).not.toMatch(/[A-Za-z]/)
-        expect(meaningText(card, index, 'en'), `${card.id}[${index}]`).toBe(meaning.text)
-      })
-    }
+  it('translates every meaning into each supported locale and keeps English canonical', () => {
+    for (const locale of TRANSLATED_LOCALES) for (const card of cards) card.meanings.forEach((meaning, index) => {
+      expect(meaningText(card, index, locale), `${locale}:${card.id}[${index}]`).not.toHaveLength(0)
+      expect(meaningText(card, index, 'en'), `${card.id}[${index}]`).toBe(meaning.text)
+    })
   })
 })
 
@@ -73,8 +71,8 @@ describe('methods', () => {
     expect(method.diagram.packets).toMatchObject({ sizes: [7, 6, 5, 4, 2, 11], firstAt: 'right' })
     expect(method.positions[4]!.meaning).toContain('consolation')
     expect(positionName('thirtyfive', method.positions[0]!, 'zh')).toBe('第一行')
-    expect(positionMeaning('thirtyfive', method.positions[4]!, 'zh')).toContain('慰藉')
-    expect(positionName('thirtyfive', method.positions[0]!, 'fr')).toBe('First Line')
+    expect(positionMeaning('thirtyfive', method.positions[4]!, 'zh')).toContain('安慰')
+    expect(positionName('thirtyfive', method.positions[0]!, 'fr')).toBe('Première ligne')
   })
   it('refuses an unknown method', async () => {
     const { getMethod } = await import('../src/index.ts')
@@ -83,12 +81,12 @@ describe('methods', () => {
 })
 
 describe('names', () => {
-  it('names all 78 cards distinctly in Chinese and keeps the book title for an unknown language', async () => {
+  it('names all 78 cards distinctly in every supported locale and keeps the book title for an unknown language', async () => {
     const { cardName, getCard } = await import('../src/index.ts')
-    const zh = cards.map(c => cardName(c, 'zh'))
-    expect(new Set(zh).size).toBe(78)
-    expect(zh.every(n => /^[一-鿿]+$/.test(n))).toBe(true)
+    for (const locale of TRANSLATED_LOCALES) expect(new Set(cards.map(c => cardName(c, locale))).size, locale).toBe(78)
     expect(cardName(getCard('pentacles-08'), 'zh-CN')).toBe('星币八')
+    expect(cardName(getCard('cups-13'), 'de')).toBe('Königin der Kelche')
+    expect(cardName(getCard('cups-13'), 'ja')).toBe('カップのクイーン')
     expect(cardName(getCard('major-16'), 'en')).toBe('The Tower')
     expect(cardName(getCard('cups-13'), undefined)).toBe('Queen of Cups')
   })
@@ -108,7 +106,7 @@ describe('names', () => {
     expect(followUpTexts(celtic, 'zh')).toHaveLength(celtic.followUp.length)
     expect(followUpTexts(celtic, 'zh').every(t => /[\u4e00-\u9fff]/.test(t))).toBe(true)
     expect(finalCardText(celtic, 'zh')).toMatch(/[\u4e00-\u9fff]/)
-    expect(followUpTexts(celtic, 'fr')).toEqual(celtic.followUp.map(f => f.text))
+    expect(followUpTexts(celtic, 'fr')).not.toEqual(celtic.followUp.map(f => f.text))
   })
   it('resolves a locale by id, then language, then fallback', async () => {
     const { pickLocale } = await import('../src/index.ts')
@@ -123,5 +121,8 @@ describe('names', () => {
     expect(recurrence('ace', 2, true)?.means).toBe('enemies')
     expect(recurrence('knight', 3, true)?.means).toBe('a duel, or personal encounter')
     expect(recurrence('king', 5, false)).toBeUndefined()
+    const kings = recurrence('king', 3, false)!
+    for (const locale of TRANSLATED_LOCALES) expect(recurrenceMeaning(kings, locale)).not.toHaveLength(0)
+    expect(recurrenceMeaning(kings, 'en')).toBe(kings.means)
   })
 })

@@ -20,7 +20,9 @@ describe('client plugin', () => {
 
     apply(ctx)
     expect(effects).toHaveLength(5)
-    expect(ctx.locale.register).toHaveBeenCalledWith('tarot', expect.objectContaining({ zh: expect.any(Object), en: expect.any(Object) }))
+    expect(ctx.locale.register).toHaveBeenCalledWith('tarot', expect.objectContaining(Object.fromEntries(
+      ['zh', 'en', 'de', 'es', 'fr', 'ja', 'pt', 'ru'].map(locale => [locale, expect.any(Object)]),
+    )))
     expect(ctx.sidebarRightTabs.register).toHaveBeenCalledWith(expect.objectContaining({ id: 'dsh-rws-tarot', kind: 'tarot' }))
     expect(registrations.map(item => item.name)).toEqual(['sidebar.right.pane.tab', 'sidebar.right.pane.tab.title', 'tool.call.toolview'])
     expect(registrations.map(item => item.key)).toEqual(['dsh-rws-tarot', 'dsh-rws-tarot', 'tarot_lay_spread'])

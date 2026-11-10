@@ -144,8 +144,8 @@ describe('Thirty-five card continuation', () => {
 
   it('speaks Chinese with the Chinese line names', () => {
     const text = describeTurn({ ...continuation('zh'), drawn: 7 }, 0)
-    expect(text).toContain('继续下去')
+    expect(text).toContain('继续先前的塔罗解读')
     expect(text).toContain('“第一行”')
-    expect(text).toContain('从左到右')
+    expect(text).toContain('从行左至右')
   })
 })
