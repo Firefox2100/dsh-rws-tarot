@@ -23,7 +23,10 @@ function leaves(value, path = '', output = new Map()) {
   return output
 }
 
-const placeholders = text => [...text.matchAll(/\{([A-Za-z]+)\}/g)].map(match => match[1]).sort().join(',')
+const placeholders = text => [...text.matchAll(/\{([A-Za-z]+)\}/g)]
+  .map(match => match[1])
+  .sort((left, right) => left.localeCompare(right))
+  .join(',')
 
 for (const [label, packs] of [['UI', ui], ['prompt', words]]) {
   const canonical = leaves(packs.en)
