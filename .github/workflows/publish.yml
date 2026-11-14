@@ -4,6 +4,16 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to publish or recover
+        required: true
+        type: string
+
+concurrency:
+  group: publish-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -14,11 +24,13 @@ jobs:
       id-token: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - name: Install pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
@@ -27,7 +39,7 @@ jobs:
       - name: Validate tag and package version
         id: package
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ inputs.tag || github.ref_name }}
         run: |
           node <<'NODE'
           const tag = process.env.TAG
@@ -74,5 +86,10 @@ jobs:
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "Release V${TAG#v}" --notes ""
+          TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; nothing to create."
+          else
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "Release V${TAG#v}" --notes ""
+          fi
